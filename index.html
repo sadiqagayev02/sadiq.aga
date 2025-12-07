@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SADIQ - Eksklüziv Təhsil Platforması</title>
+    <!-- Tailwind CSS yüklənməsi -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #3b82f6;
+            --secondary-blue: #60a5fa;
+            --accent-purple: #8b5cf6;
+            --accent-cyan: #06b6d4;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.18);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #121316;
+            color: #f1f5f9;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* HƏRƏKƏTLİ PARILTAQ DAİRƏLƏR */
+        .floating-circles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.6;
+            animation: float 20s infinite linear;
+        }
+        
+        .circle:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            top: 10%;
+            left: 5%;
+            animation-duration: 25s;
+        }
+        
+        .circle:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            top: 60%;
+            right: 10%;
+            animation-duration: 30s;
+            animation-direction: reverse;
+        }
+        
+        .circle:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            bottom: 10%;
+            left: 20%;
+            animation-duration: 20s;
+        }
+        
+        .circle:nth-child(4) {
+            width: 350px;
+            height: 350px;
+            background: linear-gradient(135deg, #10b981, #06b6d4);
+            top: 20%;
+            right: 20%;
+            animation-duration: 35s;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(100px, 50px) rotate(90deg);
+            }
+            50% {
+                transform: translate(0, 100px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-100px, 50px) rotate(270deg);
+            }
+        }
+        
+        /* GLASS EFFECT CONTAINERS */
+        .glass-container {
+            backdrop-filter: blur(20px) saturate(200%);
+            -webkit-backdrop-filter: blur(20px) saturate(200%);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-card {
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.5s ease;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.5),
+                0 0 30px rgba(59, 130, 246, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        /* NEON TEXT EFFECT */
+        .neon-text {
+            text-shadow: 
+                0 0 10px rgba(59, 130, 246, 0.5),
+                0 0 20px rgba(59, 130, 246, 0.3),
+                0 0 30px rgba(59, 130, 246, 0.2);
+        }
+        
+        /* PULSING ANIMATION */
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 
+                    0 0 20px rgba(59, 130, 246, 0.2),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            }
+            50% {
+                box-shadow: 
+                    0 0 40px rgba(59, 130, 246, 0.4),
+                    0 0 60px rgba(59, 130, 246, 0.1),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            }
+        }
+        
+        .pulse-card {
+            animation: pulse-glow 3s infinite ease-in-out;
+        }
+        
+        /* SCROLL ANIMATIONS */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* GRADIENT TEXT */
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* LOGIN MODAL GLASS */
+        .login-glass {
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* BUTTON STYLES */
+        .glass-btn {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .primary-btn {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border: none;
+        }
+        
+        .primary-btn:hover {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            transform: translateY(-2px);
+        }
+        
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            .circle {
+                filter: blur(40px);
+            }
+            
+            .circle:nth-child(1),
+            .circle:nth-child(2),
+            .circle:nth-child(3),
+            .circle:nth-child(4) {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .glass-card {
+                backdrop-filter: blur(15px);
+                -webkit-backdrop-filter: blur(15px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Circles Background -->
+    <div class="floating-circles">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+    
+    <!-- Loading Indicator -->
+    <div id="loadingIndicator" class="hidden fixed inset-0 flex items-center justify-center z-[100]">
+        <div class="login-glass p-8 rounded-2xl flex flex-col items-center">
+            <div class="relative">
+                <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary-blue"></div>
+                <div class="absolute inset-0 animate-spin rounded-full h-16 w-16 border-r-2 border-l-2 border-accent-purple" style="animation-duration: 1.5s; animation-direction: reverse;"></div>
+            </div>
+            <p class="mt-4 text-primary-blue font-semibold">Yüklənir...</p>
+        </div>
+    </div>
+    
+    <!-- Message Box -->
+    <div id="messageBox" class="hidden fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg">
+        <span id="messageText"></span>
+    </div>
+    
+    <!-- Main Content Container -->
+    <div class="relative z-10 min-h-screen">
+        
+        <!-- Header -->
+        <header class="sticky top-0 w-full py-4 px-6 glass-container z-30">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary-blue to-accent-purple flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-white"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold gradient-text">SADIQ</h1>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div id="userInfo" class="hidden glass-container px-4 py-2 rounded-full">
+                        <i class="fas fa-user-circle mr-2 text-primary-blue"></i>
+                        <span id="usernameDisplay" class="font-medium"></span>
+                    </div>
+                    
+                    <button id="loginBtn" onclick="openLoginModal()" class="glass-btn px-5 py-2.5 rounded-full font-medium hover:shadow-lg transition-all duration-300">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Giriş
+                    </button>
+                    <button id="logoutBtn" onclick="attemptLogout()" class="hidden primary-btn px-5 py-2.5 rounded-full font-medium text-white hover:shadow-lg transition-all duration-300">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Çıxış
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Hero Section -->
+        <section class="relative py-16 px-6 overflow-hidden">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-12 scroll-reveal">
+                    <div class="inline-block mb-4">
+                        <div class="glass-container px-6 py-2 rounded-full inline-flex items-center space-x-2">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <span class="font-medium">Eksklüziv Platforma</span>
+                        </div>
+                    </div>
+                    
+                    <h2 class="text-5xl md:text-7xl font-bold mb-6">
+                        <span class="block neon-text">Sadiq </span>
+                        <span class="block gradient-text mt-2">AĞAYEV</span>
+                    </h2>
+                    
+                    <p class="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
+                        ilə tapılmayan sual qalmayacaq😉
+                    </p>
+                    
+                    <div class="flex flex-wrap justify-center gap-4 mb-12">
+                        <div class="glass-card px-6 py-4">
+                            <div class="text-2xl font-bold gradient-text">10</div>
+                            <div class="text-sm text-gray-400">Nəfərlik Qrup</div>
+                        </div>
+                        <div class="glass-card px-6 py-4">
+                            <div class="text-2xl font-bold gradient-text">5</div>
+                            <div class="text-sm text-gray-400">Peşəkar Fənn</div>
+                        </div>
+                        <div class="glass-card px-6 py-4">
+                            <div class="text-2xl font-bold gradient-text">24/7</div>
+                            <div class="text-sm text-gray-400">Əlçatanlıq</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Animated Access Indicator -->
+                    <div class="max-w-md mx-auto glass-card p-6 mb-8 pulse-card">
+                        <div class="flex items-center justify-center space-x-4">
+                            <div class="relative">
+                                <div class="w-3 h-3 bg-green-500 rounded-full animate-ping absolute"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full relative"></div>
+                            </div>
+                            <p class="text-lg font-medium">Məxfi Giriş Sistemi Aktiv</p>
+                        </div>
+                        <p class="text-sm text-gray-400 mt-2">Yalnız icazəli istifadəçilər daxil ola bilər</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Subjects Section -->
+        <section class="py-12 px-6" id="subjects">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-12 scroll-reveal">
+                    <h3 class="text-3xl md:text-4xl font-bold mb-4 gradient-text">Fənnlərimiz</h3>
+                    <p class="text-gray-400 max-w-2xl mx-auto">Hər biri sənayenin tələblərinə uyğun hazırlanmış peşəkar kurslar</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Subject 1 -->
+                    <a href="diaqnistika.html" onclick="return checkAccess(event, this.href)" 
+                       class="glass-card p-6 scroll-reveal">
+                        <div class="flex items-start mb-4">
+                            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center mr-4">
+                                <i class="fas fa-truck-moving text-2xl text-cyan-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-1">Nəqliyyat vasitələrinin Diaqnosyikası</h4>
+                                <span class="text-sm text-cyan-400 font-medium">Peşəkar Kurs</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 mb-6">Müasir nəqliyyat sistemlərinin idarə edilməsi və optimallaşdırılması</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm glass-container px-3 py-1 rounded-full">12 Dərs</span>
+                            <i class="fas fa-arrow-right text-cyan-400"></i>
+                        </div>
+                    </a>
+                    
+                    <!-- Subject 2 -->
+                    <a href="sahil.html" onclick="return checkAccess(event, this.href)" 
+                       class="glass-card p-6 scroll-reveal" style="transition-delay: 0.1s">
+                        <div class="flex items-start mb-4">
+                            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center mr-4">
+                                <i class="fas fa-tools text-2xl text-purple-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-1">Texniki İstismar</h4>
+                                <span class="text-sm text-purple-400 font-medium">Texniki Kurs</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 mb-6">Avadanlıqların texniki qulluğu və təhlükəsizlik standartları</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm glass-container px-3 py-1 rounded-full">10 Dərs</span>
+                            <i class="fas fa-arrow-right text-purple-400"></i>
+                        </div>
+                    </a>
+                    
+                    <!-- Subject 3 -->
+                    <a href="ingilis_dili.html" onclick="return checkAccess(event, this.href)" 
+                       class="glass-card p-6 scroll-reveal" style="transition-delay: 0.2s">
+                        <div class="flex items-start mb-4">
+                            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center mr-4">
+                                <i class="fas fa-language text-2xl text-emerald-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-1">İngilis Dili</h4>
+                                <span class="text-sm text-emerald-400 font-medium">Peşəkar Dil</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 mb-6">Sahə terminologiyası və beynəlxalq ünsiyyət bacarıqları</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm glass-container px-3 py-1 rounded-full">15 Dərs</span>
+                            <i class="fas fa-arrow-right text-emerald-400"></i>
+                        </div>
+                    </a>
+                    
+                    <!-- Subject 4 -->
+                    <a href="kamil.html" onclick="return checkAccess(event, this.href)" 
+                       class="glass-card p-6 scroll-reveal">
+                        <div class="flex items-start mb-4">
+                            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mr-4">
+                                <i class="fas fa-balance-scale text-2xl text-red-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-1">Hüququn Əsasları</h4>
+                                <span class="text-sm text-red-400 font-medium">Normativ Kurs</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 mb-6">Nəqliyyat qanunvericiliyi və tənzimləmələr</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm glass-container px-3 py-1 rounded-full">8 Dərs</span>
+                            <i class="fas fa-arrow-right text-red-400"></i>
+                        </div>
+                    </a>
+                    
+                    <!-- Subject 5 -->
+                    <a href="neq_konstruksiya.html" onclick="return checkAccess(event, this.href)" 
+                       class="glass-card p-6 scroll-reveal" style="transition-delay: 0.1s">
+                        <div class="flex items-start mb-4">
+                            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500/20 to-yellow-500/20 flex items-center justify-center mr-4">
+                                <i class="fas fa-drafting-compass text-2xl text-orange-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-1">Nəq Konstruksiya</h4>
+                                <span class="text-sm text-orange-400 font-medium">Dizayn Kursu</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 mb-6">Nəqliyyat infrastrukturunun layihələndirilməsi</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm glass-container px-3 py-1 rounded-full">14 Dərs</span>
+                            <i class="fas fa-arrow-right text-orange-400"></i>
+                        </div>
+                    </a>
+                    
+                    <!-- Special Access Card -->
+                    <div class="glass-card p-6 scroll-reveal" style="transition-delay: 0.2s">
+                        <div class="flex items-start mb-4">
+                            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-gray-700/20 to-gray-900/20 flex items-center justify-center mr-4">
+                                <i class="fas fa-lock text-2xl text-gray-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-1">Eksklüziv Giriş</h4>
+                                <span class="text-sm text-gray-400 font-medium">Məxfi Sistem</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 mb-6">Bütün fənnlərə daxil olmaq üçün icazəli hesabınızla giriş edin</p>
+                        <button onclick="openLoginModal()" class="w-full primary-btn py-3 rounded-xl font-medium">
+                            Hesaba Giriş
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Features Section -->
+        <section class="py-16 px-6">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-12 scroll-reveal">
+                    <h3 class="text-3xl md:text-4xl font-bold mb-4 gradient-text">SADIQ</h3>
+                    <p class="text-gray-400 max-w-2xl mx-auto">Unikal xüsusiyyətlər və peşəkar yanaşma</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="glass-card p-8 text-center scroll-reveal">
+                        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-blue/20 to-accent-purple/20 flex items-center justify-center">
+                            <i class="fas fa-user-shield text-3xl text-primary-blue"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4">Məxfilik</h4>
+                        <p class="text-gray-300">Yalnız 10 nəfərlik eksklüziv qrup. Hər istifadəçiyə fərdi giriş.</p>
+                    </div>
+                    
+                    <div class="glass-card p-8 text-center scroll-reveal" style="transition-delay: 0.1s">
+                        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-accent-cyan/20 to-emerald-500/20 flex items-center justify-center">
+                            <i class="fas fa-sync-alt text-3xl text-accent-cyan"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4">Sinxron Giriş</h4>
+                        <p class="text-gray-300">Bir hesab yalnız bir yerdən aktiv ola bilər. Təhlükəsizlik təmin edilir.</p>
+                    </div>
+                    
+                    <div class="glass-card p-8 text-center scroll-reveal" style="transition-delay: 0.2s">
+                        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+                            <i class="fas fa-brain text-3xl text-purple-400"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4">Peşəkar Kontent</h4>
+                        <p class="text-gray-300">Sənayenin tələblərinə uyğun hazırlanmış praktiki biliklər.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="py-8 px-6 glass-container mt-12">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-6 md:mb-0">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary-blue to-accent-purple flex items-center justify-center">
+                                <i class="fas fa-graduation-cap text-white"></i>
+                            </div>
+                            <h4 class="text-2xl font-bold gradient-text">SADIQ</h4>
+                        </div>
+                        <p class="text-gray-400">Peşəkar təhsilin gələcəyi</p>
+                    </div>
+                    
+                    <div class="text-center md:text-right">
+                        <p class="text-sm text-gray-400 mb-2">© 2024 SADIQ Platforması. Bütün hüquqlar qorunur.</p>
+                        <p class="text-xs text-gray-500">Eksklüziv 10 nəfərlik qrup üçün</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Login Modal -->
+    <div id="loginModal" class="hidden fixed inset-0 flex items-center justify-center z-50 p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeLoginModal()"></div>
+        
+        <div class="login-glass rounded-2xl w-full max-w-md p-8 relative z-10">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary-blue/20 to-accent-purple/20 flex items-center justify-center">
+                    <i class="fas fa-lock text-3xl text-primary-blue"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Sistəmə Giriş</h3>
+                <p class="text-gray-400">Yalnız icazəli istifadəçilər daxil ola bilər</p>
+            </div>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">İstifadəçi Adı</label>
+                    <input type="text" id="loginUsername" placeholder="Məs: SADİQ" 
+                           class="w-full p-4 rounded-xl glass-container border border-gray-700 focus:border-primary-blue focus:ring-1 focus:ring-primary-blue outline-none transition-all duration-300">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Şifrə</label>
+                    <input type="password" id="loginPassword" placeholder="Şifrənizi daxil edin" 
+                           class="w-full p-4 rounded-xl glass-container border border-gray-700 focus:border-primary-blue focus:ring-1 focus:ring-primary-blue outline-none transition-all duration-300">
+                </div>
+                
+                <div class="flex space-x-4">
+                    <button onclick="attemptLogin()" class="flex-1 primary-btn py-4 rounded-xl font-bold text-white hover:shadow-lg transition-all duration-300">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Daxil Ol
+                    </button>
+                    <button onclick="closeLoginModal()" class="flex-1 glass-btn py-4 rounded-xl font-medium hover:shadow-lg transition-all duration-300">
+                        Ləğv Et
+                    </button>
+                </div>
+                
+                <div class="glass-container p-4 rounded-xl mt-6">
+                    <p class="text-sm text-gray-400 text-center">
+                        <i class="fas fa-shield-alt mr-2 text-primary-blue"></i>
+                        Təhlükəsizlik sistemi aktivdir. Hər istifadəçi yalnız bir dəfə giriş edə bilər.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // İcazəli istifadəçilər (məxfi saxlanılır)
+        const ALLOWED_USERS = {
+            'SADİQ': 'sadiq123',
+            'ƏLİ': 'ali123',
+            'MİRTAĞI': 'mirtaqi123',
+            'RƏŞAD': 'rəşad123',
+            'ZƏKA': 'zəka123',
+            'ÜLVİ': 'ülvi123',
+            'ÜMİD': 'ümüd123',
+            'MURAD': 'murad123',
+            'YUSİF': 'yusif123',
+            'AYŞƏN': 'ayşən123'
+        };
+
+        // Yadda saxlanmış giriş məlumatları
+        let loggedInUser = localStorage.getItem('loggedInUser');
+        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+        // Elementlər
+        const messageBox = document.getElementById('messageBox');
+        const messageText = document.getElementById('messageText');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+
+        // Mesaj göstərmə
+        function showMessage(text, isError = false) {
+            messageText.textContent = text;
+            messageBox.className = 'fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg ' + 
+                                     (isError ? 'bg-red-500 text-white' : 'bg-green-500 text-white');
+            messageBox.classList.remove('hidden');
+            setTimeout(() => {
+                messageBox.classList.add('hidden');
+            }, 4000);
+        }
+
+        // Yükləmə göstəricisi
+        function showLoading(show) {
+            if (loadingIndicator) {
+                loadingIndicator.classList.toggle('hidden', !show);
+            }
+        }
+
+        // Modal funksiyaları
+        window.openLoginModal = () => {
+            document.getElementById('loginModal').classList.remove('hidden');
+        };
+
+        window.closeLoginModal = () => {
+            document.getElementById('loginModal').classList.add('hidden');
+        };
+
+        // Giriş cəhdi
+        window.attemptLogin = async () => {
+            const username = document.getElementById('loginUsername').value.toUpperCase();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!username || !password) {
+                showMessage("İstifadəçi adı və şifrəni daxil edin.", true);
+                return;
+            }
+
+            showLoading(true);
+            
+            // Qısa gözləmə effekti
+            setTimeout(() => {
+                if (ALLOWED_USERS[username]) {
+                    if (ALLOWED_USERS[username] === password) {
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('loggedInUser', username);
+                        
+                        isLoggedIn = true;
+                        loggedInUser = username;
+                        
+                        showMessage(`Xoş gəldiniz, ${username}!`, false);
+                        closeLoginModal();
+                        
+                        document.getElementById('loginBtn').classList.add('hidden');
+                        document.getElementById('logoutBtn').classList.remove('hidden');
+                        document.getElementById('userInfo').classList.remove('hidden');
+                        document.getElementById('usernameDisplay').textContent = username;
+                        
+                    } else {
+                        showMessage("Yanlış şifrə!", true);
+                    }
+                } else {
+                    showMessage("Bu istifadəçi adı icazəli deyil!", true);
+                }
+                
+                showLoading(false);
+            }, 800);
+        };
+
+        // Çıxış
+        window.attemptLogout = () => {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('loggedInUser');
+            
+            isLoggedIn = false;
+            loggedInUser = null;
+            
+            showMessage("Uğurlu çıxış.", false);
+            
+            document.getElementById('loginBtn').classList.remove('hidden');
+            document.getElementById('logoutBtn').classList.add('hidden');
+            document.getElementById('userInfo').classList.add('hidden');
+        };
+
+        // Giriş yoxlama
+        window.checkAccess = (event, href) => {
+            if (!isLoggedIn) {
+                event.preventDefault();
+                showMessage("Bu fənnə daxil olmaq üçün giriş etməlisiniz.", true);
+                openLoginModal();
+                return false;
+            }
+            return true;
+        };
+
+        // Scroll animasiyaları
+        function initScrollAnimations() {
+            const revealElements = document.querySelectorAll('.scroll-reveal');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            });
+            
+            revealElements.forEach(element => {
+                observer.observe(element);
+            });
+        }
+
+        // Sayt yükləndikdə
+        window.onload = function() {
+            // Giriş statusunu yoxla
+            if (isLoggedIn && loggedInUser) {
+                document.getElementById('loginBtn').classList.add('hidden');
+                document.getElementById('logoutBtn').classList.remove('hidden');
+                document.getElementById('userInfo').classList.remove('hidden');
+                document.getElementById('usernameDisplay').textContent = loggedInUser;
+            }
+            
+            // Scroll animasiyalarını başlat
+            initScrollAnimations();
+            
+            // Background circles animasiyası
+            const circles = document.querySelectorAll('.circle');
+            circles.forEach((circle, index) => {
+                circle.style.animationDelay = `${index * 2}s`;
+            });
+        };
+
+        // Klaviatura ilə modalı bağlama
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLoginModal();
+            }
+        });
+    </script>
+</body>
+</html>

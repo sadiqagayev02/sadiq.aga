@@ -1,0 +1,3774 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Quiz Game</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+        /* Daha parlaq rənglər və Glass Effect Dizayn - MOBİL UYUMLU */
+        :root {
+            --primary-blue: #4361ee;
+            --secondary-blue: #3a0ca3;
+            --accent-pink: #f72585;
+            --accent-yellow: #ffd166;
+            --accent-green: #06d6a0;
+            --accent-purple: #7209b7;
+            --light-bg: #f8f9ff;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --shadow-color: rgba(67, 97, 238, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 25%, #7209b7 50%, #f72585 75%, #ffd166 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 10px;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating Circles Background - DAHA KİÇİK */
+        .floating-circles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(30px);
+            opacity: 0.25;
+            animation: float 30s infinite linear;
+        }
+        
+        .circle:nth-child(1) {
+            width: 150px;
+            height: 150px;
+            background: var(--accent-pink);
+            top: 10%;
+            left: 5%;
+            animation-duration: 35s;
+        }
+        
+        .circle:nth-child(2) {
+            width: 180px;
+            height: 180px;
+            background: var(--primary-blue);
+            top: 60%;
+            right: 5%;
+            animation-duration: 40s;
+            animation-direction: reverse;
+        }
+        
+        .circle:nth-child(3) {
+            width: 120px;
+            height: 120px;
+            background: var(--accent-yellow);
+            bottom: 10%;
+            left: 15%;
+            animation-duration: 30s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(30px, 20px) rotate(90deg); }
+            50% { transform: translate(0, 40px) rotate(180deg); }
+            75% { transform: translate(-30px, 20px) rotate(270deg); }
+        }
+
+        /* Glass Container - DAHA KİÇİK */
+        .glass-container {
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            box-shadow: 
+                0 10px 30px var(--shadow-color),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 450px;
+            margin: 5px auto;
+            padding: 15px;
+        }
+
+        .glass-card {
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 14px;
+            box-shadow: 
+                0 8px 20px rgba(0, 0, 0, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            padding: 18px;
+            margin-bottom: 12px;
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            padding: 8px;
+        }
+
+        /* HEADER - YAN-YANA FLEX DÜZENİ (ƏSAS DƏYİŞİKLİK) */
+        .quiz-header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 8px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            width: 100%;
+            backdrop-filter: blur(8px) saturate(180%);
+            -webkit-backdrop-filter: blur(8px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .header-item {
+            padding: 8px 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(67, 97, 238, 0.1);
+        }
+
+        .header-label {
+            font-size: 0.65rem;
+            color: var(--primary-blue);
+            margin-bottom: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            line-height: 1.2;
+        }
+
+        .header-value {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--secondary-blue);
+            font-family: 'Poppins', sans-serif;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+            width: 100%;
+            line-height: 1.2;
+        }
+
+        #username-display {
+            color: var(--accent-pink);
+            font-size: 0.95rem;
+            font-weight: 800;
+        }
+
+        #question-counter {
+            color: var(--primary-blue);
+            font-size: 0.95rem;
+            font-weight: 800;
+        }
+
+        #timer-display {
+            color: var(--accent-pink);
+            font-family: 'Poppins', monospace;
+            font-size: 0.95rem;
+            font-weight: 800;
+        }
+
+        /* Start Container - DAHA KİÇİK */
+        .start-container {
+            text-align: center;
+            padding: 25px 18px;
+        }
+
+        .start-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-pink), var(--accent-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .start-subtitle {
+            font-size: 0.9rem;
+            color: var(--secondary-blue);
+            margin-bottom: 20px;
+            opacity: 0.9;
+            line-height: 1.3;
+        }
+
+        .user-info {
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: var(--secondary-blue);
+            padding: 12px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+        }
+
+        /* Question Container */
+        .question-container {
+            margin-bottom: 15px;
+            padding: 18px;
+        }
+
+        .question {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            font-weight: 600;
+            color: var(--secondary-blue);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 16px;
+            border-radius: 10px;
+            border-left: 3px solid var(--primary-blue);
+        }
+
+        /* Options - DAHA KİÇİK */
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1.5px solid rgba(67, 97, 238, 0.2);
+            border-radius: 10px;
+            padding: 14px 16px;
+            color: var(--secondary-blue);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: rgba(67, 97, 238, 0.1);
+            transform: translateX(3px);
+            border-color: var(--primary-blue);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .option-letter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border-radius: 8px;
+            margin-right: 12px;
+            font-weight: bold;
+            color: white;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            min-width: 28px;
+        }
+
+        /* Answer States */
+        .option-btn.correct {
+            background: linear-gradient(135deg, rgba(6, 214, 160, 0.12), rgba(6, 214, 160, 0.2));
+            border-color: var(--accent-green);
+            color: #0a8754;
+            animation: pulse-green 0.5s ease-in-out;
+        }
+
+        .option-btn.incorrect {
+            background: linear-gradient(135deg, rgba(247, 37, 133, 0.12), rgba(247, 37, 133, 0.2));
+            border-color: var(--accent-pink);
+            color: #b5174e;
+            animation: pulse-red 0.5s ease-in-out;
+        }
+
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(6, 214, 160, 0.3); }
+            70% { box-shadow: 0 0 0 8px rgba(6, 214, 160, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(6, 214, 160, 0); }
+        }
+
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(247, 37, 133, 0.3); }
+            70% { box-shadow: 0 0 0 8px rgba(247, 37, 133, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(247, 37, 133, 0); }
+        }
+
+        /* Timer - DAHA KİÇİK */
+        .timer-container {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 3px;
+            margin: 15px 0 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .timer-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-pink), var(--accent-yellow));
+            width: 100%;
+            transition: width 1s linear;
+            border-radius: 3px;
+        }
+
+        /* Buttons - DAHA KİÇİK */
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+            color: white;
+            font-size: 0.95rem;
+            padding: 14px 25px;
+            margin-top: 12px;
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.25);
+        }
+
+        .btn-start:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.35);
+        }
+
+        .btn-start:active {
+            transform: translateY(0);
+        }
+
+        /* Controls - YENİ FLEX DÜZENİ */
+        .controls-bottom {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .icon-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1.5px solid rgba(67, 97, 238, 0.3);
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--primary-blue);
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .icon-btn:hover {
+            background: var(--primary-blue);
+            color: white;
+            transform: scale(1.05);
+            border-color: var(--primary-blue);
+        }
+
+        #next-btn {
+            flex: 1;
+            max-width: none;
+            width: auto;
+            margin: 0;
+            padding: 12px 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Result Container - DAHA KİÇİK */
+        .result-container {
+            text-align: center;
+            display: none;
+            padding: 25px 18px;
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .score {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            color: var(--primary-blue);
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 18px;
+            border-radius: 14px;
+            display: inline-block;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .progress {
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            color: var(--secondary-blue);
+            font-weight: 600;
+        }
+
+        /* Auto Next Message */
+        .auto-next-message {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: var(--primary-blue);
+            font-weight: 600;
+            opacity: 0;
+            animation: fadeInOut 1.2s ease-in-out;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            display: inline-block;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.5; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1.01); }
+        }
+
+        /* Progress Circles - DAHA KİÇİK */
+        .progress-circles {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+            padding: 0 8px;
+        }
+
+        .progress-circle {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .progress-circle.active {
+            background: var(--primary-blue);
+            transform: scale(1.3);
+        }
+
+        .progress-circle.correct {
+            background: var(--accent-green);
+        }
+
+        .progress-circle.incorrect {
+            background: var(--accent-pink);
+        }
+
+        /* Particles - AZALDIRILMIŞ */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: floatParticle 25s infinite linear;
+            opacity: 0.3;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* ========== MEDIA QUERIES ========== */
+        /* MOBİL ÜÇÜN TƏNZİMLƏMƏ */
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+                align-items: flex-start;
+                min-height: 100vh;
+                overflow-y: auto;
+            }
+
+            .container {
+                padding: 5px;
+            }
+
+            .glass-container {
+                border-radius: 16px;
+                padding: 12px;
+                margin: 3px auto;
+            }
+
+            /* HEADER MOBİL ÜÇÜN */
+            .quiz-header {
+                padding: 10px 12px;
+                gap: 6px;
+                margin-bottom: 12px;
+            }
+            
+            .header-item {
+                padding: 6px 8px;
+            }
+            
+            .header-label {
+                font-size: 0.6rem;
+                margin-bottom: 3px;
+            }
+            
+            .header-value {
+                font-size: 0.85rem;
+            }
+            
+            #username-display,
+            #question-counter,
+            #timer-display {
+                font-size: 0.85rem;
+            }
+
+            .start-title {
+                font-size: 1.4rem;
+                margin-bottom: 10px;
+            }
+
+            .start-subtitle {
+                font-size: 0.85rem;
+                margin-bottom: 15px;
+            }
+
+            .question {
+                font-size: 0.95rem;
+                padding: 14px;
+                margin-bottom: 15px;
+                line-height: 1.3;
+            }
+
+            .option-btn {
+                padding: 12px 14px;
+                font-size: 0.85rem;
+                line-height: 1.2;
+            }
+
+            .option-letter {
+                width: 26px;
+                height: 26px;
+                font-size: 0.8rem;
+                margin-right: 10px;
+                min-width: 26px;
+            }
+
+            .btn {
+                padding: 11px 18px;
+                font-size: 0.85rem;
+                max-width: 260px;
+            }
+
+            .btn-start {
+                padding: 12px 22px;
+                font-size: 0.9rem;
+            }
+
+            .result-title {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .score {
+                font-size: 1.3rem;
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+
+            .controls-bottom {
+                margin-top: 15px;
+                padding-top: 12px;
+                gap: 12px;
+            }
+
+            .icon-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1.1rem;
+            }
+
+            #next-btn {
+                padding: 11px 18px;
+                font-size: 0.85rem;
+            }
+
+            .timer-container {
+                margin: 12px 0 15px;
+            }
+
+            .progress-circles {
+                gap: 4px;
+                margin-top: 10px;
+            }
+
+            .progress-circle {
+                width: 7px;
+                height: 7px;
+            }
+        }
+
+        /* Çox kiçik ekranlar üçün */
+        @media (max-width: 360px) {
+            .quiz-header {
+                gap: 4px;
+                padding: 8px 10px;
+            }
+            
+            .header-label {
+                font-size: 0.55rem;
+                margin-bottom: 2px;
+                letter-spacing: 0.3px;
+            }
+            
+            .header-value {
+                font-size: 0.8rem;
+            }
+            
+            .header-item {
+                padding: 5px 7px;
+            }
+            
+            #username-display,
+            #question-counter,
+            #timer-display {
+                font-size: 0.8rem;
+            }
+
+            .start-title {
+                font-size: 1.3rem;
+            }
+
+            .question {
+                font-size: 0.9rem;
+                padding: 12px;
+            }
+
+            .option-btn {
+                padding: 10px 12px;
+                font-size: 0.8rem;
+            }
+
+            .option-letter {
+                width: 24px;
+                height: 24px;
+                font-size: 0.75rem;
+                margin-right: 8px;
+                min-width: 24px;
+            }
+        }
+
+        /* Tablet üçün */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .glass-container {
+                max-width: 420px;
+                padding: 18px;
+            }
+
+            .quiz-header {
+                padding: 15px;
+                gap: 12px;
+            }
+
+            .header-label {
+                font-size: 0.7rem;
+            }
+
+            .header-value {
+                font-size: 1rem;
+            }
+
+            #username-display,
+            #question-counter,
+            #timer-display {
+                font-size: 1rem;
+            }
+
+            .start-title {
+                font-size: 1.8rem;
+            }
+
+            .question {
+                font-size: 1.1rem;
+            }
+
+            .option-btn {
+                font-size: 0.95rem;
+                padding: 15px 18px;
+            }
+        }
+
+        /* Desktop üçün */
+        @media (min-width: 769px) {
+            body {
+                align-items: center;
+                padding: 20px;
+            }
+
+            .glass-container {
+                max-width: 500px;
+                padding: 20px;
+            }
+
+            .quiz-header {
+                gap: 15px;
+            }
+
+            .controls-bottom {
+                gap: 20px;
+            }
+        }
+
+        /* Landscape rejimi üçün */
+        @media (max-width: 768px) and (orientation: landscape) {
+            body {
+                padding: 5px;
+                align-items: flex-start;
+            }
+
+            .glass-container {
+                max-width: 98%;
+                margin: 3px auto;
+                padding: 10px;
+            }
+
+            .quiz-header {
+                padding: 10px;
+                gap: 8px;
+                margin-bottom: 10px;
+            }
+
+            .header-label {
+                font-size: 0.5rem;
+            }
+
+            .header-value {
+                font-size: 0.75rem;
+            }
+
+            #username-display,
+            #question-counter,
+            #timer-display {
+                font-size: 0.75rem;
+            }
+
+            .start-container {
+                padding: 15px 10px;
+            }
+
+            .question-container {
+                padding: 12px;
+            }
+
+            .options-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .option-btn {
+                padding: 10px 12px;
+                font-size: 0.8rem;
+                min-height: 60px;
+            }
+
+            .option-letter {
+                width: 22px;
+                height: 22px;
+                font-size: 0.75rem;
+                margin-right: 8px;
+            }
+
+            .controls-bottom {
+                margin-top: 12px;
+                padding-top: 10px;
+                gap: 10px;
+            }
+
+            .question {
+                font-size: 0.9rem;
+                padding: 12px;
+                margin-bottom: 12px;
+            }
+        }
+
+        /* Yüksək ekranlar üçün */
+        @media (min-height: 800px) and (max-width: 480px) {
+            .glass-container {
+                margin-top: 20px;
+            }
+        }
+
+        /* Aşağı scroll problemi üçün */
+        .quiz-container {
+            min-height: calc(100vh - 40px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .question-container {
+            flex: 1;
+        }
+
+        /* Header-in yan-yana olmasını təmin etmək üçün əlavə CSS */
+        .quiz-header {
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+        }
+
+        .header-item {
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Background -->
+    <div class="floating-circles">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+    
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Main Container -->
+    <div class="container glass-container">
+        <!-- Start Screen -->
+        <div class="start-container" id="start-container">
+            <h1 class="start-title">🌟 PREMIUM QUIZ 🌟</h1>
+            <p class="start-subtitle">Bilik sınağınıza xoş gəldiniz!</p>
+            
+            <div class="user-info glass-card">
+                <i class="fas fa-user-circle" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 10px;"></i>
+                <p id="user-greeting">Siz artıq giriş etmisiniz!</p>
+                <p style="font-size: 1rem; color: var(--accent-pink); margin-top: 10px;">
+                    <i class="fas fa-shield-alt"></i> Avtomatik giriş aktivdir
+                </p>
+            </div>
+            
+            <button class="btn btn-start" id="start-btn">
+                <i class="fas fa-play-circle" style="margin-right: 10px;"></i>KVİZƏ BAŞLA
+            </button>
+        </div>
+        
+        <!-- Quiz Header -->
+        <div class="quiz-header glass-card" id="quiz-header" style="display: none;">
+            <div class="header-item">
+                <div class="header-label">İSTİFADƏÇİ</div>
+                <div class="header-value" id="username-display">Qonaq</div>
+            </div>
+            <div class="header-item">
+                <div class="header-label">SUAL</div>
+                <div class="header-value" id="question-counter">1/250</div>
+            </div>
+            <div class="header-item">
+                <div class="header-label">VAXT</div>
+                <div class="header-value" id="timer-display">40s</div>
+            </div>
+        </div>
+        
+        <!-- Quiz Container -->
+        <div class="quiz-container" id="quiz-container" style="display: none;">
+            <!-- Progress Circles -->
+            <div class="progress-circles" id="progress-circles"></div>
+            
+            <!-- Progress Text -->
+            <div class="progress" id="progress">Sual 1 / 250</div>
+            
+            <!-- Timer -->
+            <div class="timer-container">
+                <div class="timer-bar" id="timer-bar"></div>
+            </div>
+            
+            <!-- Question -->
+            <div class="question-container glass-card">
+                <div class="question" id="question">Sual yüklənir...</div>
+                
+                <!-- Options -->
+                <div class="options-container" id="options-container"></div>
+                
+                <!-- Auto Next Message -->
+                <div class="auto-next-message" id="auto-next-message" style="display: none;"></div>
+            </div>
+            
+            <!-- Controls -->
+            <div class="controls-bottom">
+                <button class="btn btn-start" id="next-btn" style="display: none;">
+                    <i class="fas fa-forward" style="margin-right: 8px;"></i>NÖVBƏTİ SUAL
+                </button>
+                <div class="icon-btn" id="timer-toggle-btn" title="Vaxtı Dayandır/Davam et">
+                    <i class="fas fa-pause"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Result Container -->
+        <div class="result-container" id="result-container">
+            <h2 class="result-title">🎉 KVIZ TAMAMLANDI! 🎉</h2>
+            
+            <div class="score" id="score"></div>
+            
+            <!-- Stats -->
+            <div class="glass-card" style="padding: 30px; margin: 30px auto; max-width: 500px;">
+                <h3 style="color: var(--primary-blue); margin-bottom: 20px; font-size: 1.5rem;">
+                    <i class="fas fa-chart-bar" style="margin-right: 10px;"></i>STATİSTİKA
+                </h3>
+                <div id="stats-details" style="text-align: left; line-height: 2;">
+                    <!-- Stats will be inserted here -->
+                </div>
+            </div>
+            
+            <button class="btn btn-start" id="restart-btn">
+                <i class="fas fa-redo" style="margin-right: 10px;"></i>YENİDƏN BAŞLA
+            </button>
+        </div>
+    </div>
+
+<script>
+  
+const allQuestions = [
+    {
+        "question_number": 1,
+        "question_text": "\"Avtomobil\" sözünün yunan və latın dillərindən tərcümədə mənası nədir?",
+        "options": {
+            "a": "Mühərrikli araba",
+            "b": "Hərəkətli Araba",
+            "c": "Nəqliyyat vasitəsi",
+            "d": "Özü hərəkət edən"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 2,
+        "question_text": "Avtomobil neçə hissədən ibarətdir?",
+        "options": {
+            "a": "2 hissədən",
+            "b": "4 hissədən",
+            "c": "6 hissədən",
+            "d": "3 hissədən"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 3,
+        "question_text": "Avtomobilin hissələri, hansı cavabda düzgün verilib?",
+        "options": {
+            "a": "Mühərrik, kuza, şassi",
+            "b": "Çərçivə ,körpü , təkər",
+            "c": "Kuza və çərçivə",
+            "d": "Transmissiya və idarə sistemi"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 4,
+        "question_text": "Mühərrik nədir? Hansı cavab doğrudur?",
+        "options": {
+            "a": "Transmisiyanın bir qurğusudur",
+            "b": "Çox mürəkkəb mexanizmdir",
+            "c": "Mexaniki enerji mənbəyidir",
+            "d": "Avtomobilin arxa körpüsüdür"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 5,
+        "question_text": "Avtomobilin \"kuzası\" nə üçündür?",
+        "options": {
+            "a": "Avtomobilə yüksək sürət verilməsi üçün",
+            "b": "Sərnişin və baqajların daşınması üçün",
+            "c": "Avtomobilin xarici görünüşünü dəyişmək üçün",
+            "d": "Tormozlanmanı yaxşılaşdırmaq üçün"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 6,
+        "question_text": "\"Şassi\" nədir?",
+        "options": {
+            "a": "Hərəkət hissəsinin,transmisiyanın və idarə mexanizmlərinin birgə işidir",
+            "b": "Transmisyanın qurğularının bir növüdür",
+            "c": "İdarəetmə mexanizmlərinin və hərəkət hissəsinin toplusudur",
+            "d": "Bir neçə qurğu və mexanizmlər toplusudur"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 7,
+        "question_text": "Avtomobilin transsmissiya vasitələri dedikdə nə nəzərdə tutulur?",
+        "options": {
+            "a": "Avtomobilin hərəkət hissəsidir",
+            "b": "Avtomobilin tormoz sistemidir",
+            "c": "Avtomobili idarəetmə sistemidir",
+            "d": "Avtomobilin güc ötürücü aqreqatıdır"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 8,
+        "question_text": "Avtomobillər təyinatına görə hansı növlərə bölünür?",
+        "options": {
+            "a": "Sərnişin və yük avtomobillərinə",
+            "b": "Yalnız, yük, qoşqulara və yarımqoşqulara",
+            "c": "Sərnişin, yük, xüsusiləşdirilmiş və ixtisaslaşdırılmış",
+            "d": "Yalnız qoşqu və yarımqoşqulara"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 9,
+        "question_text": "Avtomobilin texniki xarakteristikası nəyə deyilir?",
+        "options": {
+            "a": "Avtomobilin konstruksiya xüsusiyyətlərinə",
+            "b": "Əsas texniki parametrlərinin siyhısına",
+            "c": "Avtomobilin yükgötürmə qabiliyyətinə",
+            "d": "Avtomobilin keçicilik qabiliyyətinə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 10,
+        "question_text": "Avtomobillərdə əsasən enerji mənbəyi kimi hansı mühərriklərdən istifadə olunur?",
+        "options": {
+            "a": "Odun sobalarından",
+            "b": "Elektrotransformatorlardan",
+            "c": "Buxar mühərriklərindən",
+            "d": "Daxili yanma mühərriklərindən"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 11,
+        "question_text": "İstfadə etdikləri yanacağın növünə görə mühərriklər necə təsnif olunur.",
+        "options": {
+            "a": "Yalnız qazla işləyən mühərriklər",
+            "b": "Yalniz benzinlə işləyən mühərriklər",
+            "c": "Benzin, dizel, qaz və elektrik mühərrikləri",
+            "d": "Yalnız elektriklə işləyən mühərriklər"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 12,
+        "question_text": "Porşenli benzin mühərriklərinin sistemlərinə, hansı sistem aid deyil?",
+        "options": {
+            "a": "Qida sistemi",
+            "b": "İdarəetmə sistemi",
+            "c": "Soyutma sitemi",
+            "d": "Yağlama sistemi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 13,
+        "question_text": "Avtomobil mühərrikləri neçə mexanizmdən ibarətdir?",
+        "options": {
+            "a": "8 mexanizm",
+            "b": "2 mexanizm",
+            "c": "5 mexanizm",
+            "d": "3 mexanizm"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 14,
+        "question_text": "Mühərrikin mexanizmləri hansı cavabda doğru verilib.",
+        "options": {
+            "a": "İdarəetmə mexanizmi",
+            "b": "Yalnız çarxqolu -- sürgüqolu mexanizmi",
+            "c": "Yalnız qazpaylama mexanizmi",
+            "d": "Çarxqolu -- sürgüqolu və qazpaylama mexanizmi"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 15,
+        "question_text": "Avtomobil mühərriklərinin sistemləri hansı cavabda doğru göstərilib?",
+        "options": {
+            "a": "Soyutma, yağlama, qidalanma, xaric etmə və alışdırma",
+            "b": "Yalnız qidalanma və soyutma sisteləri",
+            "c": "Yalnız qida və alışdırma sistemləri",
+            "d": "Yalnız soyutma yağlama sistemləri"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 16,
+        "question_text": "Mühərrikin porşeninin neçə ölü nöqtəsi var?",
+        "options": {
+            "a": "2",
+            "b": "4",
+            "c": "3",
+            "d": "6"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 17,
+        "question_text": "Ölü nöqtələr arasındakı məsafə necə adlanır?",
+        "options": {
+            "a": "Silindrin diametri",
+            "b": "Porşen yolu",
+            "c": "Yanma kameras",
+            "d": "Dirsəkli val"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 18,
+        "question_text": "Yanma kamerasının həcmi hansı cavabda düzgün verilib?",
+        "options": {
+            "a": "Porşen A.Ö.N-də olanda ondan yuxarıda qalan həcm",
+            "b": "Y.Ö.N.-də olan porşendən aşağıda qalan həcm",
+            "c": "Y.Ö.N. və A.Ö.N. arasında qalan həcm",
+            "d": "Y.Ö.N.-də olan porşendən yuxarıda qalan həcm"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 19,
+        "question_text": "Silindrin işçi həcmi dedikdə nə başa düşülür?",
+        "options": {
+            "a": "Y.Ö.N. və A.Ö.N. arasında qalan həcm",
+            "b": "Porşenin Y.Ö.N dən yuxarıda qalan həcm",
+            "c": "Silindrin yanma kamerasının həcmi",
+            "d": "Porşenin A.Ö.N dən yuxarıda qalan həcm"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 20,
+        "question_text": "Silindrin tam həcmi nəyə deyilir?",
+        "options": {
+            "a": "Y.Ö.N. də olan porşendən yuxarıda qalan məsafəyə",
+            "b": "A.Ö.N. ilə Y.Ö.N arasında olan həcmə",
+            "c": "Silindrin yanma kamerasının həcmi ilə işçi həcminin cəminə",
+            "d": "Silindrə daxil olan yanacağın həcmi"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 21,
+        "question_text": "Mühərrikin işçi tsikli nəyə deyilir?",
+        "options": {
+            "a": "Silindrin işçi həcminə",
+            "b": "Silindrdə təkrarlanan taktların cəminə",
+            "c": "Porşenlərin mexaniki hərəkətinə",
+            "d": "Dirsəkli valın fırlanma hərəkətinə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 22,
+        "question_text": "Dördtaktlı işçi tsikl, porşenin neçə gedişində baş verir.",
+        "options": {
+            "a": "2",
+            "b": "3",
+            "c": "4",
+            "d": "8"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 23,
+        "question_text": "Takt nəyə deyilir?",
+        "options": {
+            "a": "Porşenin dibinin diametrinə",
+            "b": "Porşenin mexaniki hərəkətinə",
+            "c": "Porşenin üzüklərinin sayına",
+            "d": "Porşenin bir gedişində baş verən işçi prosesə"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 24,
+        "question_text": "İşci tşikl hansı taktlardan ibarətdir?",
+        "options": {
+            "a": "Yalnız sıxma ve xaricetme",
+            "b": "Yalnız daxilolma və sıxma",
+            "c": "Daxilolma(sorma),sıxma,işçi gediş(yanma genişlənmə),xaricetmə",
+            "d": "Xaricetme, işci gediş və sıxma"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 25,
+        "question_text": "Carxqolu-sürgüqolu mexanizminin vezifəsi nedir?",
+        "options": {
+            "a": "Porşeni silindirin icerisinde hereket etdirmekdir",
+            "b": "Porşenin mexaniki hereketini(irəli geri), dirsekli valın fırlanma hereketine çevirməkdir",
+            "c": "Dirsekli valın dövürler sayını teyin etmekdir",
+            "d": "Porşenlə dirsəkli valı əlaqələndirməkdir"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 26,
+        "question_text": "Aytomobilin \"Baza məsafəsi\" nədir?",
+        "options": {
+            "a": "Avtomobilin qabaq və arxa təkərlərinin mərkəzi arasındakı məsafə",
+            "b": "Avtomobilin maksimal hündürlüyü",
+            "c": "Avtomobilin maksimal eni",
+            "d": "Avtomobilin maksimal uzunluğu"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 27,
+        "question_text": "Avtomobilin \"koleyası\" nədir?",
+        "options": {
+            "a": "Avtomobilin qabarit ölçüləri",
+            "b": "Avtomobilin maksimal hündürlüyü",
+            "c": "Avtomobilin maksimal eni",
+            "d": "Qabaq və arxa təkərlərin mərkəzi oxları arasındakı məsafə"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 28,
+        "question_text": "4 taktlı mühərrikin dirsəkli valı 1 tsikl ərzində hansı bucaq altında dönür?",
+        "options": {
+            "a": "360",
+            "b": "90",
+            "c": "180",
+            "d": "270"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 29,
+        "question_text": "4 taklı mühərrikin dirsəkli valı 1 takt ərzində hansı bucaq qədər dönür?",
+        "options": {
+            "a": "90",
+            "b": "180",
+            "c": "270",
+            "d": "360"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 30,
+        "question_text": "Hansı taktda silindirdə seyrəklik yaranır?",
+        "options": {
+            "a": "Xariçetmə taktında",
+            "b": "Sıxma taktında",
+            "c": "Genişlənmə taktında",
+            "d": "Sorma taktında"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 31,
+        "question_text": "Çarxqolu-sürgüqolu mexanizminin hansı detalı hərəkətsiz detallara aiddir?",
+        "options": {
+            "a": "Silindrlər bloku",
+            "b": "Porşen",
+            "c": "Nazimcarx",
+            "d": "Sürgüqolu"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 32,
+        "question_text": "Nazimçarxın əsas vəzifəsi nədir?",
+        "options": {
+            "a": "Avtomobilin hərəkəti zamanı transmisiyanın titrəyişlərinin azaldılması",
+            "b": "Qazpaylama valının səlis fırlanmasını təmin etmək,klapan mexanizmilərinin işinin optimallaşdırılması",
+            "c": "Mühərrikin işi zamanı dirsəkli valın titrəyişlərinin azaldılması",
+            "d": "Dirsəkli valın səlis fırlanması,porşenlerin ölü nöqtələrdən çıxarılması,işə salınmanın asanlaşdırılması"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 33,
+        "question_text": "Porşenin üzərinə neçə növ üzüklər asılır?",
+        "options": {
+            "a": "2 növ",
+            "b": "3 növ",
+            "c": "4 növ",
+            "d": "6 növ"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 34,
+        "question_text": "Porşenin üzərinə hansı növ üzüklər asılır.",
+        "options": {
+            "a": "Yalnız yağ sıyırıcı üzüklər",
+            "b": "Yağ sıyırıcı və kompressiya üzükləri",
+            "c": "Yalnız kompressiya üzüklər",
+            "d": "Porşenin üzərinə heç bir üzük asılmır"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 35,
+        "question_text": "Porşenin kompressiya üzüklərinin əsas vəzifəsi nədir?",
+        "options": {
+            "a": "Mühərrikin karterində, yağ axmalarının qarşısını almaq",
+            "b": "Silindrin divarlarından axan yağları silmək",
+            "c": "Silindrdə yaranan qazlrın karterə keçməsinin qarşısını almaq",
+            "d": "Karterdəki yağın silindrə keçməsinin qrşısını almaq"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 36,
+        "question_text": "Qazpaylama mexanizminin vəzifəsi nədir?",
+        "options": {
+            "a": "Mühərrikin səssiz və səlis işləməsini təmin etmək",
+            "b": "Yalnız giriş klapanlarının işini təmin etməkdir",
+            "c": "Yalnız çıxış klapanlarının işini təmin etməkdir",
+            "d": "Silindrdə giriş və çıxış klapanlarının işini təmin etmək"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 37,
+        "question_text": "Qazpaylama mexanizminə hansı detallar aiddir.",
+        "options": {
+            "a": "Paylama valı, linglər, çiyinlər, yaylar, klapanlar",
+            "b": "Yalnız daxilolma və xaricetmə klapanları",
+            "c": "Yalnız paylayıcı val və linglər",
+            "d": "Yalnız daxilolma klapanları"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 38,
+        "question_text": "Klapanlarda istilik ara boşluğu nə üçündür?",
+        "options": {
+            "a": "Çiyin və linglərin yeyilməsinin qarşısını almaq üçün",
+            "b": "Yumrucuqların sürətlə yeyilməsinin qarşısını almaq üçün",
+            "c": "Xaric olan qazların toksikiliyini azaltmaq üçün",
+            "d": "Klapanların kip bağlanmasını təmin etmək üçün"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 39,
+        "question_text": "Göstərilən funksiyalardan hansı yağlama sisteminə aid deyil.",
+        "options": {
+            "a": "Sürtünən səthlərin yeyilmə intesivliyini azaltmaq",
+            "b": "Sürtünmə qüvvəsini və itkiləri azaltmaq",
+            "c": "Mühərrikin optimal temperatur rejimini təmin etmək",
+            "d": "Sürtünən səthlərdən yeyilmə məhsullarını kənarlaşdırmaq"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 40,
+        "question_text": "Karter altlığı nədir?",
+        "options": {
+            "a": "Yağın süzülüb saxlanması üçün rezervuardır",
+            "b": "Soyducu mayenin saxlanması üçün rezervuardır",
+            "c": "Dirsəkli valın yağlanma kanallarıdır",
+            "d": "Soyutma sisteminin boru və şlanqlarıdır"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 41,
+        "question_text": "Yağ nasosu nə üçündür?",
+        "options": {
+            "a": "Yağlama klapanlarıdır",
+            "b": "Yağı təzyiq altında yalnız çarxqolu-sürgüqoluna vurmaq",
+            "c": "Yağı təzyiq altında yalnız qazpaylama mexanizminə vurmaq",
+            "d": "Yağı təzyiq altında hərəkətli detallara vurmaq"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 42,
+        "question_text": "Yağ süzgənci nə üçündür?",
+        "options": {
+            "a": "Yağın özüllüyünü və şəffaflığını artırmaq",
+            "b": "Yağı yeyimə məhsullarından və mexaniki qarışıqlardan təmizləmək",
+            "c": "Yağın markalanmasını təyin etmək",
+            "d": "Yağın keyfiyyət göstəricisini təyin etmək"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 43,
+        "question_text": "Soyutma sisteminin vəzifəsi nədir?",
+        "options": {
+            "a": "Mühərrikin tez qızmasını təmin etmək və optimal istilik rejimini saxlamay",
+            "b": "Mühərrikin yüksək hədlərə qədər soyudulmasını təmin etmək",
+            "c": "Mühərrikin yuksək hədlərə qədər qızdırılmasını təmin etmək",
+            "d": "Soyuducu mayenin markasını təyin etmək"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 44,
+        "question_text": "Soyutma köynəkləri harada yerləşir?",
+        "options": {
+            "a": "Yalnız blok başlığında",
+            "b": "Yalnız silindirlər blokunda",
+            "c": "Silindirlər blokunda və blok başlığında",
+            "d": "Mühərrikin karterində"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 45,
+        "question_text": "Su nasosu (pompa) nə üçündür?",
+        "options": {
+            "a": "Soyuducu mayenin markasını təyin etmək",
+            "b": "Mühərrikdəki mayenin soyudulmasını təmin etmək",
+            "c": "Soyuducu mayenin su köynəklərində dövrüyəsini təmin etmək",
+            "d": "Yaranan maye artığını aradan qaldırmaq"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 46,
+        "question_text": "Radiator nə üçündür?",
+        "options": {
+            "a": "Mühərrikin tez qızmasını təmin etmək",
+            "b": "Ondan keçən mayenin istiliyini ətraf mühütə vermək",
+            "c": "Maye artıqlığını aradan qaldırmaq",
+            "d": "Mayenin su köynəklərində dövranını yaxşılaşdırmaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 47,
+        "question_text": "Müasir minik avtomobillərinin mühərriklərində işçi mayenin optimal temperaturu nə qədər olmalıdır?",
+        "options": {
+            "a": "85-95",
+            "b": "95-110",
+            "c": "110-120",
+            "d": "50-60"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 48,
+        "question_text": "Soyutma sistemində adi (cod) sudan istifadə olunarsa nə baş verər?",
+        "options": {
+            "a": "Mühərrik qızar",
+            "b": "Korroziyalar",
+            "c": "Köynəklərdə ərp yaranar",
+            "d": "F.İ.Ə. artar"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 49,
+        "question_text": "Tormoz xəbərdarlıq fənərinin funksiyası nədir?",
+        "options": {
+            "a": "Dönmə istiqamətini göstərmək",
+            "b": "Tormozlama zamanı arxadakı sürücüyə xəbər vermək",
+            "c": "Mühərrik temperaturunu göstərmək",
+            "d": "Arxa duman fanarını aktivləşdirmək"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 50,
+        "question_text": "Nəzarət-ölçü cihazlarının əsas təyinatı nədir?",
+        "options": {
+            "a": "Avtomobilin xarici görünüşünə nəzarət etmək",
+            "b": "Avtomobil və mühərrik sistemlərinin işinə nəzarət etmək",
+            "c": "Yanacaq sərfiyyatını artırmaq",
+            "d": "Təkərlərin təzyiqini avtomatik tənzimləmək"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 51,
+        "question_text": "Karbürator nə üçündür?",
+        "options": {
+            "a": "Yalnız yanacağı silindirə vermək üçün",
+            "b": "Yanıçı qarışığı hazırlayıb silindirə vermək üçün",
+            "c": "Yalnız hava axınını silindirə ötürmək üçün",
+            "d": "Hava filtirini dayanaqlı saxlamaq üçün"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 52,
+        "question_text": "Yanacaq nasosu nə üçündür?",
+        "options": {
+            "a": "Yanacağın soyudulması üçün",
+            "b": "Yanacağın qida sistemində dövrüyyəsini təmin etmək üçün",
+            "c": "Yanacağın cəndən karbüratora məcburi verilməsi üçün",
+            "d": "Yanacağın qızdırılması üçün"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 53,
+        "question_text": "Benzin nasosunda diafraqma aşağı hərəkət etdikdə nə baş verir?",
+        "options": {
+            "a": "Daxilolma klapanı açılır, vurma klapanı bağlanır",
+            "b": "Hər iki klapan açılır",
+            "c": "Daxilolma klapanı bağlanır, vurma açılır",
+            "d": "Hər iki klapan bağlanır"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 54,
+        "question_text": "Nəzarət-ölçü cihazları neçə qrupa bölünür?",
+        "options": {
+            "a": "2",
+            "b": "3",
+            "c": "4",
+            "d": "5"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 55,
+        "question_text": "Benzin mühərrikində \"forsunka\" nə üçündür?",
+        "options": {
+            "a": "Yanaçağın şırnaqla axıdılması üçün",
+            "b": "Yanaçağın təzyiqlə sistemdə püskürməsi üçün",
+            "c": "Yanaçağı çəndən sorub silindirə vurmaq üçün",
+            "d": "Silindirdə yanıcı qarışığı qızdırmaq üçün"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 56,
+        "question_text": "Akkumulyator batareyaları hansı enerjini elektrik enerjisinə çevirir?",
+        "options": {
+            "a": "İstilik enerjisini",
+            "b": "Kimyəvi enerjini",
+            "c": "Mexaniki enerjini",
+            "d": "Optik enerjini"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 57,
+        "question_text": "Plunjer çütlükləri harada yerləşir?",
+        "options": {
+            "a": "Silindirin içərisində",
+            "b": "Aşağı təzyiqli yanaçaq nasosunda",
+            "c": "Yüksək təzyiqli yanaçaq nasosunda",
+            "d": "Qida sisteminin tərkibində"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 58,
+        "question_text": "Avtomobildə mayeləşmiş qaz kimi hansı qazdan istifadə olunur?",
+        "options": {
+            "a": "Asetilen",
+            "b": "Metan",
+            "c": "Hidrogen",
+            "d": "Propan-butan"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 59,
+        "question_text": "Sıxılmış qaz kimi hansı qazlardan istifadə olunur?",
+        "options": {
+            "a": "Propan-butan",
+            "b": "Metan",
+            "c": "Hidrogen",
+            "d": "Oksigen"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 60,
+        "question_text": "Mayeləşmiş qaz, balonlarda hansı təzyiq altında saxlanılır?",
+        "options": {
+            "a": "1.6 ... 2 Mpa",
+            "b": "1,0 Mpa",
+            "c": "2,0 ... 5,0 Mpa",
+            "d": "5 ... 10 Mpa"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 61,
+        "question_text": "Mühərrikin xaric etmə sisteminin vəzifəsi hansı cavabda düzgün verilmişdir.",
+        "options": {
+            "a": "Yanacağın və hava buxarlarının bir-biri ilə yaxşı qarışdırılması",
+            "b": "Yanıcı qarışığın silindrə axil olmasının təmin edilməsi",
+            "c": "İşlənmiş qazların silindrdən çıxarılması və səs küyün azaldılması",
+            "d": "Karter qazlarının mühərrikin daxilindən kənarıaşdırılması"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 62,
+        "question_text": "Səsboğucunun avtomobildə funksiyası, hansı cavabda düzgün verilmişdir.",
+        "options": {
+            "a": "Avtomobildə yaranan titrəyişləri söndürür",
+            "b": "Qaz axınının yaratdığı səsin səviyyəsini artırır",
+            "c": "Yanma zamanı yaranan qazları silindrdən çıxarır",
+            "d": "Qaz axınının yaratdığı səsin səviyyəsini azaldır"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 63,
+        "question_text": "Generator avtomobildə hansı enerjini elektrik enerjisinə çevirir?",
+        "options": {
+            "a": "İstilik enerjisini",
+            "b": "Kimyəvi enerjini",
+            "c": "Mexaniki enerjini",
+            "d": "Hidravlik enerjini"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 64,
+        "question_text": "Reaktiv səsboğucu səsboğucunun işi hansı prinsipə əsaslanır?",
+        "options": {
+            "a": "Səs dalğalarının qarşılıqlı bir-birini məhv etmə prinsipinə",
+            "b": "Səs enerjisinin səsuducunun köməyilə istiliyə çevrilməsi prinsipinə",
+            "c": "Çıxış qazlarının oksidləşməsi prinsipinə",
+            "d": "Çıxış qazlarının soyudulması prinsipinə"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 65,
+        "question_text": "Daxiliyanma mühərriklərində turboüfürmənin məqsədi nədir?",
+        "options": {
+            "a": "Yanmış qazların silindrdən xaric olunması",
+            "b": "Sorma klapanlarında təyziqin aşağı salınması",
+            "c": "Sorma klapablarında təyziqin artırılması",
+            "d": "Atmosferə atılan qazların sürətini artırmaq"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 66,
+        "question_text": "Transmisiyanın təyinatı hansı cavabda doğrudur.",
+        "options": {
+            "a": "Avtomobilin istiqamətini dəyişməkdir",
+            "b": "Avtomobilin sürətləməsini qismən təmin etməkdir",
+            "c": "Avtomobilin yerlə ilişməsini yaxşılaşdırmaqdır",
+            "d": "Burucu momenti aparan təkərlərə ötürməkdir"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 67,
+        "question_text": "Transmisiyanı təşkil edən qurğu və mexanizmlər, hansı cavabda doğrudur.",
+        "options": {
+            "a": "Mühərrik,ötürmələr qutusu, kardan ötürməsi,diferensial və yarımoxlar",
+            "b": "İlişmə muftası, ötürmələr qutusu,kardan,baş ötürmə,diferensial və yarımoxlar",
+            "c": "Mühərrik, kuzov və şassi",
+            "d": "Çərçivə, asqılar,körpülər,təkərlər və şinlər"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 68,
+        "question_text": "Bu aqreqatlardan hansı transmissiya vasitələrinə aid deyil?",
+        "options": {
+            "a": "Asqılar",
+            "b": "Ötürmələr qutusu",
+            "c": "Kardan ötürməsi",
+            "d": "Yarımoxlar"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 69,
+        "question_text": "Hansı qurğu transmisiyanı qısa müddətdə mühərrikdən ayıra bilir?",
+        "options": {
+            "a": "Baş ötürmə",
+            "b": "Ötürmələr qutusu",
+            "c": "İlişmə muftası",
+            "d": "Diferensial"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 70,
+        "question_text": "Burucu momenti qiymət və istiqamətcə dəyişə bilən hansı qurğudur?",
+        "options": {
+            "a": "Diferensial",
+            "b": "İlişmə muftası",
+            "c": "Kardan ötürməsi",
+            "d": "Ötürmələr qutusu"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 71,
+        "question_text": "Transmisiyanın hansı qurğusu avtomobilin yerindən səlis tərpənməsini təmin edir.",
+        "options": {
+            "a": "İlşmə muftası",
+            "b": "Təkərlər və şinlər",
+            "c": "Avtomobilin çərçivəsi",
+            "d": "Mühərrik"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 72,
+        "question_text": "Sadalanan hansı funksiyanı transmisiya yerinə yetirmir?",
+        "options": {
+            "a": "Təkərlərə ötürülən burucu momentin qiymətini dəyişir",
+            "b": "Avtomobilin nahamar yolda hərəkətini təmin etmir",
+            "c": "Ötürülən burucu momentin istiqamətini dəyişir",
+            "d": "Mühərriki trasnsmisiyadan qısa müddətli ayırır"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 73,
+        "question_text": "Avtomobildə elektrik cərəyanı mənbəyi kimi hansı qurğulardan istifadə olunur?",
+        "options": {
+            "a": "Yalnız akkumulyator batareyaları.",
+            "b": "Yalnız dəyişən cərəyan transformatorları.",
+            "c": "Dəyişən cərəyan generatorları və akkumulyator batareyaları.",
+            "d": "Statik çeviricilər"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 74,
+        "question_text": "Ötümələr qutusunun vəzifəsi nədən ibarətdir?",
+        "options": {
+            "a": "Geriyə hərəkəti təmin etmək",
+            "b": "Avtomobilin hərəkət sürətini dəyişmək",
+            "c": "Mühərriki transmisiyadan ayırmaq",
+            "d": "Burucu momenti qiymət və istiqamətcə dəyişmək"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 75,
+        "question_text": "Ötürmələrin səlis dəyişməsini təmin edən hansı mexanizmdir?",
+        "options": {
+            "a": "Sinxronlaşdırıcı",
+            "b": "Hərəkətli dişli çarx",
+            "c": "Birləşdirici mufta",
+            "d": "Birləşən vallar"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 76,
+        "question_text": "Ötürmələr qutusunun aparan valını hərəkətə gətirən detal hansıdır?",
+        "options": {
+            "a": "Baş ötürmə",
+            "b": "İlişmə muftasının aparılan diski",
+            "c": "İlişmə muftasının ayırıcı çəngəli",
+            "d": "Valın yastığı"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 77,
+        "question_text": "Kardan ötürməsini hərəkətə gətirən nədir?",
+        "options": {
+            "a": "Baş ötürmə",
+            "b": "Ötürmələr qutusunun aparan valı",
+            "c": "Ötürmələr qutusunun aparılan valı",
+            "d": "Ötürmələr qutusunun aralıq valı"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 78,
+        "question_text": "Ötürmələr qutusunun idarə mexanizminin vəzifəsi nədir?",
+        "options": {
+            "a": "Pillələrin dəyişdirilməsi",
+            "b": "Dişli çarxları hərəkətə gətirmək",
+            "c": "Valların birləşdirilməsi",
+            "d": "Arxaya hərəkəti təmin etməkdir"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 79,
+        "question_text": "Mexaniki ötürmələr qutusunun pilləri dəyişmə mexanizmində, fiksatorun işi nədir? Hansı cavab doğrudur.",
+        "options": {
+            "a": "Pillələrin səssiz dəyişməsini təmin etmək",
+            "b": "Ötürmə ədədinin qiymətini sabit saxlamaq",
+            "c": "Arxa pillənin qoşulmasını asanlaşdırmaq",
+            "d": "Pillələrin öz-özünə qoşulmalarının qarşısını almaq"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 80,
+        "question_text": "Ötürmələr qutusunda sinxrolaşdırıcının vəzifəsi, hansı cavabda düzgün verilmişdir",
+        "options": {
+            "a": "Pillələrin oz-ozünə qoşulmalarının qarşısını alır",
+            "b": "Pillələrin səssiz və zərbələrsiz dəyişdirilməsini təmin edir",
+            "c": "Ötürmə ədədinin qiymətini sabit saxlayır",
+            "d": "Iki pillənin birdən qoşulmasını təmin edir"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 81,
+        "question_text": "İnjektorlu mühərriklərdə yanacaq nasosu hansı tipdir?",
+        "options": {
+            "a": "Diafrağmalı-mexaniki.",
+            "b": "Elektromexaniki.",
+            "c": "Yüksək təzyiqli pilyonjerli-mexaniki.",
+            "d": "Mexaniki."
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 82,
+        "question_text": "Avtomobildə elektrik cərəyanının əsas təyinatı nədir?",
+        "options": {
+            "a": "Yalnız mühərrikin soyudulmasını təmin etmək.",
+            "b": "Yanacaq qarışığının alışdırılması və müxtəlif elektrik sistemlərinin işləməsini təmin etmək.",
+            "c": "Yanacağın təzyiq altında nasosla ötürülməsi.",
+            "d": "Mühərrik yağının özlülüyünü artırmaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 83,
+        "question_text": "Avtomobildə elektrik cərəyanı mənbəyi kimi hansı qurğulardan istifadə olunur?",
+        "options": {
+            "a": "Yalnız akkumulyator batareyaları.",
+            "b": "Yalnız dəyişən cərəyan transformatorları.",
+            "c": "Dəyişən cərəyan generatorları və akkumulyator batareyaları.",
+            "d": "Statik çeviricilər"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 84,
+        "question_text": "Donma temperaturu nəyi göstərir?",
+        "options": {
+            "a": "Yağın qoxusunu.",
+            "b": "Yağın rəngini.",
+            "c": "Yağın axıcılığının dayandığı ən soyuq temperatur həddini.",
+            "d": "Yağın özlülüyünü."
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 85,
+        "question_text": "Yanacaq nasosunun əsas funksiyası hansıdır?",
+        "options": {
+            "a": "Yanacaq çəndən karbüratora və ya mühərrikə təzyiq altında vurmaq.",
+            "b": "Yanacağı soyutmaq.",
+            "c": "Yanacaq filtrini təmizləmə.",
+            "d": "Mühərrikin sürətini artırmaq"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 86,
+        "question_text": "Karbüratorlu mühərriklərdə hansı növ yanacaq nasosu istifadə olunur?",
+        "options": {
+            "a": "Elektromexaniki.",
+            "b": "Diafrağmalı-mexaniki.",
+            "c": "Yüksək təzyiqli pilyonjerli-mexaniki.",
+            "d": "Hidravlik"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 87,
+        "question_text": "Kardan ötürməsinin vəzifəsi hansı cavabda düzgün verilib.",
+        "options": {
+            "a": "Aparan təkərlərin qeyri -- bərabər sürətlə fırlanmasını təmin etmək",
+            "b": "Burucu momentin hərəkət istiqamətini dəyişərək ötürmək",
+            "c": "Aparan təkərin müqvimət quvvəsinin dəyişməsinə uyğun burucu momenti dəyişmək",
+            "d": "Ötürmələr qutusundan aldığı burucu momenti baş ötürücü və differensiala ötürmək"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 88,
+        "question_text": "Konstruksiyasına gorə, hansı kardan ötürmələri mövcuddur?",
+        "options": {
+            "a": "Yalnız örtülü kardan ötürmələri",
+            "b": "Örtülü və açıq kardan ötürmələri",
+            "c": "Yalnız açıq kardan ötürmələri",
+            "d": "Bərabər bucaq sürətli kardan ötürmsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 89,
+        "question_text": "Örtülü kardan ötürməsi nədir?",
+        "options": {
+            "a": "Qısa borulu kardan ötürməsi",
+            "b": "Borunun içərisində yerləşməyən",
+            "c": "Borunun içərisində yerləşən",
+            "d": "Körpünün gövdəsində yerləşən"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 90,
+        "question_text": "Açıq kardan ötürməsi nədir?",
+        "options": {
+            "a": "Borunun içərisində yerləşməyən",
+            "b": "Borunun içərisində yerləşən",
+            "c": "Uzun borulu kardan ötürməsi",
+            "d": "Körpünün gövdəsində yerləşən kardan ötürməsi"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 91,
+        "question_text": "Kardan valının uzunluğunun dəyişməsini tənzimləmək üçün hansı birləşmədən istifadə olunur.",
+        "options": {
+            "a": "Zəncir ötürməsindən",
+            "b": "Rezin araqatından",
+            "c": "Yaylı şaybadan",
+            "d": "Şlisli birləşmədən"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 92,
+        "question_text": "Arxa aparan təkərli avtomobildə,kardan ötürməsi burucu momenti haradan haraya ötürür.",
+        "options": {
+            "a": "Baş ötürmədən diferensiala",
+            "b": "Ötürmələr qutusundan baş ötürməyə",
+            "c": "Diferensialdan ötürmələr qutusuna",
+            "d": "Ötürmələr qutusundan paylayıcı qutuya"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 93,
+        "question_text": "Baş ötürmənin vəzifəsi hansı cavabda düzgündür.",
+        "options": {
+            "a": "Yarımoxların fırlanma sürətini azaltmaq",
+            "b": "Kardan ötürməsini əvəz etmək",
+            "c": "Aparan təkərlərə ötürülən burucu momenti artırmaq",
+            "d": "Diferensial mexanizmini firlatmaq"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 94,
+        "question_text": "Dişli çarx cütlərinin tipinə görə baş ötürmənin növləri hansı cavabda düzgündür?",
+        "options": {
+            "a": "Sonsuz vint; konik; hipoid; silindrik",
+            "b": "Yalnız hipoid və silindrik",
+            "c": "Yalnız silindrik və konik",
+            "d": "Yalnız sonsuz vint"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 95,
+        "question_text": "Diferensialın vəzifəsi, hansı cavabda düzgün verilib.",
+        "options": {
+            "a": "Ötürmələr qutusu ilə aparan körpü arasında əlaqə yaratmaq",
+            "b": "Burucu momenti yalnız körpülər arasında paylamaq",
+            "c": "Burucu momenti yalnız aparan təkərlər arasında paylamq",
+            "d": "Burucu momenti aparan təkərlər vəya körpülər arasında paylamaq"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 96,
+        "question_text": "Soyutma sistemi mühərrik başlığında hansı optimal temperaturu təmin edir?",
+        "options": {
+            "a": "40--50°C",
+            "b": "60--70°C",
+            "c": "80--95°C",
+            "d": "100--120^0^C"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 97,
+        "question_text": "Yağın sabitliyi nə deməkdir?",
+        "options": {
+            "a": "Yağın rəngini dəyişmək qabiliyyəti.",
+            "b": "Yağın öz keyfiyyətlərini qoruyub saxlaması xüsusiyyəti.",
+            "c": "Yağın donma temperaturu.",
+            "d": "Yağın özlülüyünün artması."
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 98,
+        "question_text": "Benzinli dörd taktlı mühərriklərdə qida sisteminin əsas vəzifəsi nədir?",
+        "options": {
+            "a": "Mühərriki soyutmaq",
+            "b": "Yanacaq-hava qarışığını hazırlamaq və silindrə vermək",
+            "c": "Yağ təzyiqini artırmaq",
+            "d": "Elektrik enerjisi istehsal etmək"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 99,
+        "question_text": "Çarxqolu-sürgüqolu mexanizminin əsas funksiyası nədir?",
+        "options": {
+            "a": "Mühərriki soyutmaq",
+            "b": "Yanacaq-hava qarışığını hazırlamaq",
+            "c": "Porşenin düzxətli hərəkətini fırlanma hərəkətinə çevirmək",
+            "d": "Yanacaq təzyiqini artırmaq"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 100,
+        "question_text": "Paylayıcı qutunun təyinatı hansı cavabda düzgün göstərilib?",
+        "options": {
+            "a": "Burucu momentin sürət və istiqamətini artırmaq",
+            "b": "Burucu momenti aparan körpülər arasında paylamaq",
+            "c": "Yarımoxların müəyyən bucaq altıda fırlanmasını təmin etmək",
+            "d": "Transmisiyanı uzumüddətli mühərrikdən ayırmaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 101,
+        "question_text": "Yanacağı yandırma üsuluna görə daxili yanma mühərrikləri neçə yerə bölünür?",
+        "options": {
+            "a": "İki yerə",
+            "b": "Üçyerə",
+            "c": "Dörd yerə",
+            "d": "Beş yerə"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 102,
+        "question_text": "Məcburi alışdırma hansı vasitə ilə həyata keçirilir?",
+        "options": {
+            "a": "İstilik mübadiləsi ilə",
+            "b": "Elektrik qığılcımı vasitəsilə",
+            "c": "Qazların təzyiqi ilə",
+            "d": "Mexaniki enerji ilə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 103,
+        "question_text": "Dizel mühərriki hansı yanacaqla işləyir?",
+        "options": {
+            "a": "Elektriklə",
+            "b": "Benzin yanacağı",
+            "c": "Qaz yanacağı",
+            "d": "Dizel yanacağı"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 104,
+        "question_text": "Avtomobildə yerləşməsinə görə körpülər hansı cavabda düzgün verilib?",
+        "options": {
+            "a": "Yalnız qabaq körpülər",
+            "b": "Qabaq, arxa və aralıq",
+            "c": "Yalnız arxa körpülər",
+            "d": "Uzununa körpülər"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 105,
+        "question_text": "Vakuum gücləndiricisi avtomobilin hansı göstəricisini yaxşılaşdırır?",
+        "options": {
+            "a": "Yanacaq sərfiyyatını",
+            "b": "İşıqlandırma sistemini",
+            "c": "Tormozlama effektivliyini",
+            "d": "Sükan idarəsini"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 106,
+        "question_text": "Rezinləşdirilmiş dayaqlı metal elementlər hansı avtomobillərdə istifadə olunur?",
+        "options": {
+            "a": "Velosipetlərdə",
+            "b": "Minik avtomobillərində",
+            "c": "Yük avtomobillərində",
+            "d": "Skuterlərdə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 107,
+        "question_text": "Sükan idarəsi nədir?",
+        "options": {
+            "a": "Avtomobilin sükan çarxıdır",
+            "b": "Avtomobilin sükan mexanizmidir",
+            "c": "Avtomobilin sükan intiqallarıdır",
+            "d": "Təkərin dönməsini təmin edən qurluşların məcmusu"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 108,
+        "question_text": "Sükan idarəsinin düzgün elementlərini göstərin.",
+        "options": {
+            "a": "Sükan mexanizmi və sükan intiqalı",
+            "b": "Sükan valı,sükan çarxı,sükan mexanizmi, sükan intiqalı",
+            "c": "Sükan trapesiyası",
+            "d": "Sükan valı, sükan çarxı"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 109,
+        "question_text": "Tormoz idarəsi nədir?",
+        "options": {
+            "a": "Tormoz sistemlərinin cəmidir",
+            "b": "İsçi tormoz sistemidir",
+            "c": "Köməkçi tormoz sistemidir",
+            "d": "Dayanacaq tormoz sistemidir"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 110,
+        "question_text": "İşçi tormoz sistemi nə üçündür?",
+        "options": {
+            "a": "Avtomobilin duracaq tormoz sistemidir",
+            "b": "Avtomobillərin sürətini artırmaq",
+            "c": "Avtomobilləri sürətini azaltmaq və dayandırmaq",
+            "d": "Avtomobilin köməkçi tormoz sistemidir"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 111,
+        "question_text": "Ehtiyat tormoz sistemi nə üçündür?",
+        "options": {
+            "a": "Avtomobilin sürətinin qarşısını almaq",
+            "b": "Sürəti azaltmaq",
+            "c": "Avtomobilə kifayət qədər sürət vermək",
+            "d": "İşçi tormoz sıradan çıxdıqda avtomobili dayandırmaq"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 112,
+        "question_text": "Duracaq tormoz sistemi nə ücündür?",
+        "options": {
+            "a": "Avtomobilin sürətini azaltmaq",
+            "b": "Duracaqda avtomobili uzuzn müddətli saxlamaq",
+            "c": "Daimi enişlərdə avtomobili tormozlamaq",
+            "d": "İşci tormoz sistemidir"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 113,
+        "question_text": "Köməkçi tormoz sistemi nə üçündür?",
+        "options": {
+            "a": "Daimi enişlərdə avtomobilin sürətini məhdudlaşdırmaq",
+            "b": "Qoşqu və yarımqoşqu tormoz sistemidir",
+            "c": "Dayanacaq-duracaq tormoz sistemidir",
+            "d": "Ehtiyat tormoz sistemidir"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 114,
+        "question_text": "Detal nədir?",
+        "options": {
+            "a": "Avtomobilin bir hissədir",
+            "b": "Qaynaq olunmuş metallardır",
+            "c": "Bircinsli materialdan hazırlanan məhsul",
+            "d": "Sadə bir fiqurdur"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 115,
+        "question_text": "Qovşaq nəyə deyilir? Düzgün cavabı tapın",
+        "options": {
+            "a": "Avtomobilin idarə etmə sitemlərindən biridir",
+            "b": "Avtomobilin dirsəkli valıdır",
+            "c": "Avtomobilin intiqal sistemidir",
+            "d": "Yiv,pərçim, qaynaq və digər birləşmə ilə birləşdirilən detal yığımıdır"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 116,
+        "question_text": "Mexnizm nəyə deyilir? Düzgün cavabı seçin.",
+        "options": {
+            "a": "Öz aralarında hərəkətli birləşən detal və qovşaq yığımıdır",
+            "b": "Avtomobilin sadə bir detalıdır",
+            "c": "Transmisiyanın qurğularından biridir",
+            "d": "Avtomobilin xaricetmə sistemidir"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 117,
+        "question_text": "Sistem nəyə deyilir? Düzgün cavabı tapın.",
+        "options": {
+            "a": "Mexanizmləri hərəkətə gətirən intiqal sistemidir",
+            "b": "Bir funksiyanı yerinə yetirən ayrı-ayrı hissələrin birgə işidir",
+            "c": "Avtomobili idarə edən bir mexanizmdir",
+            "d": "Avtomobilin hərəkət hissəsidir"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 118,
+        "question_text": "Hərəkət hissəsi nə üçündür?",
+        "options": {
+            "a": "Avtomobilə lazimi hərəkət sürəti vermək üçündür",
+            "b": "Avtomobili hərəkətə gətirmək üçün bir vasitədir",
+            "c": "Mexnizm,aqreqat,qovşaq,sistem və digər hissələrin bərkidilməsi",
+            "d": "Tormozlamanın keyfiyyətini artırmaq üçündür"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 119,
+        "question_text": "Avtomobilin asqı sistemləri nə üçündür? Düzgün cavabı tapın.",
+        "options": {
+            "a": "Uzun müddətli enişlərdə avtomobilin hərəkətini təmin etmək üçün",
+            "b": "Avtomobilin yerlə ilişməsini təmin etmək və sürət vermək üçün",
+            "c": "Avtomobili atmosfer təzyiqlərindən qoruyaraq lazımi məkana çatdırmaq üçün",
+            "d": "Təkərləri aparan sistemlə elasiki birləşdirmək və hərəkətin səlisliyini bərpa etmək üçündür"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 120,
+        "question_text": "Təyinatına görə avtomobillər hansı növlərə bölünür.",
+        "options": {
+            "a": "Sərinşin, yük, xüsusi təyinatlı,xüsusiləşdirilmiş",
+            "b": "Yalnız xüsusi təyinatlı və yük avtomobillərinə",
+            "c": "Yalnız sərnişin avtobuslarına",
+            "d": "Yalnız mnik və xüsusiləşdirilmiş avtomobillərə"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 121,
+        "question_text": "Porşenin mühərrikdə vəzifəsi nədən ibarətdir?",
+        "options": {
+            "a": "Dirsəkli valı dayanıqlı şəkildə saxlamaqdan",
+            "b": "Istilik enerjisini mexaniki enerjiyə çevirməkdən",
+            "c": "Üzükləri saxlamaqdan",
+            "d": "Yağ dövriyyəsini bərpa etdirməkdən"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 122,
+        "question_text": "Avtomobilin təkər bazası nəyə deyilir? Düzgün cavabı tapın.",
+        "options": {
+            "a": "Təkərlərin ümumilikdə diametrlərinə",
+            "b": "Avtomobilin yerə qədər olan ən aşağı nöqtəsinə",
+            "c": "Avtomobilin qabarit ölçülərinə",
+            "d": "Qabaq və arxa təkərlərin mərkəzləri arasındakı məsafəyə"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 123,
+        "question_text": "Bir cərgəli mühərrikdə silindrlər neçə müstəvidə yrləşdirilir?",
+        "options": {
+            "a": "Dörd müstəvidə",
+            "b": "Iki müstəvidə",
+            "c": "Bir müstəvidə",
+            "d": "Beş müstəvidə"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 124,
+        "question_text": "V -- şəkilli mühərriklərdə silindrlər neçə müstəvidə yerləşdirilir?",
+        "options": {
+            "a": "Dörd müstəvidə",
+            "b": "Üç müstəvidə",
+            "c": "Beş müstəvidə",
+            "d": "İki müstəvidə"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 125,
+        "question_text": "Neçə cür yağlama sistemini tanıyırsınız? Düzgün cavabı tapın.",
+        "options": {
+            "a": "2 cür",
+            "b": "4 cür",
+            "c": "6 cür",
+            "d": "1 cür"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 126,
+        "question_text": "Yağ süzgəclərinin tipləri hansı cavabda düzgün verilmişdir.",
+        "options": {
+            "a": "Yalnız sökülən",
+            "b": "Sökülən və sökülməyən",
+            "c": "Yalnız sökülməyən",
+            "d": "Kombinəedilmiş"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 127,
+        "question_text": "Porşenin bir gedişi zamanı dirsəkli valın neçə dövrü baş verir?",
+        "options": {
+            "a": "1/4 dövr",
+            "b": "1/2 dövr",
+            "c": "1 dövr",
+            "d": "2 dövr"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 128,
+        "question_text": "Soyutma sistemi mühərrikdə hansı temperaturu təmin edir?",
+        "options": {
+            "a": "40--60°C",
+            "b": "60--70°C",
+            "c": "80--95°C",
+            "d": "100--120°C"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 129,
+        "question_text": "Daxili yanma mühərriklərinin hansı sistemləri mövcuddur?",
+        "options": {
+            "a": "İşıqlandırma və əyləc sistemləri",
+            "b": "Soyutma, yağlama, qidalandırma, alışdırma və işə salma sistemləri",
+            "c": "Təkər və asqı sistemləri",
+            "d": "Elektrik ötürücü sistemləri"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 130,
+        "question_text": "Sürgü qolunun vəzifəsi nədən ibarətdir? Doğru cavabı tapın.",
+        "options": {
+            "a": "Porşeni qazpaylama valı ilə birləşdirmək",
+            "b": "Porşeni dirsəkli valla birləşdirmək",
+            "c": "Silindrdə porşenin kipliyini yaratmaq",
+            "d": "Poşenin yaxşı yağlanmasını təşkil etmək"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 131,
+        "question_text": "Daxili yanma mühərriklərində çarxqolu-sürgüqolu mexanizminin əsas vəzifəsi nədir?",
+        "options": {
+            "a": "Yanacağın buxarlanmasını təmin etmək",
+            "b": "Yanacaq qarışığını sıxmaq və mexaniki enerjiyə çevirmək",
+            "c": "Mühərriki soyutmaq",
+            "d": "Elektrik enerjisi hasil etmək"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 132,
+        "question_text": "Porşenin yuxarı ölü nöqtə ilə aşağı ölü nöqtə arasında qət etdiyi məsafə necə adlanır?",
+        "options": {
+            "a": "Porşenin diametri",
+            "b": "Porşenin hündürlüyü",
+            "c": "Porşenin gedişi (yolu)",
+            "d": "Porşenin sıxılması"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 133,
+        "question_text": "\"Daxilolma\" və \"Xaricetmə\" klapanı bir -- birindən nə ilə fərqlənir?",
+        "options": {
+            "a": "Nimçələrini diametri ilə",
+            "b": "Buraxma qabiliyyəti ilə",
+            "c": "Sıxılma kipliyi ilə",
+            "d": "Qazpaylama valının uzunluğu ilə"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 134,
+        "question_text": "Karter altlığının funksiyası hansı cavabda düzgün göstərilib.",
+        "options": {
+            "a": "Avtomobilin yanacaq çənidir",
+            "b": "Yağın saxlanması üçün bir rezervuardır",
+            "c": "Kuzanın alt hissəsidir",
+            "d": "Antifrizin saxlanmsı üçün bir rezervuardır"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 135,
+        "question_text": "Soyuducu maye olan \"Tosol -- 40\" da 40 rəqəmi nəyə işarədir?",
+        "options": {
+            "a": "Mayenin - 40 dərəcədə maye hala keçməsinə",
+            "b": "Mayenin 40 dərəcədə buxarlanmasına",
+            "c": "Mayenin temperaturu ilə əlaqəsi yoxdu",
+            "d": "Mayenin -- 40 dərəcədə donmasına"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 136,
+        "question_text": "Rezin qol, borular və şlanqlar nə üçündür?",
+        "options": {
+            "a": "Mühərrikin silindrlərini soyutmaq üçün",
+            "b": "Yalnız su köynaklərini soyutmaq üçün",
+            "c": "Su köynəklərini,soyutma sistemi ilə əlaqələndirmək üçün",
+            "d": "Yalnız radiatorun çənlərini birləşdirmək"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 137,
+        "question_text": "Elektrik benzin nasosu hansı mühərriklərdə istifadə edilir?",
+        "options": {
+            "a": "Yanacaq püskürməli mühərriklərdə",
+            "b": "Yalnız Karbüratorlu mühərriklərdə",
+            "c": "Elektrik mühərriklərində",
+            "d": "Avtomobilin elektrik sistemlərində"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 138,
+        "question_text": "Hava filtrinin əsas vəzifəsi nədir?",
+        "options": {
+            "a": "Yanmış qazları təmizləmək",
+            "b": "Silindrlərə daxil olan havanı təmizləmək",
+            "c": "Yanacağı təmizləmək",
+            "d": "Katalizator rolu oynayır"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 139,
+        "question_text": "Yanacaq süzgəcləri nə üçündür?",
+        "options": {
+            "a": "Tormoz mayelərini təmizləmək üçün",
+            "b": "Yagları təmizləmək üçün",
+            "c": "Soyuducu mayeləri təmizləmək üçün",
+            "d": "Yanacağı təmizləmək üçün"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 140,
+        "question_text": "YTYN -- da plunjer cütlüklərinin rolu nədən ibarətdir?",
+        "options": {
+            "a": "Yanacağı çəndən sovurmaqdan",
+            "b": "Yanacağı aşağı təzyiqlə forsunkaya verməkdən",
+            "c": "Yanacağı yüksək təzyiqlə forsukaya verməkdən",
+            "d": "Artıq yanacağı çənə qaytarmaqdan"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 141,
+        "question_text": "YTYN -- də plunjer cütlüyiü əsasən hansı detallardan ibarətdir?",
+        "options": {
+            "a": "Porşen (plunjer) və silindrdən (oymaq)",
+            "b": "Qaz paylama valından",
+            "c": "Döndərici tamasadan",
+            "d": "Yumrucuqlardan"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 142,
+        "question_text": "Turboüfürmə nədir?",
+        "options": {
+            "a": "Dizel mühərrikidir",
+            "b": "Mərkəzdənqaçma kompressorudur",
+            "c": "Hava filtiridir",
+            "d": "Yağ nasosudur"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 143,
+        "question_text": "Dirsəkli val 180° dönərkən hansı hadisə baş verir?",
+        "options": {
+            "a": "Porşen dayanır",
+            "b": "Porşen gedişini tamamlayır",
+            "c": "Porşen sıxılma mərhələsinə keçir",
+            "d": "Porşen klapanları açır"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 144,
+        "question_text": "Porşenin mexaniki hərəkəti, dirsəkli valın hansı hərəkətinə çevrilir.",
+        "options": {
+            "a": "Fırlanma hərəkətinə",
+            "b": "Yellənmə hərəkətinə",
+            "c": "Mexaniki hərəkətinə",
+            "d": "Ox boyu hərəkətinə"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 145,
+        "question_text": "AÖN - ə nəyə deyilir? Doğru cavabı tapın.",
+        "options": {
+            "a": "Porşenin dirsəkli valdan ən çox uzaqlaşdığı vəziyyətə",
+            "b": "Porşenin neytral vəziyyətinə",
+            "c": "Porşenin dirsəkli vala ən çox yaxınlaşdığı vəziyyətə",
+            "d": "Porşenin silindrdə qət etdiyi məsafəyə"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 146,
+        "question_text": "YÖN - ə nəyə deyilir? Doğru cavabı tapın.",
+        "options": {
+            "a": "Porşenin dirsəkli vala ən çox yaxınlaşdığı vəziyyətinə",
+            "b": "Porşenin dirsəkli valdan ən çox uzaqlaşdığı vəziyyətinə",
+            "c": "Porşenin silindrdə qət etdiyi məsafəyə",
+            "d": "Porşenin neytral vəziyyətinə"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 147,
+        "question_text": "Porşenin hər bir gedişi zamanı dirsəkli val neçə dərəcə dönür?",
+        "options": {
+            "a": "90°",
+            "b": "120°",
+            "c": "180°",
+            "d": "360°"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 148,
+        "question_text": "Porşenin gedişi hansı nöqtələr arasında baş verir?",
+        "options": {
+            "a": "Aşağı ölü nöqtə ilə orta nöqtə arasında",
+            "b": "Yuxarı ölü nöqtə ilə aşağı ölü nöqtə arasında",
+            "c": "Yuxarı ölü nöqtə ilə yan nöqtə arasında",
+            "d": "Dirsəkli valın başlanğıc nöqtəsi ilə son nöqtəsi arasında"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 149,
+        "question_text": "Asqı nə üçündür? Doğru cavabı tapın.",
+        "options": {
+            "a": "Təkərlər arasında əlaqədir",
+            "b": "Kuzanı təkərlərlə sərt əlaqələndirmək üçün",
+            "c": "Körpülər arasında əlaqədir",
+            "d": "Kuzanı, təkərlərlə elastiki əlaqələndirmək üçün"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 150,
+        "question_text": "Avtomobilin asqısı, hansı quruluşlardan təşkil olunur?",
+        "options": {
+            "a": "Yalnız istiqamələndirici quruluşlardan",
+            "b": "Elastik, istiqamətləndirici və söndütücü quruluşlardan",
+            "c": "Yalnız söndürücü quruluşlardan",
+            "d": "Yalnız elastiki quruluşlardan"
+        },
+        "correct_answer": "b"
+    },
+    
+    {
+        "question_number": 151,
+        "question_text": "İşçi sikl nədir?",
+        "options": {
+            "a": "Mühərrikin yanacaq doldurma prosesidir.",
+            "b": "Mühərrikin silindrində baş verən işçi proseslərinin cəmidir.",
+            "c": "Mühərrikin əyləc prosesidir.",
+            "d": "Mühərrikin təmir prosesidir."
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 152,
+        "question_text": "Dördtaktlı mühərriklərdə işçi sikl necə təşkil olunur?",
+        "options": {
+            "a": "Porşenin iki gedişi ilə.",
+            "b": "Porşenin üç gedişi ilə.",
+            "c": "Porşenin dörd gedişi ilə.",
+            "d": "Porşenin beş gedişi ilə."
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 153,
+        "question_text": "Dördtaktlı mühərriklərdə işçi sikl hansı taktlardan ibarətdir?",
+        "options": {
+            "a": "Daxilolma, sıxma, işçi gediş, xaricetmə.",
+            "b": "Daxilolma, çıxarma, yanma, sıxma.",
+            "c": "Yanma, sıxma, qarışdırma, xaricetmə.",
+            "d": "Yanma, sıxma, əyləc, xaricetmə."
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 154,
+        "question_text": "İki taktlı mühərriklərdə işçi sikl neçə gedişdə baş verir?",
+        "options": {
+            "a": "Üç gedişdə.",
+            "b": "Dörd gedişdə.",
+            "c": "İki gedişdə.",
+            "d": "Beş gedişdə."
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 155,
+        "question_text": "Mühərriklər hansı əsas xüsusiyyətə görə iki növə bölünür?",
+        "options": {
+            "a": "Mühərrikin çəkisinə görə.",
+            "b": "Yanacaq növünə görə.",
+            "c": "İşçi sikli təşkil edən taktların sayına görə.",
+            "d": "Silindrin diametrinə görə."
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 156,
+        "question_text": "Dördtaktlı mühərriklərdə hansı takt yanıcı qarışığın silindrə daxil olması ilə bağlıdır?",
+        "options": {
+            "a": "Sıxma.",
+            "b": "Daxilolma(sorma)",
+            "c": "İşçi gediş(yanma)",
+            "d": "Xaricetmə."
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 157,
+        "question_text": "V-şəkilli mühərrikdə silindrlər necə yerləşdirilir?",
+        "options": {
+            "a": "Bir müstəvidə düz xətt boyunca",
+            "b": "İki müstəvidə \"V\" hərfi formasında",
+            "c": "Bir-birinin əksinə üfüqi düzülmüş şəkildə",
+            "d": "Dairəvi formada"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 158,
+        "question_text": "Oppozit mühərrikdə silindrlərin yerləşmə bucağı neçə dərəcədir?",
+        "options": {
+            "a": "180°",
+            "b": "120°",
+            "c": "150°",
+            "d": "90°"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 159,
+        "question_text": "Oppozit mühərriklərin əsas üstünlüyü nədir?",
+        "options": {
+            "a": "Daha az yanacaq sərfiyyatı",
+            "b": "Daha yüngül olur",
+            "c": "Mühərrikin hündürlüyünü azaldır",
+            "d": "Daha az güc istehsal edir"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 160,
+        "question_text": "Silindrlər bloku hansı materiallardan hazırlanır?",
+        "options": {
+            "a": "Dəmir və rezin",
+            "b": "Çuqun və ya alüminium",
+            "c": "Polad və plastik",
+            "d": "Karbon və titan"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 161,
+        "question_text": "Alüminium silindrlər blokunun çuqun blokla müqayisədə əsas üstünlüyü nədir?",
+        "options": {
+            "a": "Daha ucuz başa gəlir",
+            "b": "Daha yüngüldür",
+            "c": "Daha dözümlüdür",
+            "d": "Daha çox yağ saxlayır"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 162,
+        "question_text": "Qazpaylama mexanizminin əsas funksiyası nədir?",
+        "options": {
+            "a": "Silindrlərə hava və ya yanacaq-hava qarışığını buraxmaq və işlənmiş qazları xaric etmək",
+            "b": "Mühərriki yağlamaq",
+            "c": "Yanacaq sərfiyyatını azaltmaq",
+            "d": "Mühərrikin temperaturunu tənzimləmək"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 163,
+        "question_text": "Xaricetmə klapanının temperaturu maksimum neçə dərəcəyə çata bilər?",
+        "options": {
+            "a": "500°C",
+            "b": "600°C",
+            "c": "700°C",
+            "d": "800°C"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 164,
+        "question_text": "Daxilolma klapanının ölçüsü niyə xaricetmə klapanından böyük olur?",
+        "options": {
+            "a": "Mühərrikin daha səssiz işləməsi üçün",
+            "b": "Daha çox hava və ya yanacaq-hava qarışığının daxil olmasını təmin etmək üçün",
+            "c": "Yağlama sisteminin işini yaxşılaşdırmaq üçün",
+            "d": "Yanacaq sərfiyyatını azaltmaq üçün"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 165,
+        "question_text": "Aşağıdakı hansı qazpaylama mexanizminin intiqal növü səssiz işləyir?",
+        "options": {
+            "a": "Dişli çarxlı",
+            "b": "Zəncirli",
+            "c": "Dişli qayışlı",
+            "d": "Kəmərli"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 166,
+        "question_text": "Klapanların bağlanmasını təmin edən əsas mexanizm hansıdır?",
+        "options": {
+            "a": "Yaylar və konik kəmərcik",
+            "b": "Karbürator",
+            "c": "Porşen",
+            "d": "Generator"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 167,
+        "question_text": "Xaricetmə klapanının daha yaxşı soyumasını təmin edən maddə hansıdır?",
+        "options": {
+            "a": "Natrium",
+            "b": "Karbon",
+            "c": "Alüminium",
+            "d": "Hidrogen"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 168,
+        "question_text": "Soyutma sisteminin əsas vəzifəsi nədir?",
+        "options": {
+            "a": "Mühərrikin gücünü artırmaq",
+            "b": "Mühərrikin optimal temperaturunu qorumaq",
+            "c": "Mühərrikin yanacaq sərfini azaltmaq",
+            "d": "Mühərrikin yağlanmasını yaxşılaşdırmaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 169,
+        "question_text": "Əgər mühərrik çox qızarsa, hansı problemlər yarana bilər?",
+        "options": {
+            "a": "Yağın yanması və detalların pərçimlənməsi",
+            "b": "Yanacağın tam yanmaması",
+            "c": "Mühərrikin sönməsi",
+            "d": "Avtomobilin sürətinin azalması"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 170,
+        "question_text": "Termostatın əsas funksiyası nədir?",
+        "options": {
+            "a": "Mühərrikin temperaturunu daim aşağı saxlamaq",
+            "b": "Soyuducu mayenin dövranını tənzimləmək",
+            "c": "Antifriz miqdarını artırmaq",
+            "d": "Ventilyatorun sürətini tənzimləmək"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 171,
+        "question_text": "Radiator hansı materiallardan hazırlanır?",
+        "options": {
+            "a": "Plastik və polad",
+            "b": "Mis və latun",
+            "c": "Taxta və dəmir",
+            "d": "Şüşə və alüminium"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 172,
+        "question_text": "Antifrizin əsas tərkib hissəsi nədir?",
+        "options": {
+            "a": "Benzin və su",
+            "b": "Dizel və spirt",
+            "c": "Etilenqlikol və su",
+            "d": "Yağ və spirt"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 173,
+        "question_text": "Mühərrikin soyutma sisteminə hansı element daxil deyil?",
+        "options": {
+            "a": "Radiator",
+            "b": "Termostat",
+            "c": "Karbürator",
+            "d": "Su nasosu"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 174,
+        "question_text": "Ventilyatorun əsas funksiyası nədir?",
+        "options": {
+            "a": "Mühərrikin gücünü artırmaq",
+            "b": "Yağın dövranını təmin etmək",
+            "c": "Radiatora hava axınını artırmaq",
+            "d": "Yanacaq sərfini azaltmaq"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 175,
+        "question_text": "Yağlama sisteminin əsas vəzifəsi nədir?",
+        "options": {
+            "a": "Mühərrikin soyudulmasını təmin etmək",
+            "b": "Mühərrikin sürtünən səthlərinə yağ vermək",
+            "c": "Mühərrikin gücünü artırmaq",
+            "d": "Yanacağın sərfini azaltmaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 176,
+        "question_text": "Yağlama sisteminin hansı elementi yağı təmizləyir?",
+        "options": {
+            "a": "Yağ süzgəci",
+            "b": "Yağ nasosu",
+            "c": "Reduksiya klapanı",
+            "d": "Yağ radiatoru"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 177,
+        "question_text": "Karbüratorlu mühərrikin qida sisteminə hansı funksiyalar daxildir?",
+        "options": {
+            "a": "Yağın dəyişdirilməsi",
+            "b": "Yanacaq buxarları və havadan ibarət olan yanıcı qarışığın hazırlanması və silindrlərə verilməsi",
+            "c": "Avtomobilin təkərlərini fırlatması",
+            "d": "Mühərrikin elektrik sistemini tənzimləməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 178,
+        "question_text": "Yanacaq hansı element vasitəsilə süzülərək təmizlənir?",
+        "options": {
+            "a": "Hava filtri",
+            "b": "Yanacaq çəni",
+            "c": "Karbürator",
+            "d": "Yanacaq süzgəci"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 179,
+        "question_text": "Karbüratora hava haradan daxil olur?",
+        "options": {
+            "a": "Yanacaq çənindən",
+            "b": "Yanacaq süzgəcindən",
+            "c": "Hava filtrindən",
+            "d": "Mühərrik blokundan"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 180,
+        "question_text": "İşlənmiş qazlar mühərrikdən necə uzaqlaşdırılır?",
+        "options": {
+            "a": "Soyutma sistemi ilə",
+            "b": "Xaricetmə sistemi ilə",
+            "c": "Elektrik dövrəsi ilə",
+            "d": "Karbürator vasitəsilə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 181,
+        "question_text": "Dizel mühərriklərinin qida sisteminin əsas xüsusiyyəti nədir?",
+        "options": {
+            "a": "Yanıcı qarışığın əvvəlcədən hazırlanması",
+            "b": "Yanıcı qarışığın mühərrik daxilində hazırlanması və özüalışma ilə işləməsi",
+            "c": "Benzinlə işləməsi",
+            "d": "Yalnız əl ilə işə salınması"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 182,
+        "question_text": "Dizel mühərriklərinin əsas üstünlüyü hansıdır?",
+        "options": {
+            "a": "Yanacaq sərfinin az olması",
+            "b": "Daha çox səs-küy yaratması",
+            "c": "İstehsalının ucuz olması",
+            "d": "İşlənmiş qazların daha təmiz olması"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 183,
+        "question_text": "Dizel mühərriklərinin əsas çatışmazlıqlarından biri hansıdır?",
+        "options": {
+            "a": "Yanacaq sərfinin yüksək olması",
+            "b": "İşəsalma keyfiyyətinin aşağı olması və səs-küyün çox olması",
+            "c": "Yanacağın baha olması",
+            "d": "Mühərrikin tez qızması"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 184,
+        "question_text": "Dizel mühərriklərində elektrik közərmə şamları nə üçün istifadə olunur?",
+        "options": {
+            "a": "Yanacağın sıxılmasını təmin etmək üçün",
+            "b": "Yanacaq sərfini artırmaq üçün",
+            "c": "İşəsalma prosesini asanlaşdırmaq üçün",
+            "d": "Mühərrikin soyudulmasını təmin etmək üçün"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 185,
+        "question_text": "Elektrik enerji mənbəyi kimi hansı qurğulardan istifadə olunur?",
+        "options": {
+            "a": "Yalnız akkumulyator batareyaları",
+            "b": "Yalnız generatorlar",
+            "c": "Akkumulyator batareyaları və generatorlar",
+            "d": "Yalnız kondensatorlar"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 186,
+        "question_text": "Generator hansı enerjini elektrik enerjisinə çevirir?",
+        "options": {
+            "a": "Kimyəvi",
+            "b": "İşıq",
+            "c": "İstilik",
+            "d": "Mexaniki"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 187,
+        "question_text": "Alışdırma zamanı yanacaq qarışığı necə alışır?",
+        "options": {
+            "a": "Akkumulyatorun birbaşa enerjisi ilə",
+            "b": "Şam elektrodları arasında yaranan qığılcımla",
+            "c": "Generatorun verdiyi enerji ilə",
+            "d": "Mühərrikin istisi ilə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 188,
+        "question_text": "Dirsəkli val hansı materiallardan hazırlanır?",
+        "options": {
+            "a": "Yüksək möhkəmlikli qrafitli çuqun və ya polad",
+            "b": "Plastik və mis",
+            "c": "Yüngül lehimli alüminium",
+            "d": "Mərmər və çuqun"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 189,
+        "question_text": "Sürgüqolunun yuxarı başlığına hansı detal yerləşdirilir?",
+        "options": {
+            "a": "Dirsəkli val",
+            "b": "Porşen barmağı",
+            "c": "Yağ nasosu",
+            "d": "Flans"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 190,
+        "question_text": "Kiçik mühərriklərdə sürgüqolu hansı materialdan hazırlanır?",
+        "options": {
+            "a": "Polad",
+            "b": "Çuqun",
+            "c": "Alüminium ərintisi",
+            "d": "Misin ərintisi"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 191,
+        "question_text": "Dirsəkli valın əsas funksiyası nədir?",
+        "options": {
+            "a": "Transmissiyanı idarə etmək",
+            "b": "Sürgüqolundan aldığı qüvvəni burucu momentə çevirmək",
+            "c": "Silindrlərin yağlanmasını təmin etmək",
+            "d": "Porşenin hərəkətini tənzimləmək"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 192,
+        "question_text": "Hərəkət və sürət yaratmaq üçün detal və düyünlərdən ibarət qurğu necə adlanır?",
+        "options": {
+            "a": "Sistem",
+            "b": "Aqreqat",
+            "c": "Mexanizm",
+            "d": "Düyün"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 193,
+        "question_text": "Bir neçə mexanizmin birləşməsi nə adlanır?",
+        "options": {
+            "a": "Aqreqat",
+            "b": "Düyün",
+            "c": "Detal",
+            "d": "Sistem"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 194,
+        "question_text": "Yüngül minik avtomobilləri neçə əsas hissəyə bölünür?",
+        "options": {
+            "a": "2 hissəyə",
+            "b": "3 hissəyə",
+            "c": "4 hissəyə",
+            "d": "5 hissəyə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 195,
+        "question_text": "Yüngül minik avtomobillərinin əsas hissələri hansılardır?",
+        "options": {
+            "a": "Kuzov, mühərrik, şassi",
+            "b": "Dəmir, təkər, sükan",
+            "c": "Oturacaq, kapot, təkər",
+            "d": "Mühərrik, benzin çəni, sükan"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 196,
+        "question_text": "Mühərrik hansı enerjini mexaniki işə çevirir?",
+        "options": {
+            "a": "Kimyəvi enerjini",
+            "b": "İşıq enerjisini",
+            "c": "İstilik enerjisini",
+            "d": "Elektrik enerjisini"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 197,
+        "question_text": "Avtomobillərdə əsasən hansı növ mühərriklərdən istifadə olunur?",
+        "options": {
+            "a": "Xarici yanma mühərriklərindən",
+            "b": "Porşenli istilik mühərriklərindən",
+            "c": "Elektrik mühərriklərindən",
+            "d": "Turbin mühərriklərindən"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 198,
+        "question_text": "Daxili yanma mühərriklərində yanma prosesi harada baş verir?",
+        "options": {
+            "a": "Mühərrikin xaricində",
+            "b": "Yanacaq çənində",
+            "c": "Silindrin daxilində",
+            "d": "Mühərrikin soyutma sistemində"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 199,
+        "question_text": "Porşenli istilik mühərrikləri başqa necə adlanır?",
+        "options": {
+            "a": "Xarici yanma mühərrikləri",
+            "b": "Daxili yanma mühərrikləri",
+            "c": "Elektrik mühərrikləri",
+            "d": "Dizel nasosları"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 200,
+        "question_text": "Daxili yanma mühərrikləri hansı mexanizmlərdən ibarətdir?",
+        "options": {
+            "a": "Çarxqolu-sürgüqolu və qazpaylama mexanizmlərindən",
+            "b": "Təkər və sükan mexanizmlərindən",
+            "c": "Səsboğucu və yanacaq çənindən",
+            "d": "Karbürator və radiator sistemlərindən"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 201,
+        "question_text": "Dirsəkli val porşendən aldığı hərəkəti transmissiyaya hansı mexanizm vasitəsilə ötürür?",
+        "options": {
+            "a": "Klapanlarla",
+            "b": "Qazpaylama valı ilə",
+            "c": "Nazimçarx vasitəsilə",
+            "d": "Generatorun köməkliyi ilə"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 202,
+        "question_text": "Dirsəkli val porşenlə hansı detal vasitəsilə əlaqədə olur?",
+        "options": {
+            "a": "Klapanla",
+            "b": "Sürgüqolu ilə",
+            "c": "İkiçiyinli linglə",
+            "d": "Nazimçarxla"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 203,
+        "question_text": "Porşenin əsas vəzifəsi nədir?",
+        "options": {
+            "a": "Yanacaq-hava qarışığını hazırlamaq",
+            "b": "Burucu momenti stabilləşdirmək",
+            "c": "Klapanların açılıb bağlanmasını təmin etmək",
+            "d": "Genişlənmiş qazların təzyiqini qəbul edib onu mexaniki hərəkətə çevirmək"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 204,
+        "question_text": "Porşen aşağıdakı hansı səbəbdən qızır?",
+        "options": {
+            "a": "Sadəcə yanacaq çatışmazlığına görə",
+            "b": "Hava filtrinin çirklənməsi səbəbindən",
+            "c": "Həm yanmış qazların hərarətindən, həm də sürtünmədən",
+            "d": "Yalnız yağlama sisteminin təzyiqinə görə"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 205,
+        "question_text": "Radiator hansı hissələrdən ibarətdir?",
+        "options": {
+            "a": "Özül, yuxarı və aşağı tutumlar",
+            "b": "Blok silindr, porşen, klapanlar",
+            "c": "Su nasosu və termostat",
+            "d": "Yalnız özül"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 206,
+        "question_text": "Yanacaq nasosunun əsas vəzifəsi nədir?",
+        "options": {
+            "a": "Yağı silindrlərə çatdırmaq",
+            "b": "Yanacağın çəndən karbüratora təzyiq altında vurulmasını təmin etmək",
+            "c": "Havanı filtrdən keçirmək",
+            "d": "Mühərriki soyutmaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 207,
+        "question_text": "Benzin mühərriklərini işə salmaq üçün dirsəkli val neçə dövrə/dəqiqə ilə fırladılmalıdır?",
+        "options": {
+            "a": "20--40 dövrə/dəqiqə",
+            "b": "50--80 dövrə/dəqiqə",
+            "c": "100--150 dövrə/dəqiqə",
+            "d": "160--200 dövrə/dəqiqə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 208,
+        "question_text": "Dizel mühərriklərini işə salmaq üçün dirsəkli valın tələb olunan fırlanma tezliyi nə qədərdir?",
+        "options": {
+            "a": "30--60 dövrə/dəqiqə",
+            "b": "50--80 dövrə/dəqiqə",
+            "c": "120--160 dövrə/dəqiqə",
+            "d": "180--220 dövrə/dəqiqə"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 209,
+        "question_text": "Baş ötürücünün əsas funksiyası nədir?",
+        "options": {
+            "a": "Yanacaq sərfiyyatını azaltmaq",
+            "b": "Akkumulyator batareyasının doldurulmasını təmin etmək",
+            "c": "Burucu momenti artırmaq və təkərlərə ötürmək",
+            "d": "Elektrik enerjisi ötürmək"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 210,
+        "question_text": "İşçi qarışığını yandırmaq üçün hansı qurğudan istifadə olunur?",
+        "options": {
+            "a": "Yanacaq nasosu",
+            "b": "Karbürator",
+            "c": "Generator",
+            "d": "Alışdırma şamları"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 211,
+        "question_text": "Alışdırma şamları hansı əsas hissələrdən ibarətdir?",
+        "options": {
+            "a": "Rotor, stator və tənzimləyici",
+            "b": "Mərkəzi elektrod, yan elektrod və izolyator",
+            "c": "Klapan, klapan oturacağı və yay",
+            "d": "Porşen, halqa və barmaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 212,
+        "question_text": "Avtomobil asqılarının əsas vəzifəsi nədir?",
+        "options": {
+            "a": "Mühərrikin gücünü artırmaq",
+            "b": "Kuzov ilə körpülər arasında sərt əlaqə yaratmaq",
+            "c": "Kuzov ilə körpülər və təkərlər arasında yumşaq əlaqə yaratmaq",
+            "d": "Yanacaq sərfiyyatını azaltmaq"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 213,
+        "question_text": "Avtomobillərdə əsasən hansı tip amortizatorlar tətbiq olunur?",
+        "options": {
+            "a": "Mexaniki və elektrik",
+            "b": "Hidravlik və pnevmatik",
+            "c": "Termik və mexaniki",
+            "d": "Elektromaqnit və hidravlik"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 214,
+        "question_text": "Sükan idarəsinin əsas funksiyası nədir?",
+        "options": {
+            "a": "Avtomobilin sürətini artırmaq",
+            "b": "Təkərlərin yeyilməsini azaltmaq",
+            "c": "Mühərrikin gücünü ötürmək",
+            "d": "Avtomobilin təyin olunmuş istiqamətdə hərəkətini təmin etmək"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 215,
+        "question_text": "Vakuum gücləndiricisinin əsas vəzifəsi nədir?",
+        "options": {
+            "a": "Tormoz pedalına təsir edən tormozlama qüvvəsini azaltmaq",
+            "b": "Tormoz pedalına təsir edən tormozlama qüvvəsini artırmaq",
+            "c": "Avtomobilin gücünü artırmaq",
+            "d": "Ötürmələr qutusunun işini yüngülləşdirmək"
+        },
+        "correct_answer": "b"
+    }
+];
+        // Oyun dəyişənləri
+// Oyun dəyişənləri
+let currentQuestionIndex = 0;
+let userAnswers = [];
+let quizStarted = false;
+let userName = '';
+let timerInterval;
+const totalTime = 40;
+let timeLeft = totalTime;
+let isTimerPaused = false;
+let autoNextTimeout;
+
+// DOM elementləri
+const startContainer = document.getElementById('start-container');
+const quizHeader = document.getElementById('quiz-header');
+const quizContainer = document.getElementById('quiz-container');
+const resultContainer = document.getElementById('result-container');
+const questionElement = document.getElementById('question');
+const optionsContainer = document.getElementById('options-container');
+const progressElement = document.getElementById('progress');
+const questionCounterElement = document.getElementById('question-counter');
+const timerDisplayElement = document.getElementById('timer-display');
+const timerBarElement = document.getElementById('timer-bar');
+const nextBtn = document.getElementById('next-btn');
+const timerToggleBtn = document.getElementById('timer-toggle-btn');
+const autoNextMessage = document.getElementById('auto-next-message');
+const userGreeting = document.getElementById('user-greeting');
+const progressCircles = document.getElementById('progress-circles');
+const statsDetails = document.getElementById('stats-details');
+
+// ====== ƏSAS DƏYİŞİKLİKLƏR ======
+// 1. Avtomatik giriş sistemi
+window.onload = function() {
+    // LocalStorage-dən istifadəçi məlumatlarını yoxla
+    const savedUsername = localStorage.getItem('quizUsername');
+    const savedIsLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    
+    if (savedIsLoggedIn && savedUsername) {
+        // Əvvəlki giriş məlumatları var
+        userName = savedUsername;
+        userGreeting.innerHTML = `<strong>${userName}</strong> olaraq giriş etdiniz!`;
+    } else {
+        // Yeni giriş - təsadüfi ad
+        const guestNames = ['Qonaq', 'İstifadəçi', 'Tələbə', 'Tədqiqatçı', 'Biliksevər'];
+        userName = guestNames[Math.floor(Math.random() * guestNames.length)];
+        localStorage.setItem('quizUsername', userName);
+        localStorage.setItem('isLoggedIn', 'true');
+        userGreeting.innerHTML = `<strong>${userName}</strong> olaraq giriş etdiniz!`;
+    }
+    
+    // Particles yarat
+    createParticles();
+    
+    // Progress circles yarat
+    createProgressCircles();
+    
+    // Event listener-ları əlavə et
+    setupEventListeners();
+};
+
+function setupEventListeners() {
+    // Start button
+    document.getElementById('start-btn').addEventListener('click', () => {
+        console.log('Start button clicked!');
+        startContainer.style.display = 'none';
+        quizHeader.style.display = 'grid';
+        quizContainer.style.display = 'block';
+        document.getElementById('username-display').textContent = userName;
+        loadQuestion(currentQuestionIndex);
+    });
+
+    // Next button
+    document.getElementById('next-btn').addEventListener('click', nextQuestion);
+    
+    // Timer toggle button
+    document.getElementById('timer-toggle-btn').addEventListener('click', toggleTimer);
+    
+    // Restart button
+    document.getElementById('restart-btn').addEventListener('click', restartQuiz);
+}
+
+// ====== PARTİCLE SİSTEMİ ======
+function createParticles() {
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.animationDelay = `${Math.random() * 20}s`;
+        particle.style.animationDuration = `${15 + Math.random() * 10}s`;
+        particle.style.opacity = Math.random() * 0.5 + 0.3;
+        particle.style.width = particle.style.height = `${Math.random() * 6 + 2}px`;
+        particlesContainer.appendChild(particle);
+    }
+}
+
+// ====== PROGRESS CIRCLES ======
+function createProgressCircles() {
+    const totalQuestions = allQuestions.length;
+    progressCircles.innerHTML = '';
+    for (let i = 0; i < totalQuestions; i++) {
+        const circle = document.createElement('div');
+        circle.className = 'progress-circle';
+        circle.id = `circle-${i}`;
+        progressCircles.appendChild(circle);
+    }
+}
+
+function updateProgressCircles() {
+    const circles = document.querySelectorAll('.progress-circle');
+    circles.forEach((circle, index) => {
+        circle.classList.remove('active');
+        if (index === currentQuestionIndex) {
+            circle.classList.add('active');
+        }
+        
+        // Əvvəlki cavabları rənglə
+        if (userAnswers[index]) {
+            if (userAnswers[index].correct) {
+                circle.classList.add('correct');
+                circle.classList.remove('incorrect');
+            } else {
+                circle.classList.add('incorrect');
+                circle.classList.remove('correct');
+            }
+        }
+    });
+}
+
+// ====== TIMER FUNCTIONS ======
+function resetTimer() {
+    stopTimer();
+    timeLeft = totalTime;
+    timerDisplayElement.textContent = `${timeLeft}s`;
+    timerBarElement.style.width = '100%';
+    startTimer();
+}
+
+function startTimer() {
+    if (timerInterval) return;
+    isTimerPaused = false;
+    timerToggleBtn.innerHTML = '<i class="fas fa-pause"></i>';
+
+    timerInterval = setInterval(() => {
+        if (!isTimerPaused) {
+            timeLeft--;
+            timerDisplayElement.textContent = `${timeLeft}s`;
+            timerBarElement.style.width = `${(timeLeft / totalTime) * 100}%`;
+
+            if (timeLeft <= 0) {
+                handleAnswer(null, allQuestions[currentQuestionIndex].correct_answer, null);
+            }
+        }
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+    timerInterval = null;
+}
+
+function toggleTimer() {
+    if (isTimerPaused) {
+        isTimerPaused = false;
+        timerToggleBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        startTimer();
+    } else {
+        isTimerPaused = true;
+        timerToggleBtn.innerHTML = '<i class="fas fa-play"></i>';
+        stopTimer();
+    }
+}
+
+// ====== QUIZ FUNCTIONS ======
+function loadQuestion(questionIndex) {
+    console.log('Loading question:', questionIndex);
+    
+    clearTimeout(autoNextTimeout);
+    autoNextMessage.style.display = 'none';
+    
+    if (questionIndex >= allQuestions.length) {
+        showResult();
+        return;
+    }
+
+    const currentQuestion = allQuestions[questionIndex];
+    
+    questionElement.innerHTML = `<span style="color: var(--accent-pink);">${currentQuestion.question_number}.</span> ${currentQuestion.question_text}`;
+    progressElement.textContent = `Sual ${questionIndex + 1} / ${allQuestions.length}`;
+    questionCounterElement.textContent = `${questionIndex + 1} / ${allQuestions.length}`;
+
+    optionsContainer.innerHTML = '';
+    nextBtn.style.display = 'none';
+
+    const optionLetters = ['a', 'b', 'c', 'd'];
+    optionLetters.forEach((letter) => {
+        const optionText = currentQuestion.options[letter];
+        if (optionText) {
+            const button = document.createElement('button');
+            button.className = 'option-btn';
+            button.dataset.answer = letter;
+            button.innerHTML = `<span class="option-letter">${letter.toUpperCase()}</span> ${optionText}`;
+            
+            button.addEventListener('click', () => handleAnswer(letter, currentQuestion.correct_answer, button));
+            
+            optionsContainer.appendChild(button);
+        }
+    });
+
+    resetTimer();
+    updateProgressCircles();
+}
+
+function handleAnswer(selectedAnswer, correctAnswer, selectedButton) {
+    stopTimer();
+    
+    Array.from(optionsContainer.children).forEach(btn => {
+        btn.disabled = true;
+    });
+    
+    let isCorrect = selectedAnswer === correctAnswer;
+
+    userAnswers.push({
+        question: allQuestions[currentQuestionIndex].question_number,
+        correct: isCorrect,
+        userAnswer: selectedAnswer
+    });
+
+    // Cavabları rənglə
+    Array.from(optionsContainer.children).forEach(btn => {
+        const letter = btn.dataset.answer;
+        if (letter === correctAnswer) {
+            btn.classList.add('correct');
+        } else if (letter === selectedAnswer && letter !== correctAnswer) {
+            btn.classList.add('incorrect');
+        }
+    });
+
+    // Avtomatik növbəti suala keçid
+    autoNextMessage.textContent = isCorrect ? "✅ Düzgün cavab! Növbəti suala keçir..." : "❌ Yanlış cavab! Növbəti suala keçir...";
+    autoNextMessage.style.display = 'block';
+    autoNextMessage.style.color = isCorrect ? 'var(--accent-green)' : 'var(--accent-pink)';
+    
+    autoNextTimeout = setTimeout(() => {
+        nextQuestion();
+    }, 1500);
+    
+    // Progress circles yenilə
+    updateProgressCircles();
+}
+
+function nextQuestion() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < allQuestions.length) {
+        loadQuestion(currentQuestionIndex);
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    stopTimer();
+    clearTimeout(autoNextTimeout);
+    quizHeader.style.display = 'none';
+    quizContainer.style.display = 'none';
+    resultContainer.style.display = 'block';
+
+    const correctCount = userAnswers.filter(a => a.correct).length;
+    const totalQuestions = allQuestions.length;
+    const percentage = ((correctCount / totalQuestions) * 100).toFixed(1);
+    
+    // Skor
+    document.getElementById('score').innerHTML = `
+        <div style="font-size: 1.8rem; color: var(--secondary-blue); margin-bottom: 10px;">
+            ${userName}
+        </div>
+        <div style="font-size: 1.3rem; color: var(--accent-pink); margin-bottom: 15px;">
+            ${totalQuestions} sualdan ${correctCount} düzgün
+        </div>
+        <div style="font-size: 3rem; color: var(--primary-blue); font-weight: 800;">
+            ${percentage}%
+        </div>
+    `;
+    
+    // Statistika
+    let statsHTML = `
+        <div style="margin-bottom: 15px;">
+            <i class="fas fa-check-circle" style="color: var(--accent-green); margin-right: 10px;"></i>
+            <strong>Düzgün cavablar:</strong> ${correctCount}
+        </div>
+        <div style="margin-bottom: 15px;">
+            <i class="fas fa-times-circle" style="color: var(--accent-pink); margin-right: 10px;"></i>
+            <strong>Yanlış cavablar:</strong> ${totalQuestions - correctCount}
+        </div>
+        <div style="margin-bottom: 15px;">
+            <i class="fas fa-percentage" style="color: var(--primary-blue); margin-right: 10px;"></i>
+            <strong>Uğur faizi:</strong> ${percentage}%
+        </div>
+    `;
+    
+    if (percentage >= 80) {
+        statsHTML += `
+            <div style="margin-top: 20px; padding: 15px; background: rgba(6, 214, 160, 0.1); border-radius: 10px; border-left: 4px solid var(--accent-green);">
+                <i class="fas fa-trophy" style="color: var(--accent-yellow); margin-right: 10px;"></i>
+                <strong>ƏLA NƏTİCƏ!</strong> Təbriklər!
+            </div>
+        `;
+    } else if (percentage >= 60) {
+        statsHTML += `
+            <div style="margin-top: 20px; padding: 15px; background: rgba(67, 97, 238, 0.1); border-radius: 10px; border-left: 4px solid var(--primary-blue);">
+                <i class="fas fa-star" style="color: var(--accent-yellow); margin-right: 10px;"></i>
+                <strong>YAXŞI NƏTİCƏ!</strong> Davam edin!
+            </div>
+        `;
+    }
+    
+    statsDetails.innerHTML = statsHTML;
+}
+
+function restartQuiz() {
+    currentQuestionIndex = 0;
+    userAnswers = [];
+    
+    startContainer.style.display = 'none';
+    quizHeader.style.display = 'grid';
+    quizContainer.style.display = 'block';
+    resultContainer.style.display = 'none';
+    
+    document.getElementById('username-display').textContent = userName;
+    loadQuestion(currentQuestionIndex);
+    createProgressCircles();
+}
+
+// ====== KEYBOARD CONTROLS ======
+document.addEventListener('keydown', (e) => {
+    if (!quizContainer.style.display || quizContainer.style.display === 'none') return;
+    
+    // 1-4 rəqəmləri ilə cavab seçmək
+    if (e.key >= '1' && e.key <= '4') {
+        const index = parseInt(e.key) - 1;
+        const buttons = document.querySelectorAll('.option-btn');
+        if (buttons[index] && !buttons[index].disabled) {
+            const answer = buttons[index].dataset.answer;
+            const correctAnswer = allQuestions[currentQuestionIndex].correct_answer;
+            buttons[index].click();
+        }
+    }
+    
+    // Space - taymeri dayandır/davam et
+    if (e.key === ' ') {
+        e.preventDefault();
+        toggleTimer();
+    }
+    
+    // Enter - növbəti suala keç
+    if (e.key === 'Enter' && nextBtn.style.display !== 'none') {
+        nextBtn.click();
+    }
+    
+    // N - növbəti suala keç
+    if (e.key === 'n' || e.key === 'N') {
+        if (nextBtn.style.display !== 'none') {
+            nextBtn.click();
+        }
+    }
+});
+    </script>
+</body>
+</html>

@@ -1,0 +1,4150 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Quiz Game</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+        /* Daha parlaq rənglər və Glass Effect Dizayn - MOBİL UYUMLU */
+        :root {
+            --primary-blue: #4361ee;
+            --secondary-blue: #3a0ca3;
+            --accent-pink: #f72585;
+            --accent-yellow: #ffd166;
+            --accent-green: #06d6a0;
+            --accent-purple: #7209b7;
+            --light-bg: #f8f9ff;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --shadow-color: rgba(67, 97, 238, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 25%, #7209b7 50%, #f72585 75%, #ffd166 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 10px;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating Circles Background - DAHA KİÇİK */
+        .floating-circles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(30px);
+            opacity: 0.25;
+            animation: float 30s infinite linear;
+        }
+        
+        .circle:nth-child(1) {
+            width: 150px;
+            height: 150px;
+            background: var(--accent-pink);
+            top: 10%;
+            left: 5%;
+            animation-duration: 35s;
+        }
+        
+        .circle:nth-child(2) {
+            width: 180px;
+            height: 180px;
+            background: var(--primary-blue);
+            top: 60%;
+            right: 5%;
+            animation-duration: 40s;
+            animation-direction: reverse;
+        }
+        
+        .circle:nth-child(3) {
+            width: 120px;
+            height: 120px;
+            background: var(--accent-yellow);
+            bottom: 10%;
+            left: 15%;
+            animation-duration: 30s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(30px, 20px) rotate(90deg); }
+            50% { transform: translate(0, 40px) rotate(180deg); }
+            75% { transform: translate(-30px, 20px) rotate(270deg); }
+        }
+
+        /* Glass Container - DAHA KİÇİK */
+        .glass-container {
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            box-shadow: 
+                0 10px 30px var(--shadow-color),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 450px;
+            margin: 5px auto;
+            padding: 15px;
+        }
+
+        .glass-card {
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 14px;
+            box-shadow: 
+                0 8px 20px rgba(0, 0, 0, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            padding: 18px;
+            margin-bottom: 12px;
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            padding: 8px;
+        }
+
+        /* HEADER - YAN-YANA FLEX DÜZENİ (ƏSAS DƏYİŞİKLİK) */
+        .quiz-header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 8px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            width: 100%;
+            backdrop-filter: blur(8px) saturate(180%);
+            -webkit-backdrop-filter: blur(8px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .header-item {
+            padding: 8px 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(67, 97, 238, 0.1);
+        }
+
+        .header-label {
+            font-size: 0.65rem;
+            color: var(--primary-blue);
+            margin-bottom: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            line-height: 1.2;
+        }
+
+        .header-value {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--secondary-blue);
+            font-family: 'Poppins', sans-serif;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+            width: 100%;
+            line-height: 1.2;
+        }
+
+        #username-display {
+            color: var(--accent-pink);
+            font-size: 0.95rem;
+            font-weight: 800;
+        }
+
+        #question-counter {
+            color: var(--primary-blue);
+            font-size: 0.95rem;
+            font-weight: 800;
+        }
+
+        #timer-display {
+            color: var(--accent-pink);
+            font-family: 'Poppins', monospace;
+            font-size: 0.95rem;
+            font-weight: 800;
+        }
+
+        /* Start Container - DAHA KİÇİK */
+        .start-container {
+            text-align: center;
+            padding: 25px 18px;
+        }
+
+        .start-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-pink), var(--accent-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .start-subtitle {
+            font-size: 0.9rem;
+            color: var(--secondary-blue);
+            margin-bottom: 20px;
+            opacity: 0.9;
+            line-height: 1.3;
+        }
+
+        .user-info {
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: var(--secondary-blue);
+            padding: 12px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+        }
+
+        /* Question Container */
+        .question-container {
+            margin-bottom: 15px;
+            padding: 18px;
+        }
+
+        .question {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            font-weight: 600;
+            color: var(--secondary-blue);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 16px;
+            border-radius: 10px;
+            border-left: 3px solid var(--primary-blue);
+        }
+
+        /* Options - DAHA KİÇİK */
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1.5px solid rgba(67, 97, 238, 0.2);
+            border-radius: 10px;
+            padding: 14px 16px;
+            color: var(--secondary-blue);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: rgba(67, 97, 238, 0.1);
+            transform: translateX(3px);
+            border-color: var(--primary-blue);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .option-letter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border-radius: 8px;
+            margin-right: 12px;
+            font-weight: bold;
+            color: white;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            min-width: 28px;
+        }
+
+        /* Answer States */
+        .option-btn.correct {
+            background: linear-gradient(135deg, rgba(6, 214, 160, 0.12), rgba(6, 214, 160, 0.2));
+            border-color: var(--accent-green);
+            color: #0a8754;
+            animation: pulse-green 0.5s ease-in-out;
+        }
+
+        .option-btn.incorrect {
+            background: linear-gradient(135deg, rgba(247, 37, 133, 0.12), rgba(247, 37, 133, 0.2));
+            border-color: var(--accent-pink);
+            color: #b5174e;
+            animation: pulse-red 0.5s ease-in-out;
+        }
+
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(6, 214, 160, 0.3); }
+            70% { box-shadow: 0 0 0 8px rgba(6, 214, 160, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(6, 214, 160, 0); }
+        }
+
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(247, 37, 133, 0.3); }
+            70% { box-shadow: 0 0 0 8px rgba(247, 37, 133, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(247, 37, 133, 0); }
+        }
+
+        /* Timer - DAHA KİÇİK */
+        .timer-container {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 3px;
+            margin: 15px 0 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .timer-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-pink), var(--accent-yellow));
+            width: 100%;
+            transition: width 1s linear;
+            border-radius: 3px;
+        }
+
+        /* Buttons - DAHA KİÇİK */
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+            color: white;
+            font-size: 0.95rem;
+            padding: 14px 25px;
+            margin-top: 12px;
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.25);
+        }
+
+        .btn-start:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.35);
+        }
+
+        .btn-start:active {
+            transform: translateY(0);
+        }
+
+        /* Controls - YENİ FLEX DÜZENİ */
+        .controls-bottom {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .icon-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1.5px solid rgba(67, 97, 238, 0.3);
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--primary-blue);
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .icon-btn:hover {
+            background: var(--primary-blue);
+            color: white;
+            transform: scale(1.05);
+            border-color: var(--primary-blue);
+        }
+
+        #next-btn {
+            flex: 1;
+            max-width: none;
+            width: auto;
+            margin: 0;
+            padding: 12px 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Result Container - DAHA KİÇİK */
+        .result-container {
+            text-align: center;
+            display: none;
+            padding: 25px 18px;
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .score {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            color: var(--primary-blue);
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 18px;
+            border-radius: 14px;
+            display: inline-block;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .progress {
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            color: var(--secondary-blue);
+            font-weight: 600;
+        }
+
+        /* Auto Next Message */
+        .auto-next-message {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: var(--primary-blue);
+            font-weight: 600;
+            opacity: 0;
+            animation: fadeInOut 1.2s ease-in-out;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            display: inline-block;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.5; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1.01); }
+        }
+
+        /* Progress Circles - DAHA KİÇİK */
+        .progress-circles {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+            padding: 0 8px;
+        }
+
+        .progress-circle {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .progress-circle.active {
+            background: var(--primary-blue);
+            transform: scale(1.3);
+        }
+
+        .progress-circle.correct {
+            background: var(--accent-green);
+        }
+
+        .progress-circle.incorrect {
+            background: var(--accent-pink);
+        }
+
+        /* Particles - AZALDIRILMIŞ */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: floatParticle 25s infinite linear;
+            opacity: 0.3;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* ========== MEDIA QUERIES ========== */
+        /* MOBİL ÜÇÜN TƏNZİMLƏMƏ */
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+                align-items: flex-start;
+                min-height: 100vh;
+                overflow-y: auto;
+            }
+
+            .container {
+                padding: 5px;
+            }
+
+            .glass-container {
+                border-radius: 16px;
+                padding: 12px;
+                margin: 3px auto;
+            }
+
+            /* HEADER MOBİL ÜÇÜN */
+            .quiz-header {
+                padding: 10px 12px;
+                gap: 6px;
+                margin-bottom: 12px;
+            }
+            
+            .header-item {
+                padding: 6px 8px;
+            }
+            
+            .header-label {
+                font-size: 0.6rem;
+                margin-bottom: 3px;
+            }
+            
+            .header-value {
+                font-size: 0.85rem;
+            }
+            
+            #username-display,
+            #question-counter,
+            #timer-display {
+                font-size: 0.85rem;
+            }
+
+            .start-title {
+                font-size: 1.4rem;
+                margin-bottom: 10px;
+            }
+
+            .start-subtitle {
+                font-size: 0.85rem;
+                margin-bottom: 15px;
+            }
+
+            .question {
+                font-size: 0.95rem;
+                padding: 14px;
+                margin-bottom: 15px;
+                line-height: 1.3;
+            }
+
+            .option-btn {
+                padding: 12px 14px;
+                font-size: 0.85rem;
+                line-height: 1.2;
+            }
+
+            .option-letter {
+                width: 26px;
+                height: 26px;
+                font-size: 0.8rem;
+                margin-right: 10px;
+                min-width: 26px;
+            }
+
+            .btn {
+                padding: 11px 18px;
+                font-size: 0.85rem;
+                max-width: 260px;
+            }
+
+            .btn-start {
+                padding: 12px 22px;
+                font-size: 0.9rem;
+            }
+
+            .result-title {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .score {
+                font-size: 1.3rem;
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+
+            .controls-bottom {
+                margin-top: 15px;
+                padding-top: 12px;
+                gap: 12px;
+            }
+
+            .icon-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1.1rem;
+            }
+
+            #next-btn {
+                padding: 11px 18px;
+                font-size: 0.85rem;
+            }
+
+            .timer-container {
+                margin: 12px 0 15px;
+            }
+
+            .progress-circles {
+                gap: 4px;
+                margin-top: 10px;
+            }
+
+            .progress-circle {
+                width: 7px;
+                height: 7px;
+            }
+        }
+
+        /* Çox kiçik ekranlar üçün */
+        @media (max-width: 360px) {
+            .quiz-header {
+                gap: 4px;
+                padding: 8px 10px;
+            }
+            
+            .header-label {
+                font-size: 0.55rem;
+                margin-bottom: 2px;
+                letter-spacing: 0.3px;
+            }
+            
+            .header-value {
+                font-size: 0.8rem;
+            }
+            
+            .header-item {
+                padding: 5px 7px;
+            }
+            
+            #username-display,
+            #question-counter,
+            #timer-display {
+                font-size: 0.8rem;
+            }
+
+            .start-title {
+                font-size: 1.3rem;
+            }
+
+            .question {
+                font-size: 0.9rem;
+                padding: 12px;
+            }
+
+            .option-btn {
+                padding: 10px 12px;
+                font-size: 0.8rem;
+            }
+
+            .option-letter {
+                width: 24px;
+                height: 24px;
+                font-size: 0.75rem;
+                margin-right: 8px;
+                min-width: 24px;
+            }
+        }
+
+        /* Tablet üçün */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .glass-container {
+                max-width: 420px;
+                padding: 18px;
+            }
+
+            .quiz-header {
+                padding: 15px;
+                gap: 12px;
+            }
+
+            .header-label {
+                font-size: 0.7rem;
+            }
+
+            .header-value {
+                font-size: 1rem;
+            }
+
+            #username-display,
+            #question-counter,
+            #timer-display {
+                font-size: 1rem;
+            }
+
+            .start-title {
+                font-size: 1.8rem;
+            }
+
+            .question {
+                font-size: 1.1rem;
+            }
+
+            .option-btn {
+                font-size: 0.95rem;
+                padding: 15px 18px;
+            }
+        }
+
+        /* Desktop üçün */
+        @media (min-width: 769px) {
+            body {
+                align-items: center;
+                padding: 20px;
+            }
+
+            .glass-container {
+                max-width: 500px;
+                padding: 20px;
+            }
+
+            .quiz-header {
+                gap: 15px;
+            }
+
+            .controls-bottom {
+                gap: 20px;
+            }
+        }
+
+        /* Landscape rejimi üçün */
+        @media (max-width: 768px) and (orientation: landscape) {
+            body {
+                padding: 5px;
+                align-items: flex-start;
+            }
+
+            .glass-container {
+                max-width: 98%;
+                margin: 3px auto;
+                padding: 10px;
+            }
+
+            .quiz-header {
+                padding: 10px;
+                gap: 8px;
+                margin-bottom: 10px;
+            }
+
+            .header-label {
+                font-size: 0.5rem;
+            }
+
+            .header-value {
+                font-size: 0.75rem;
+            }
+
+            #username-display,
+            #question-counter,
+            #timer-display {
+                font-size: 0.75rem;
+            }
+
+            .start-container {
+                padding: 15px 10px;
+            }
+
+            .question-container {
+                padding: 12px;
+            }
+
+            .options-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .option-btn {
+                padding: 10px 12px;
+                font-size: 0.8rem;
+                min-height: 60px;
+            }
+
+            .option-letter {
+                width: 22px;
+                height: 22px;
+                font-size: 0.75rem;
+                margin-right: 8px;
+            }
+
+            .controls-bottom {
+                margin-top: 12px;
+                padding-top: 10px;
+                gap: 10px;
+            }
+
+            .question {
+                font-size: 0.9rem;
+                padding: 12px;
+                margin-bottom: 12px;
+            }
+        }
+
+        /* Yüksək ekranlar üçün */
+        @media (min-height: 800px) and (max-width: 480px) {
+            .glass-container {
+                margin-top: 20px;
+            }
+        }
+
+        /* Aşağı scroll problemi üçün */
+        .quiz-container {
+            min-height: calc(100vh - 40px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .question-container {
+            flex: 1;
+        }
+
+        /* Header-in yan-yana olmasını təmin etmək üçün əlavə CSS */
+        .quiz-header {
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+        }
+
+        .header-item {
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Background -->
+    <div class="floating-circles">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+    
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Main Container -->
+    <div class="container glass-container">
+        <!-- Start Screen -->
+        <div class="start-container" id="start-container">
+            <h1 class="start-title">🌟 PREMIUM QUIZ 🌟</h1>
+            <p class="start-subtitle">Bilik sınağınıza xoş gəldiniz!</p>
+            
+            <div class="user-info glass-card">
+                <i class="fas fa-user-circle" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 10px;"></i>
+                <p id="user-greeting">Siz artıq giriş etmisiniz!</p>
+                <p style="font-size: 1rem; color: var(--accent-pink); margin-top: 10px;">
+                    <i class="fas fa-shield-alt"></i> Avtomatik giriş aktivdir
+                </p>
+            </div>
+            
+            <button class="btn btn-start" id="start-btn">
+                <i class="fas fa-play-circle" style="margin-right: 10px;"></i>KVİZƏ BAŞLA
+            </button>
+        </div>
+        
+        <!-- Quiz Header -->
+        <div class="quiz-header glass-card" id="quiz-header" style="display: none;">
+            <div class="header-item">
+                <div class="header-label">İSTİFADƏÇİ</div>
+                <div class="header-value" id="username-display">Qonaq</div>
+            </div>
+            <div class="header-item">
+                <div class="header-label">SUAL</div>
+                <div class="header-value" id="question-counter">1/250</div>
+            </div>
+            <div class="header-item">
+                <div class="header-label">VAXT</div>
+                <div class="header-value" id="timer-display">40s</div>
+            </div>
+        </div>
+        
+        <!-- Quiz Container -->
+        <div class="quiz-container" id="quiz-container" style="display: none;">
+            <!-- Progress Circles -->
+            <div class="progress-circles" id="progress-circles"></div>
+            
+            <!-- Progress Text -->
+            <div class="progress" id="progress">Sual 1 / 250</div>
+            
+            <!-- Timer -->
+            <div class="timer-container">
+                <div class="timer-bar" id="timer-bar"></div>
+            </div>
+            
+            <!-- Question -->
+            <div class="question-container glass-card">
+                <div class="question" id="question">Sual yüklənir...</div>
+                
+                <!-- Options -->
+                <div class="options-container" id="options-container"></div>
+                
+                <!-- Auto Next Message -->
+                <div class="auto-next-message" id="auto-next-message" style="display: none;"></div>
+            </div>
+            
+            <!-- Controls -->
+            <div class="controls-bottom">
+                <button class="btn btn-start" id="next-btn" style="display: none;">
+                    <i class="fas fa-forward" style="margin-right: 8px;"></i>NÖVBƏTİ SUAL
+                </button>
+                <div class="icon-btn" id="timer-toggle-btn" title="Vaxtı Dayandır/Davam et">
+                    <i class="fas fa-pause"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Result Container -->
+        <div class="result-container" id="result-container">
+            <h2 class="result-title">🎉 KVIZ TAMAMLANDI! 🎉</h2>
+            
+            <div class="score" id="score"></div>
+            
+            <!-- Stats -->
+            <div class="glass-card" style="padding: 30px; margin: 30px auto; max-width: 500px;">
+                <h3 style="color: var(--primary-blue); margin-bottom: 20px; font-size: 1.5rem;">
+                    <i class="fas fa-chart-bar" style="margin-right: 10px;"></i>STATİSTİKA
+                </h3>
+                <div id="stats-details" style="text-align: left; line-height: 2;">
+                    <!-- Stats will be inserted here -->
+                </div>
+            </div>
+            
+            <button class="btn btn-start" id="restart-btn">
+                <i class="fas fa-redo" style="margin-right: 10px;"></i>YENİDƏN BAŞLA
+            </button>
+        </div>
+    </div>
+
+    <script>
+    
+        const allQuestions = [
+             {
+                
+  
+    "question_number": 1,
+    "question_text": "\"Avtonəqliyyat vasitəsi\" anlayışına aşağıdakı təriflərdən hansı uyğundur?",
+    "options": {
+      "A": "Sərnişin daşımaları üçün nəzərdə tutulmuş nəqliyyat vasitəsi.",
+      "B": "Yük daşımaları üçün nəzərdə tutulmuş nəqliyyat vasitəsi.",
+      "C": "Sərnişin, yük və ya xüsusi avadanlığın avtomobil yolları ilə daşınması üçün nəzərdə tutulmuş mühərriklə hərəkətə gətirilən nəqliyyat vasitəsi.",
+      "D": "Yalnız minik avtomobilləri və yük maşınlarından ibarət nəqliyyat vasitəsi."
+    },
+    "correct_answer": "C"
+  },
+  
+  {
+    "question_number": 2,
+    "question_text": "\"Avtomobil nəqliyyatı ilə təsərrüfat ehtiyacları üçün daşımalar\"ı yerinə yetirən şəxs bu məqsədlə hansı avtonəqliyyat vasitəsindən istifadə edə bilər?",
+    "options": {
+      "A": "Öz sərəncamında olan avtonəqliyyat vasitəsindən.",
+      "B": "Sifarişçinin təqdim etdiyi avtonəqliyyat vasitəsindən.",
+      "C": "İcarəyə götürülmüş avtonəqliyyat vasitəsindən.",
+      "D": "Hər hansı bir qaydada əldə etdiyi avtonəqliyyat vasitəsindən."
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 3,
+    "question_text": "Aşağıdakılardan hansı \"avtomobil nəqliyyatının infrastrukturuna\" daxil deyil?",
+    "options": {
+      "A": "Avtovağzallar və dayanacaq məntəqələri.",
+      "B": "Sənaye fabrikləri və anbarlar.",
+      "C": "Texniki-təmir stansiyaları və yanacaqdoldurma məntəqələri.",
+      "D": "Avtomobil yolları və avtobus dayanacaqları."
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 4,
+    "question_text": "\"Baqaj\" anlayışı aşağıdakılardan hansını ifadə edir?",
+    "options": {
+      "A": "Sərnişinin özü ilə avtomobilin salonunda daşıdığı şəxsi əşyalar.",
+      "B": "Daşınmaq üçün qablaşdırılmış, sərnişin tərəfindən avtonəqliyyat vasitəsilə göndərilən və ya səfər boyu müşayiət edilən yük.",
+      "C": "Yalnız avtobusun baqaj bölməsində daşınan hər bir çəkidəki yük.",
+      "D": "Daşıyıcıya xüsusi sənədlə təqdim olunan qiymətli yük."
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 5,
+    "question_text": "\"Sifarişçi\" kim ola bilər?",
+    "options": {
+      "A": "Yalnız fiziki şəxs.",
+      "B": "Yalnız hüquqi şəxs.",
+      "C": "Həm hüquqi, həm də fiziki şəxs.",
+      "D": "Yalnız dövlət orqanı."
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 6,
+    "question_text": "Bu Qanunun müddəaları aşağıdakı daşımalardan hansına şamil edilir?",
+    "options": {
+      "A": "Kənd təsərrüfatı məhsullarının təsərrüfat daxilində daşınmasına.",
+      "B": "Müntəzəm marşrut üzrə şəhərdaxili sərnişin daşımalarına.",
+      "C": "Fiziki şəxsin şəxsi avtomobili ilə ailə üzvlərini daşımasına.",
+      "D": "Hərbi qulluqçuların xidməti avtomobillə daşınmasına."
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 7,
+    "question_text": "\"Sürücü\" anlayışına aşağıdakı şərtlərdən hansı daxildir?",
+    "options": {
+      "A": "Avtonəqliyyat vasitəsini idarə etmək hüququ olan şəxs",
+      "B": "Daşıyıcının işçisi olan şəxs",
+      "C": "Nəqliyyat vasitəsinin mülkiyyətçisi olan şəxs",
+      "D": "Avtonəqliyyat vasitəsini idarə etmək hüququ olan və müvafiq hallarda daşıyıcını təmsil edən şəxs"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 8,
+    "question_text": "Aşağıdakı daşıma növlərindən hansı \"qeyri-müntəzəm sərnişin daşımalarına\" aiddir?",
+    "options": {
+      "A": "Hərəkət cədvəli olan şəhər avtobusunun daşımaları.",
+      "B": "Sabot marşrutu üzrə işləyən sərnişin minik avtomobillərinin daşımaları.",
+      "C": "Sifarişçi ilə bağlanmış müqavilə əsasında turist qrupunun daşınması.",
+      "D": "Şəhərlər arasında işləyən vağzal avtobusunun daşımaları."
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 9,
+    "question_text": "\"Avtomobil nəqliyyatı ilə kommersiya məqsədli daşımalar\"ın əsas meyarı nədir?",
+    "options": {
+      "A": "Daşımanın yalnız hüquqi şəxs tərəfindən təşkil edilməsi.",
+      "B": "Daşımanın beynəlxalq olması.",
+      "C": "Daşınma haqqı ödənilməklə yerinə yetirilməsi.",
+      "D": "Daşımanın yalnız sərnişinlər üçün nəzərdə tutulması."
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 10,
+    "question_text": "Aşağıdakılardan hansı \"beynəlxalq daşımalar\"a nümunədir?",
+    "options": {
+      "A": "Azərbaycan ərazisindən tranzit keçməklə Gürcüstana yük daşınması.",
+      "B": "Sumqayıtın daxilində sərnişin daşınması.",
+      "C": "Bakıdan Gəncəyə yük daşınması.",
+      "D": "Şirvan və Ağsu rayonları arasında sərnişin daşınması."
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 11,
+    "question_text": "Avtomobil nəqliyyatı sahəsində fəaliyyətin əsas prinsiplərindən biri deyil:",
+    "options": {
+      "A": "Bütün subyektlərin mülkiyyət növündən asılı olmayaraq hüquq bərabərliyi.",
+      "B": "Fəaliyyətin təhlükəsizliyinin vahid norma və qaydalar əsasində təmin olunması.",
+      "C": "Xidmət qiymətlərinin mərkəzləşdirilmiş şəkildə dövlət tərəfindən müəyyən edilməsi.",
+      "D": "İstehlakçıların daşıyıcını azad seçməsi."
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 12,
+    "question_text": "\"Avtomobil nəqliyyatı sahəsində fəaliyyətin dövlət tənzimlənməsinin sosial yönümlüyü\" prinsipinin əsas məqsədi nədir?",
+    "options": {
+      "A": "Daşıyıcıların mənfəətinin artırılması.",
+      "B": "İctimai maraqların üstünlüyünün təmin olunması.",
+      "C": "Xarici investisiyaların cəlb edilməsi.",
+      "D": "Rəqabətin məhdudlaşdırılması."
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 13,
+    "question_text": "Avtonəqliyyat vasitələrinin kütlə və qabarit ölçüləri ilə bağlı tələblər əsasən nəyi təmin etmək məqsədi daşıyır?",
+    "options": {
+      "A": "Yalnız daşıyıcıların iqtisadi maraqlarını.",
+      "B": "Vasitələrin istehsalının asanlaşdırılmasını.",
+      "C": "Nəqliyyat vasitələrinin sürətini artırmağı.",
+      "D": "Hərəkətin təhlükəsizliyini, əməyin və ətraf mühitin mühafizəsini."
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 14,
+    "question_text": "Avtonəqliyyat vasitələrinin müxtəlif təyinatlı nəzarət cihazları ilə təchiz edilməsi qaydaları necə müəyyən edilir?",
+    "options": {
+      "A": "Hər daşıyıcının öz daxili qaydaları ilə.",
+      "B": "Azərbaycan Respublikasının müvafiq normativ hüquqi aktları ilə.",
+      "C": "Beynəlxalq standartlarla müəyyən edilir.",
+      "D": "Yalnız istehsalçı firmaların tövsiyələri ilə."
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 15,
+    "question_text": "Ümumi istifadədə olan sərnişin avtonəqliyyat vasitələrinə və dayanacaqlara dair ümumi tələblər hansı sənədlə müəyyən olunur?",
+    "options": {
+      "A": "Azərbaycan Respublikasının Konstitusiyası ilə.",
+      "B": "Dövlət Standartları Komitəsinin əmrnamələri ilə.",
+      "C": "\"Avtomobil nəqliyyatı ilə sərnişin və baqaj daşınması Qaydaları\" ilə.",
+      "D": "Bələdiyyələrin qərarları ilə."
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 16,
+    "question_text": "Avtomobil nəqliyyatının infrastruktur obyektlərinin yerləşdirilməsi və ya yenidən qurulması zamanı aşağıdakılardan hansı nəzərə alınmır?",
+    "options": {
+      "A": "Sərnişin və yük axınının həcmi.",
+      "B": "Nəqliyyat xidmətləri istehlakçılarının tələbatı.",
+      "C": "Müvafiq icra hakimiyyəti orqanının rəyi.",
+      "D": "Yerli əhalinin fərdi nəqliyyat vasitələrinin sayı."
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 17,
+    "question_text": "Avtomobil nəqliyyatının infrastrukturu aşağıdakı tələblərdən hansına cavab verməlidir?",
+    "options": {
+      "A": "Yalnız yol hərəkətinin təhlükəsizliyinə.",
+      "B": "Yalnız ətraf mühitin mühafizəsinə.",
+      "C": "Həm sərnişin və yük daşımalarının yerinə yetirilməsinə, həm də yol təhlükəsizliyinə və ətraf mühitə.",
+      "D": "Yalnız daşıyıcıların iqtisadi səmərəliliyinə."
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 18,
+    "question_text": "Aşağıdakılardan hansı avtomobil nəqliyyatı infrastrukturuna aid obyekt deyil?",
+    "options": {
+      "A": "Avtovağzal (avtostansiya).",
+      "B": "Yanacaqdoldurma məntəqəsi.",
+      "C": "Texniki-təmir stansiyası.",
+      "D": "Sənaye zavodu."
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 19,
+    "question_text": "\"Avtomobil nəqliyyatı xidmətlərinin istehlakçıların tərəfindən daşıyıcının azad seçilməsi\" prinsipi əsasən nəyi ifadə edir?",
+    "options": {
+      "A": "Daşıyıcıların istədiyi qiymət təyin etmə azadlığını.",
+      "B": "İstehlakçıların öz istəyinə uyğun daşıyıcı ilə müqavilə bağlama hüququnu.",
+      "C": "Dövlətin istehlakçı üçün daşıyıcı təyin etməsini.",
+      "D": "Hər daşıyıcının ixtisaslaşdığı marşrutlarda işləməsinə zəmanət verir."
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 20,
+    "question_text": "Avtomobil nəqliyyatı infrastruktur obyektlərinin yerləşdirilməsi qanunvericiliklə nəzərdə tutulmuş qaydada həyata keçirilir və bu prosesdə aşağıdakı orqanlardan hansının rəyi nəzərə alınır?",
+    "options": {
+      "A": "Yalnız yerli özünüidarəetmə orqanının.",
+      "B": "Yalnız Mərkəzi Bankın.",
+      "C": "Müvafiq icra hakimiyyəti orqanının.",
+      "D": "Yalnız Ətraf Mühit Nazirliyinin."
+    },
+    "correct_answer": "C"
+  },
+    {
+    "question_number": 21,
+    "question_text": "Avtovağzalda olması məcburi olan obyektlər sırasına aşağıdakılardan hansı daxildir?",
+    "options": {
+      "A": "İdman zalı.",
+      "B": "75-dən artıq sərnişin tutan gözləmə zalı.",
+      "C": "Mehmanxana.",
+      "D": "Hovuz."
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 22,
+    "question_text": "Avtostansiya ilə avtovağzalı fərqləndirən əsas göstərici nədir?",
+    "options": {
+      "A": "Avtostansiyada bilet kassasının olmaması.",
+      "B": "Avtostansiyada tibbi yardım məntəqəsinin olmaması.",
+      "C": "Gözləmə zalının tutumu (avtostansiyada 75-dək, avtovağzalda 75-dən artıq).",
+      "D": "Avtostansiyada sərnişinlərin minib-düşməsi üçün perronun olmaması."
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 23,
+    "question_text": "Avtovağzalın (avtostansiyanın) fəaliyyət göstərməsi üçün əsas rəsmi sənəd nədir?",
+    "options": {
+      "A": "Vergi ödənişi qeydi.",
+      "B": "Daşıyıcı ilə müqavilə.",
+      "C": "Tikinti layihəsinin təsdiqi.",
+      "D": "Müvafiq icra hakimiyyəti orqanı tərəfindən verilmiş pasport."
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 24,
+    "question_text": "Avtonəqliyyat vasitəsinin dövlət qeydiyyatı ilə bağlı aşağıdakı ifadələrdən hansı doğrudur?",
+    "options": {
+      "A": "Bir avtonəqliyyat vasitəsi eyni vaxtda bir neçə dövlətdə qeydiyyata alına bilər.",
+      "B": "Dövlət qeydiyyatına alınmamış avtonəqliyyat vasitəsindən istifadə etmək qadağandır.",
+      "C": "Qeydiyyat yalnız yük maşınları üçün məcburidir.",
+      "D": "Qeydiyyat ömürlük etibarlıdır və yenilənməsi tələb olunmur."
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 25,
+    "question_text": "Avtomobil nəqliyyatı sahəsində dövlət idarəetməsinin əsas vəzifələrindən biri deyil:",
+    "options": {
+      "A": "Vahid dövlət siyasətinin həyata keçirilməsi.",
+      "B": "Normativ tələblərə riayət olunmasına nəzarət.",
+      "C": "Fərdi daşıyıcılar üçün avtomobil almağa maddi yardım göstərilməsi.",
+      "D": "Texnoloji və ekoloji təhlükəsizliyin təmin olunması."
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 26,
+    "question_text": "Dövlət tənzimlənməsinin vəzifələrindən biri \"azad rəqabət mühitinin inkişaf etdirilməsi\" ilə yanaşı, onun əksinə olan hərəkət nədir?",
+    "options": {
+      "A": "İnhisarçılığın qarşısının alınması.",
+      "B": "Sahibkarlığın stimullaşdırılması.",
+      "C": "Xidmətlərin ixracının stimullaşdırılması.",
+      "D": "Daşıyıcıların rəqabət qabiliyyətinin artırılması."
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 27,
+    "question_text": "Avtovağzalın (avtostansiyanın) göstərdiyi xidmətlərin səviyyəsi pasportda qeyd olunandan aşağı olduqda, müvafiq icra hakimiyyəti orqanı nə edə bilər?",
+    "options": {
+      "A": "Cəmi anbarını müsadirə edə bilər.",
+      "B": "Bütün işçiləri işdən çıxara bilər.",
+      "C": "Avtovağzalı dərhal bağlaya bilər.",
+      "D": "Pasportun qüvvəsini dayandıra və ya kateqoriyanı aşağı sala bilər."
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 28,
+    "question_text": "Aşağıdakılardan hansı avtomobil nəqliyyatı sahəsində dövlət tənzimlənməsinin vəzifələrindən biridir?",
+    "options": {
+      "A": "Bütün daşıyıcılar üçün vahid tariflər müəyyən etmək.",
+      "B": "Avtomobil nəqliyyatı xidmətlərinin ixracının stimullaşdırılması.",
+      "C": "Şəhərlər arası daşımaları məhdudlaşdırmaq.",
+      "D": "Fərdi sahibkarların yük daşımasını qadağan etmək."
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 29,
+    "question_text": "Avtovağzalda göstərilən xidmətlər sırasına aşağıdakilərdən hansı daxil deyil?",
+    "options": {
+      "A": "Gediş sənədlərinin (biletlərin) satışı.",
+      "B": "Sərnişin avtonəqliyyat vasitələrinin gəlmə və yola düşməsinin idarə olunması.",
+      "C": "Sürücülər üçün pulsuz yemək xidməti.",
+      "D": "Sərnişin və baqaj daşınması qaydalarına riayət olunmasına nəzarət."
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 30,
+    "question_text": "Avtomobil nəqliyyatı xidmətlərinin tarifləri necə müəyyən edilir?",
+    "options": {
+      "A": "Hər daşıyıcı tərəfindən sərbəst şəkildə müəyyən edilir.",
+      "B": "Azərbaycan Respublikasının normativ hüquqi aktları ilə nəzərdə tutulmuş qaydada.",
+      "C": "Yalnız bazar qanunları əsasında formalaşır.",
+      "D": "Beynəlxalq daşımalar üçün xarici valyutada müəyyən edilir."
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 31,
+    "question_text": "Ümumi istifadədə olan avtomobil nəqliyyatı ilə daşınma tarifləri üçün nə müəyyən edilir?",
+    "options": {
+      "A": "Yuxarı həddi.",
+      "B": "Yalnız aşağı həddi.",
+      "C": "Həm aşağı, həm də yuxarı həddi.",
+      "D": "Heç bir hədd müəyyən edilmir."
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 32,
+    "question_text": "Lisenziyalaşdırmanın əsas məqsədlərindən biri deyil:",
+    "options": {
+      "A": "İstehlakçıların qanuni maraqlarının qorunması.",
+      "B": "Daşımaların təhlükəsizliyinin təmin olunması.",
+      "C": "Bütün daşıyıcıların gəlirlərinin bərabərləşdirilməsi.",
+      "D": "İnhisarçılığın qarşısının alınması."
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 33,
+    "question_text": "Aşağıdakı daşıma növlərindən hansı üçün xüsusi razılıq (lisenziya) tələb olunur?",
+    "options": {
+      "A": "Fiziki şəxsin şəxsi avtomobili ilə ailə üzvlərini daşıması.",
+      "B": "Şəhərlərarası (rayonlararası) sərnişin daşımaları.",
+      "C": "Hüquqi şəxsin öz işçilərinin təsərrüfat ehtiyacları üçün daşınması.",
+      "D": "Kənd təsərrüfatı məhsulunun eyni ərazi daxilində daşınması."
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 34,
+    "question_text": "Avtomobil nəqliyyatı ilə beynəlxalq yük daşınması üçün lisenziya alan daşıyıcı üçün aşağıdakılardan hansı doğrudur?",
+    "options": {
+      "A": "Yalnız xarici ölkələrə daşıma apara bilər.",
+      "B": "Ölkədaxili daşımalar üçün ayrıca lisenziya almalıdır.",
+      "C": "Yalnız tranzit yük daşıya bilər.",
+      "D": "Həm beynəlxalq, həm də ölkədaxili yük daşımalarını yerinə yetirə bilər."
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 35,
+    "question_text": "Xüsusi razılıq (lisenziya) olmadan daşıma fəaliyyətinin aparılmasına aşağıdakı hallardan hansında icazə verilir?",
+    "options": {
+      "A": "Şəhərdaxili sərnişin daşımalarında.",
+      "B": "Taksi minik avtomobilləri ilə daşımalarda.",
+      "C": "Hüquqi şəxsin öz işçilərinin təsərrüfat ehtiyacları üçün daşınmasında.",
+      "D": "Beynəlxalq yük daşımalarında."
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 36,
+    "question_text": "Müxtəlif növ daşımalarla məşğul olan daşıyıcı üçün lisenziya necə verilir?",
+    "options": {
+      "A": "Bir lisenziya ilə bütün növ daşımaları aparmaq olar.",
+      "B": "Hər bir daşıma növü üzrə ayrıca xüsusi razılıq (lisenziya) tələb olunur.",
+      "C": "Yalnız ən riskli daşıma növü üçün lisenziya tələb olunur.",
+      "D": "Lisenziya yalnız beynəlxalq daşımalar üçün tələb olunur."
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 37,
+    "question_text": "Lisenziya müvafiq icra hakimiyyəti orqanı tərəfindən nə qədər müddətə verilir?",
+    "options": {
+      "A": "1 il müddətinə.",
+      "B": "3 il müddətinə.",
+      "C": "5 il müddətinə.",
+      "D": "10 il müddətinə."
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 38,
+    "question_text": "Lisenziyalaşdırmanın məqsədlərindən biri \"inhisarçılığın qarşısının alınması\" ilə yanaşı, onunla əlaqəli başqa bir məqsəd nədir?",
+    "options": {
+      "A": "Daşımaların sayının məhdudlaşdırılması.",
+      "B": "Azad rəqabət mühitinin yaradılması.",
+      "C": "Dövlət müəssisələrinin üstünlüyünün təmin edilməsi.",
+      "D": "Xarici daşıyıcıların fəaliyyətinə qadağan qoyulması."
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 39,
+    "question_text": "Aşağıdakı ifadələrdən hansı avtomobil nəqliyyatı xidmətlərinin tarifləri ilə bağlı düzgündür?",
+    "options": {
+      "A": "Tariflər yalnız daşıyıcılar tərəfindən müəyyən edilir.",
+      "B": "Tariflər yalnız beynəlxalq daşımalar üçün nəzərdə tutulub.",
+      "C": "Bütün nəqliyyat növləri üçün tariflər eynidır.",
+      "D": "Ümumi istifadədə olan nəqliyyat üçün tariflərin yuxarı həddi normativ aktlarla müəyyən edilir."
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 40,
+    "question_text": "Lisenziya almaq üçün aşağıdakı şərtlərdən hansı məcburi deyil?",
+    "options": {
+      "A": "Vergi orqanlarında qeydiyyatda olmaq.",
+      "B": "Müəyyən edilmiş tələblərə cavab verən sürücülərlə əmək müqaviləsinin olması.",
+      "C": "Öz mülkiyyətində olan avtomobil qarajına malik olmaq.",
+      "D": "Mülki məsuliyyətin icbari sığortasının olması."
+    },
+    "correct_answer": "C"
+  },
+    {
+    "question_number": 41,
+    "question_text": "Lisenziya kartında aşağıdakı məlumatlardan hansının göstərilməsi məcburi deyil?",
+    "options": {
+      "A": "Avtonəqliyyat vasitəsinin markası və dövlət qeydiyyat nişanı.",
+      "B": "Daşımaların növü.",
+      "C": "Lisenziya kartının nömrəsi və verilmə tarixi.",
+      "D": "Avtonəqliyyat vasitəsinin alınma qiyməti."
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 42,
+    "question_text": "Lisenziya kartının etibarlılıq müddəti ümumiyyətlə nə qədərdir?",
+    "options": {
+      "A": "1 il",
+      "B": "3 il",
+      "C": "5 il",
+      "D": "6 ay"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 43,
+    "question_text": "Avtonəqliyyat vasitəsindən icarə əsasında istifadə edildikdə, lisenziya kartının etibarlılıq müddəti necə müəyyən edilir?",
+    "options": {
+      "A": "Müddəti xidmət müqaviləsində göstərilən istifadə dövrü ilə uyğunlaşdırılır.",
+      "B": "Müddəti normativ qaydalarla müəyyən edilən maksimal dövrə əsaslanır.",
+      "C": "Müddəti nəqliyyat vasitəsinin istismar tələblərinə əsaslanan dövr üzrə müəyyən edilir",
+      "D": "Lisenziyanın qüvvədə olma müddətindən artıq olmamaqla, icarə müqaviləsinin müddəti ilə."
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 44,
+    "question_text": "Əlavə lisenziya kartlarının verilməsi haqqında ərizəyə nə qədər müddətdə baxılır?",
+    "options": {
+      "A": "30 gün müddətində.",
+      "B": "3 gün müddətində.",
+      "C": "10 gün müddətində.",
+      "D": "60 gün müddətində."
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 45,
+    "question_text": "Lisenziya kartı verildikdən sonra avtonəqliyyat vasitəsinin texniki yoxlaması nə qədər tezliklə həyata keçirilir?",
+    "options": {
+      "A": "İldə bir dəfə.",
+      "B": "Rübdə bir dəfə.",
+      "C": "Ayda bir dəfə.",
+      "D": "Hər 6 aydan bir."
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 46,
+    "question_text": "Aşağıdakı hallardan hansında lisenziya kartları daşıyıcıdan geri alınır?",
+    "options": {
+      "A": "Avtonəqliyyat vasitəsi rüblük texniki yoxlamadan keçmədikdə.",
+      "B": "Daşıyıcının ofis ünvanı dəyişdikdə.",
+      "C": "Sürücü işdən çıxdıqda.",
+      "D": "Daşıyıcı vergi ödədikdə."
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 47,
+    "question_text": "Müvafiq icra hakimiyyəti orqanı lisenziya və ya lisenziya kartlarının sayına məhdudiyyət tətbiq etməzdən neçə gün əvvəl ictimayətə məlumat verməlidir?",
+    "options": {
+      "A": "10 gün əvvəl.",
+      "B": "30 gün əvvəl.",
+      "C": "60 gün əvvəl.",
+      "D": "90 gün əvvəl."
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 48,
+    "question_text": "Avtobus dayanacağı kimi hansı infrastruktur obyekti sayılır?",
+    "options": {
+      "A": "Avtomobil nəqliyyatının infrastrukturu",
+      "B": "Texniki baxış və servis xidmətləri üçün nəzərdə tutulan istehsalat sahəsi",
+      "C": "Nəqliyyat vasitələrinin təminat xidmətləri göstərən sahə kimi fəaliyyət göstərən obyekt",
+      "D": "İctimai nəqliyyata yaxın yerləşən, müxtəlif xidmətlər göstərən kompleks obyekt"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 49,
+    "question_text": "Sərnişin özü ilə avtobusda daşıdığı şəxsi əşyalara nə deyilir?",
+    "options": {
+      "A": "Baqaj",
+      "B": "Əl yükü",
+      "C": "Yük",
+      "D": "Sərnişin əşyası"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 50,
+    "question_text": "Avtomobil nəqliyyatı ilə bağlı qaydaları hansı qurum təsdiq edir?",
+    "options": {
+      "A": "Yerli idarəetmə və təşkilati məsələlər üzrə məsul qurum",
+      "B": "Müvafiq icra hakimiyyəti orqanı",
+      "C": "Maliyyə və kredit əməliyyatlarını həyata keçirən təşkilat",
+      "D": "Nəqliyyat vasitələrinin sığortalanması ilə məşğul olan təşkilat"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 51,
+    "question_text": "Bakıdan Gəncəyə sərnişin daşımaq hansı növ daşımadır?",
+    "options": {
+      "A": "Şəhərdaxili",
+      "B": "Kənddaxili",
+      "C": "Beynəlxalq",
+      "D": "Şəhərlərarası"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 52,
+    "question_text": "Avtovağzalda sərnişinlər harada gözləyir?",
+    "options": {
+      "A": "Ticarət mərkəzində",
+      "B": "Ofis otağında",
+      "C": "Gözləmə zalında",
+      "D": "Yolda"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 53,
+    "question_text": "Daşıyıcıların mülki məsuliyyətini sığorta etdirməsi necə adlanır?",
+    "options": {
+      "A": "İsteğe bağlı sığorta",
+      "B": "İcbari sığorta",
+      "C": "Kasko sığortası",
+      "D": "Səhiyyə sığortası"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 54,
+    "question_text": "Avtomobil nəqliyyatı ilə daşınan mal və məhsullara nə deyilir?",
+    "options": {
+      "A": "Baqaj",
+      "B": "Sərnişin",
+      "C": "Əl yükü",
+      "D": "Yük"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 55,
+    "question_text": "Sərnişinləri daşımaq üçün istifadə edən şəxs və ya şirkət kimdir?",
+    "options": {
+      "A": "Sifarişçi",
+      "B": "Daşıyıcı",
+      "C": "Sürücü",
+      "D": "Sərnişin"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 56,
+    "question_text": "Taksi ilə sərnişin daşımalarını hara dayanaraq gözləmək olar?",
+    "options": {
+      "A": "İstənilən yerdə",
+      "B": "Yolun ortasında",
+      "C": "Dayanacaqlarda",
+      "D": "Avtobus dayanacaqlarında"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 57,
+    "question_text": "Taksi xidməti hansı marşrut üzrə həyata keçirilir?",
+    "options": {
+      "A": "Nəqliyyatın müəyyən vaxt və xətt üzrə planlaşdırıldığı marşrutlarda",
+      "B": "Qeyri-müntəzəm marşrut üzrə",
+      "C": "Şəhər daxilində sərnişin daşımaları üçün nəzərdə tutulmuş marşrut",
+      "D": "Şəhərlərarası daşımalar üçün xüsusi təşkil edilmiş marşrut"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 58,
+    "question_text": "Müntəzəm sərnişin daşımalarında daşıyıcılar necə seçilir?",
+    "options": {
+      "A": "Müsabiqə yolu ilə",
+      "B": "Şəxsi razılaşma yolu ilə",
+      "C": "Növbə ilə",
+      "D": "İşə götürmə yolu ilə"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 59,
+    "question_text": "Taksi xidmətinin haqqı necə hesablanır?",
+    "options": {
+      "A": "Pazarlıqla",
+      "B": "Taksometrə görə",
+      "C": "Sabit qiymətlə",
+      "D": "Məsafəyə görə"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 60,
+    "question_text": "Müntəzəm sərnişin daşımalarının marşrut şəbəkəsini kim müəyyən edir?",
+    "options": {
+      "A": "Daşıyıcılar",
+      "B": "Sərnişinlər",
+      "C": "Müvafiq dövlət orqanı",
+      "D": "Bələdiyyə"
+    },
+    "correct_answer": "C"
+  },
+    {
+    "question_number": 61,
+    "question_text": "Taksi xidməti göstərən avtomobildə nə olmalıdır?",
+    "options": {
+      "A": "Yüngül musiqi",
+      "B": "Yoxlanılmış taksometr",
+      "C": "Xüsusi rəng",
+      "D": "Kondisioner"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 62,
+    "question_text": "Müntəzəm beynəlxalq marşrut üçün müqavilə neçə ilə qədər bağlana bilər?",
+    "options": {
+      "A": "5 il",
+      "B": "1 il",
+      "C": "10 il",
+      "D": "3 il"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 63,
+    "question_text": "Taksi daşımalarının xüsusiyyətləri hansı sənədlə müəyyən edilir?",
+    "options": {
+      "A": "Yol hərəkəti qaydaları",
+      "B": "Sərnişin daşınması qaydaları",
+      "C": "Dövlət standartları",
+      "D": "Bələdiyyə qərarları"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 64,
+    "question_text": "Daşıyıcı müqavilə şərtlərini pozduqda sifarişçi nə edə bilər?",
+    "options": {
+      "A": "Cərimələyə bilər",
+      "B": "Müsabiqəni təkrar edə bilər",
+      "C": "İcazəni ləğv edə bilər",
+      "D": "Müqaviləni ləğv edə bilər"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 65,
+    "question_text": "Müntəzəm marşrutla səyahət edən sərnişin nəyi olmalıdır?",
+    "options": {
+      "A": "Yol vərəqəsi",
+      "B": "Bilet",
+      "C": "Pasport",
+      "D": "Sürücü vəsiqəsi"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 66,
+    "question_text": "Yük daşınması zamanı sürücüdə hansı sənəd olmalıdır?",
+    "options": {
+      "A": "Nəqliyyat vasitəsinin istifadəsi üçün tələb olunan sərəncam sənədi",
+      "B": "Əmtəə-nəqliyyat qaiməsi",
+      "C": "Daşınan şəxslərin siyahısını əks etdirən sənəd",
+      "D": "Daşınan yükün sığortalanmasını təsdiq edən sənəd"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 67,
+    "question_text": "Sifarişçi marşrut müəyyən etmədikdə, daşıyıcı yükü necə daşımalıdır?",
+    "options": {
+      "A": "Öz seçdiyi marşrutla",
+      "B": "Ən ucuz marşrutla",
+      "C": "Ən sürətli marşrutla",
+      "D": "Ən qısa marşrutla"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 68,
+    "question_text": "Qeyri-müntəzəm sərnişin daşınması hansı sənədlə rəsmiləşir?",
+    "options": {
+      "A": "Biletlə",
+      "B": "Sərnişin siyahısı ilə",
+      "C": "Yol vərəqəsi ilə",
+      "D": "Baqaj qəbzi ilə"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 69,
+    "question_text": "Baqaj ödənişli daşındıqda sərnişin nə alır?",
+    "options": {
+      "A": "Yol vərəqəsi",
+      "B": "Baqaj qəbzi",
+      "C": "Sərnişin siyahısı",
+      "D": "Bilet"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 70,
+    "question_text": "Daşıyıcı sifarişçiyə nə təqdim etməlidir?",
+    "options": {
+      "A": "Saz vəziyyətdə avtomobil",
+      "B": "Yeni avtomobil",
+      "C": "İcarə müqaviləsi",
+      "D": "Sığorta sənədi"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 71,
+    "question_text": "Uzun marşrutla daşıma etmək lazım olduqda nə etməlidir?",
+    "options": {
+      "A": "Sərnişindən icazə almalı",
+      "B": "Sifarişçi ilə razılaşmalı",
+      "C": "Dərhal daşımağa başlamalı",
+      "D": "Polisdən icazə almalı"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 72,
+    "question_text": "Avtomobilin təqdim olunma vaxtı nə zaman hesablanır?",
+    "options": {
+      "A": "Avtomobil yola düşəndə",
+      "B": "Müqavilə bağlananda",
+      "C": "Sifariş veriləndə",
+      "D": "Avtomobil sifariş yerinə çatanda"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 73,
+    "question_text": "Sifarişçi hansı halda avtomobildən imtina edə bilər?",
+    "options": {
+      "A": "Avtomobilin rəngi bəyənmədikdə",
+      "B": "Avtomobil yararsız olduqda",
+      "C": "Sürücü gənc olduqda",
+      "D": "Avtomobil köhnə model olduqda"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 74,
+    "question_text": "Sərnişin daşımalarında müntəzəm marşrutların qaydası hansı sənədlə müəyyən olunur?",
+    "options": {
+      "A": "Yol Hərəkəti Qaydaları ilə",
+      "B": "Nəqliyyat Nazirliyi əmri ilə",
+      "C": "Mülki Məcəllə ilə",
+      "D": "Sərnişin Daşınması Qaydaları ilə"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 75,
+    "question_text": "Sərnişinlərin icbari sığortası hansı sənədlə tənzimlənir?",
+    "options": {
+      "A": "Mülki Məcəllə ilə",
+      "B": "\"Sərnişinlərin icbari sığortası haqqında\" Qanunla",
+      "C": "Nəqliyyat Nazirliyinin əmri ilə",
+      "D": "Sığorta şirkətlərinin qaydaları ilə"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 76,
+    "question_text": "Daşıyıcılar avtomobillərin texniki vəziyyətini nə vaxt yoxlamalıdır?",
+    "options": {
+      "A": "Hər reysdən əvvəl",
+      "B": "Müntəzəm olaraq müəyyən edilmiş dövrlərdə texniki yoxlama aparmalıdır",
+      "C": "İllik texniki baxış planına əsasən yoxlanış həyata keçirilməlidir",
+      "D": "Avtomobil sıradan çıxan zaman texniki vəziyyəti qiymətləndirilməlidir"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 77,
+    "question_text": "Sürücülər reysdən əvvəl hansı müayinədən keçməlidir?",
+    "options": {
+      "A": "Psixoloji müayinə",
+      "B": "Tibbi müayinə",
+      "C": "Texniki bilik testi",
+      "D": "Uğur imtahanı"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 78,
+    "question_text": "Avtomobil nəqliyyatının təhlükəsizliyinə nəzarət hansı orqan tərəfindən həyata keçirilir?",
+    "options": {
+      "A": "Bələdiyyə orqanları",
+      "B": "Müvafiq icra hakimiyyəti orqanı",
+      "C": "Sığorta şirkətləri",
+      "D": "Həkim komissiyası"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 79,
+    "question_text": "Aşağıdakılardan hansı könüllü sığorta obyekti ola bilər?",
+    "options": {
+      "A": "Sərnişinlərin həyatı və sağlamlığı",
+      "B": "Daşınan yük",
+      "C": "Daşıyıcının məsuliyyəti",
+      "D": "Hamısı"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 80,
+    "question_text": "Avtomobil nəqliyyatı ilə bağlı təhlükəsizlik tədbirləri hansı sahəyə aid deyil?",
+    "options": {
+      "A": "Yol hərəkəti təhlükəsizliyi",
+      "B": "Ətraf mühitin mühafizəsi",
+      "C": "Sığorta tariflərinin müəyyən edilməsi",
+      "D": "Nəqliyyat vasitələrinin texniki vəziyyəti"
+    },
+    "correct_answer": "C"
+  },
+    {
+    "question_number": 81,
+    "question_text": "Avtobus sürücüsünün minimum yaş həddi neçədir?",
+    "options": {
+      "A": "18 yaş",
+      "B": "21 yaş",
+      "C": "25 yaş",
+      "D": "19 yaş"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 82,
+    "question_text": "Taksi sürücüsü üçün tələb olunan minimum təcrübə müddəti nə qədərdir?",
+    "options": {
+      "A": "1 il",
+      "B": "3 il",
+      "C": "2 il",
+      "D": "6 ay"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 83,
+    "question_text": "Sərnişin daşınması müqaviləsinə görə daşıyıcının əsas öhdəliyi nədir?",
+    "options": {
+      "A": "Sərnişinə pulsuz yemək vermək",
+      "B": "Sərnişini və baqajını təyinat yerinə çatdırmaq",
+      "C": "Sərnişinə otel təmin etmək",
+      "D": "Sərnişini evinə qədər aparmaq"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 84,
+    "question_text": "Taksi sürücüsü üçün tələb olunan sürücülük vəsiqəsi kateqoriyası hansıdır?",
+    "options": {
+      "A": "D kateqoriyası",
+      "B": "E kateqoriyası",
+      "C": "C kateqoriyası",
+      "D": "B kateqoriyası"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 85,
+    "question_text": "Müntəzəm marşrutlarda sərnişin daşınması müqaviləsi nə ilə təsdiq olunur?",
+    "options": {
+      "A": "Şifahi razılaşma ilə",
+      "B": "Pasport qeydi ilə",
+      "C": "Yalnız ödəniş qaiməsi ilə",
+      "D": "Bilet və baqaj qəbzi ilə"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 86,
+    "question_text": "Avtobus sürücüsünün minimum təcrübə müddəti neçə ildir?",
+    "options": {
+      "A": "1 il",
+      "B": "3 il",
+      "C": "2 il",
+      "D": "5 il"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 87,
+    "question_text": "Sərnişin daşınması müqaviləsinə görə sərnişinin əsas öhdəliyi nədir?",
+    "options": {
+      "A": "Daşıyıcıya hədiyyə vermək",
+      "B": "Daşınma haqqını ödəmək",
+      "C": "Baqajı özü daşımaq",
+      "D": "Sürücüyə kömək etmək"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 88,
+    "question_text": "Ümumi istifadədə olan nəqliyyat sürücüləri hansı xüsusi hazırlıqdan keçməlidir?",
+    "options": {
+      "A": "Peşə fəaliyyətinə dair xüsusi proqram",
+      "B": "İdman hazırlığı",
+      "C": "Xarici dil kursu",
+      "D": "Kompyuter təlimi"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 89,
+    "question_text": "Taksi sürücüsünün minimum yaş həddi neçədir?",
+    "options": {
+      "A": "21 yaş",
+      "B": "19 yaş",
+      "C": "18 yaş",
+      "D": "20 yaş"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 90,
+    "question_text": "İcarə (fraxtetmə) müqaviləsi əsasında daşıyıcının öhdəliyi nədir?",
+    "options": {
+      "A": "Sərnişin daşımaları zamanı əlavə xidmətlər göstərmək",
+      "B": "Yüklərin daşınması üzrə xüsusi tapşırıqları yerinə yetirmək",
+      "C": "Sürücü təmin etməməklə əlaqədar hər hansı öhdəlik daşımamaq",
+      "D": "Avtonəqliyyat vasitəsini sifarişçiyə təqdim etmək"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 91,
+    "question_text": "İcarə (fraxtetmə) müqaviləsində avtonəqliyyat vasitəsinin haqqını kim ödəyir?",
+    "options": {
+      "A": "Daşıyıcı",
+      "B": "Sifarişçi",
+      "C": "Sürücü",
+      "D": "Sərnişin"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 92,
+    "question_text": "Sərnişin daşınmasının təşkili haqqında müqavilə hansı marşrutlarda tətbiq oluna bilər?",
+    "options": {
+      "A": "Müntəzəm marşrutlar üzrə sərnişin daşımalarını əhatə edən müqavilə",
+      "B": "Qeyri-müntəzəm marşrutlarda daşımaları nəzərdə tutan müqavilə",
+      "C": "Həm müntəzəm, həm də qeyri-müntəzəm marşrutlarda",
+      "D": "Beynəlxalq sərnişin daşımalarını təşkil edən müqavilə"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 93,
+    "question_text": "Sərnişin daşınmasının təşkili haqqında müqavilə əsasında nə bağlana bilər?",
+    "options": {
+      "A": "Yük daşınması müqaviləsi",
+      "B": "Sərnişin daşınması müqaviləsi",
+      "C": "Sığorta müqaviləsi",
+      "D": "İcarə müqaviləsi"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 94,
+    "question_text": "Daşımanın təşkilatçısı sifarişi kimin hesabına yerinə yetirir?",
+    "options": {
+      "A": "Öz hesabına",
+      "B": "Dövlət hesabına",
+      "C": "Sərnişinin hesabına",
+      "D": "Sifarişçinin hesabına"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 95,
+    "question_text": "Sərnişin müntəzəm avtobus marşrutunda neçə yaşına qədər olan uşağı pulsuz apara bilər?",
+    "options": {
+      "A": "3 yaşına qədər",
+      "B": "5 yaşına qədər",
+      "C": "7 yaşına qədər",
+      "D": "10 yaşına qədər"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 96,
+    "question_text": "Sərnişin daşıyıcının təqsiri üzündən vurulmuş zərər üçün nə etmək hüququna malikdir?",
+    "options": {
+      "A": "Kompensasiya almaq",
+      "B": "Sürücüdən üzr istəmək",
+      "C": "Pulsuz səyahət etmək",
+      "D": "Avtomobili dəyişdirmək"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 97,
+    "question_text": "Sərnişin öz təqsiri üzündən daşıyıcıya vurduğu zərər üçün nə etməlidir?",
+    "options": {
+      "A": "Heç nə etməməlidir",
+      "B": "Sığorta şirkətinə müraciət etməlidir",
+      "C": "Yalnız üzr istəməlidir",
+      "D": "Zərərin əvəzini ödəməlidir"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 98,
+    "question_text": "Daşıyıcı sərnişindən nə tələb etmək hüququna malikdir?",
+    "options": {
+      "A": "Əlavə ödəniş etməyi",
+      "B": "Qaydalara riayət etməyi",
+      "C": "Baqajı özü daşımasını",
+      "D": "Sürücüyə kömək etməsini"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 99,
+    "question_text": "Sərnişin baqajın qiymətini necə elan etmək hüququna malikdir?",
+    "options": {
+      "A": "İstədiyi qiymətə",
+      "B": "Daşıyıcının təyin etdiyi qiymətə",
+      "C": "Sığorta dəyərinə",
+      "D": "Real dəyərindən yüksək olmamaqla"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 100,
+    "question_text": "Sərnişin daşıyıcının təyin etdiyi avtomobil daha keyfiyyətsiz olduqda nə edə bilər?",
+    "options": {
+      "A": "Yolunu davam etdirməlidir",
+      "B": "Bileti qaytara və ya pul fərqini ala bilər",
+      "C": "Yalnız şikayət edə bilər",
+      "D": "Sürücü ilə mübahisə edə bilər"
+    },
+    "correct_answer": "B"
+  },
+    {
+    "question_number": 101,
+    "question_text": "Sərnişin gediş zamanı özü ilə aparmaq məcburiyyətində olduğu sənəd hansıdır?",
+    "options": {
+      "A": "Pasport",
+      "B": "Sığorta polisi",
+      "C": "Gediş sənədi (bilet)",
+      "D": "Doğum şəhadətnaməsi"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 102,
+    "question_text": "Sərnişin avtomobilin salonunda hansı yeri tutmaq hüququna malikdir?",
+    "options": {
+      "A": "İstənilən yeri",
+      "B": "Biletdə göstərilmiş və ya boş yeri",
+      "C": "Yalnız sürücü yaxınlığındakı yeri",
+      "D": "Yalnız pəncərə yanı yeri"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 103,
+    "question_text": "Daşıyıcının əsas vəzifələrindən biri nədir?",
+    "options": {
+      "A": "Sərnişinlərə pulsuz yemək vermək",
+      "B": "Sərnişinləri evlərinə qədər aparmaq",
+      "C": "Sərnişinlərə şəxsi sürücü təmin etmək",
+      "D": "Yol hərəkətinin təhlükəsizliyini təmin etmək"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 104,
+    "question_text": "Daşıyıcı sərnişinə nə haqqında məlumat verməlidir?",
+    "options": {
+      "A": "Daşımanın şərtləri və qaydaları haqqında",
+      "B": "Öz şəxsi həyatı haqqında",
+      "C": "Digər sərnişinlər haqqında",
+      "D": "Siyasi xəbərlər haqqında"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 105,
+    "question_text": "Baqaj daşınması zamanı daşıyıcı sərnişinə nə verməlidir?",
+    "options": {
+      "A": "Şəxsi kart",
+      "B": "Baqaj qəbzi",
+      "C": "Sığorta polisi",
+      "D": "Zəmanət sənədi"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 106,
+    "question_text": "Daşıyıcı texniki səbəbdən daşımanı dayandırdıqda nə etməlidir?",
+    "options": {
+      "A": "Sərnişinləri avtomobildə gözlətməlidir",
+      "B": "Sərnişinlərə pul qaytarmalıdır",
+      "C": "Sərnişinləri təyinat yerinə çatdırmalıdır",
+      "D": "Sərnişinləri dayanacaqda buraxmalıdır"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 107,
+    "question_text": "Tələb olunmamış baqaj neçə gündən sonra satıla bilər?",
+    "options": {
+      "A": "15 gün",
+      "B": "30 gün",
+      "C": "60 gün",
+      "D": "90 gün"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 108,
+    "question_text": "Daşıyıcı baqajı kimə təhvil verir?",
+    "options": {
+      "A": "Baqaj qəbzi olan şəxsə",
+      "B": "Sərnişinə birbaşa təqdim edilməlidir",
+      "C": "Baqajın təhvil verilməsi üçün hüquqi əsaslı şəxslərə",
+      "D": "Yaxın qohum və ya tanış şəxsə təqdim edilə bilər"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 109,
+    "question_text": "Daşıyıcı öz təqsiri üzündən zərər vurduqda nə etməlidir?",
+    "options": {
+      "A": "Heç nə etməməlidir",
+      "B": "Zərəri ödəməlidir",
+      "C": "Yalnız üzr istəməlidir",
+      "D": "Sərnişini sığortaya yönləndirməlidir"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 110,
+    "question_text": "Daşıyıcı sərnişinlərin hüquqlarını təmin etməklə yanaşı nəyi təşkil etməlidir?",
+    "options": {
+      "A": "Onlara iş yeri",
+      "B": "Şəxsi sığortanı",
+      "C": "Pulsuz səyahət",
+      "D": "İcbari sığortanı"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 111,
+    "question_text": "Daşıyıcı hansı normlara riayət etməlidir?",
+    "options": {
+      "A": "Texniki göstəricilər və standartlara uyğunluq normlarına",
+      "B": "Əxlaq və davranış qaydalarını əhatə edən normlara",
+      "C": "Maliyyə və iqtisadi tələblərə uyğun normlara",
+      "D": "Ekoloji və sanitar normlara"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 112,
+    "question_text": "Baqajın satışından sonra sərnişin nə edə bilər?",
+    "options": {
+      "A": "Heç nə edə bilməz",
+      "B": "Qaydalarla müəyyən edilmiş hüquqları var",
+      "C": "Yeni baqaj ala bilər",
+      "D": "Daşıyıcıya məhkəmə edə bilər"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 113,
+    "question_text": "Daşıyıcı sərnişini hansı səbəbdən daşımaqdan imtina edə bilər?",
+    "options": {
+      "A": "Sərnişin gənc olduqda",
+      "B": "Sərnişin yaşlı olduqda",
+      "C": "Sərnişin tələbə olduqda",
+      "D": "Sərnişin ictimai asayiş qaydalarını pozduqda"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 114,
+    "question_text": "Yük daşınması müqaviləsinə görə daşıyıcının əsas öhdəliyi nədir?",
+    "options": {
+      "A": "Yükü pulsuz daşımaq",
+      "B": "Yükü anbarda saxlamaq",
+      "C": "Yükü təyinat yerinə çatdırmaq",
+      "D": "Yükü başqa daşıyıcıya tapşırmaq"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 115,
+    "question_text": "Daşıyıcı sərnişini nə vaxt daşıya bilməz?",
+    "options": {
+      "A": "Sərnişin sürətli getdikdə",
+      "B": "Avtomobildə boş yer olmadıqda",
+      "C": "Sərnişin danışmadıqda",
+      "D": "Sərnişin az baqajı olduqda"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 116,
+    "question_text": "Yük daşınması üçün icarə müqaviləsində avtonəqliyyat vasitəsini kim ödəyir?",
+    "options": {
+      "A": "Sifarişçi",
+      "B": "Daşıyıcı",
+      "C": "Sürücü",
+      "D": "Yükgöndərən"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 117,
+    "question_text": "Daşıyıcı sərnişinə nə zaman imtina edə bilər?",
+    "options": {
+      "A": "Sərnişin baqajı az olduqda",
+      "B": "Sərnişin gediş haqqını tam ödəmədikdə",
+      "C": "Sərnişin tez gəldikdə",
+      "D": "Sərnişin uşağı olduqda"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 118,
+    "question_text": "Yük daşınması müqaviləsində daşınma haqqını kim ödəyir?",
+    "options": {
+      "A": "Yükalan",
+      "B": "Sürücü",
+      "C": "Daşıyıcı",
+      "D": "Yükgöndərən"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 119,
+    "question_text": "Daşıyıcı sərnişini hansı halda daşımaqdan imtina edə bilər?",
+    "options": {
+      "A": "Sərnişin sakit olduqda",
+      "B": "Sərnişin qadağan edilmiş əşya apardıqda",
+      "C": "Sərnişin az səyahət etdikdə",
+      "D": "Sərnişin yeni paltar geyindikdə"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 120,
+    "question_text": "Daşıyıcı sərnişinə nə vaxt imtina edə bilər?",
+    "options": {
+      "A": "Sərnişin sürücü ilə razılaşdıqda",
+      "B": "Sərnişin avtomobili bəyənmədikdə",
+      "C": "Sərnişin sürücünün tələblərini yerinə yetirmədikdə",
+      "D": "Sərnişin gediş haqqını artıq ödədikdə"
+    },
+    "correct_answer": "C"
+  },
+    {
+    "question_number": 121,
+    "question_text": "Yük daşınması müqaviləsinin bağlanma qaydası necə müəyyən edilir?",
+    "options": {
+      "A": "Şifahi razılaşma ilə",
+      "B": "Hər kəs öz qaydası ilə",
+      "C": "Yalnız notarial qaydada",
+      "D": "Müvafiq normativ hüquqi aktlarla"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 122,
+    "question_text": "Uzunmüddətli yük daşınması zərurəti yarandıqda hansı müqavilə bağlanır?",
+    "options": {
+      "A": "Yük daşınması müqaviləsi",
+      "B": "Yük daşınmasının təşkili haqqında müqavilə",
+      "C": "İcarə müqaviləsi",
+      "D": "Sığorta müqaviləsi"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 123,
+    "question_text": "Əmtəə-nəqliyyat qaiməsi olmadan nə daşına bilməz?",
+    "options": {
+      "A": "Sərnişin daşımaları üçün tələb olunan sənəd olmadan",
+      "B": "Əmtəə təyinatlı yük",
+      "C": "Baqajın daşınması üçün tələb olunan sənədlər olmadan",
+      "D": "Şəxsi əşyaların daşınması üçün normativ sənəd olmadan"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 124,
+    "question_text": "Əmtəə-nəqliyyat qaiməsində aşağıdakılardan hansının göstərilməsi məcburi deyil?",
+    "options": {
+      "A": "Yük alanın ünvanı",
+      "B": "Yükün çatdırılma yeri",
+      "C": "Yük göndərənin şəxsi mobil telefonu",
+      "D": "Yükün çəkisi"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 125,
+    "question_text": "Yükün düzgün yerləşdirilməsinə və bərkidilməsinə kim nəzarət etməlidir?",
+    "options": {
+      "A": "Yük alan",
+      "B": "Daşıyıcı",
+      "C": "Yük göndərən",
+      "D": "Sürücü"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 126,
+    "question_text": "Beynəlxalq yük daşımalarında hansı nümunəli qaimə istifadə olunur?",
+    "options": {
+      "A": "Daxili nümunəli",
+      "B": "Şərti nümunəli",
+      "C": "Beynəlxalq nümunəli",
+      "D": "Sadələşdirilmiş nümunəli"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 127,
+    "question_text": "Yük göndərən yükün yerləşdirilməsində yol verilmiş pozuntuları nə vaxt aradan qaldırmalıdır?",
+    "options": {
+      "A": "Öz istəyinə görə",
+      "B": "Daşıyıcının göstərişi ilə",
+      "C": "Yük alanın tələbi ilə",
+      "D": "Heç vaxt"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 128,
+    "question_text": "Yük daşınmasının təşkili haqqında müqaviləyə görə yük göndərən nə etməlidir?",
+    "options": {
+      "A": "Yükü müəyyən edilmiş həcmdə təqdim etməlidir",
+      "B": "Yükü pulsuz daşıtmalıdır",
+      "C": "Yükü özü daşımalıdır",
+      "D": "Yükü başqa daşıyıcıya verməlidir"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 129,
+    "question_text": "Əmtəə-nəqliyyat qaiməsini adətən kim tərtib edir?",
+    "options": {
+      "A": "Daşıyıcı",
+      "B": "Yük göndərən",
+      "C": "Yük alan",
+      "D": "Sürücü"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 130,
+    "question_text": "Yükün plomblanması qaydası hansı sənədlə müəyyən edilir?",
+    "options": {
+      "A": "Mülki Məcəllə ilə",
+      "B": "Sığorta Qanunvericiliyi ilə",
+      "C": "Konstitusiya ilə",
+      "D": "Yüklərin Daşınması Qaydaları ilə"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 131,
+    "question_text": "Yük ümumi çəkisi yoxlanılmadan nə vaxt təhvil verilə bilər?",
+    "options": {
+      "A": "Yük alan istədiyi vaxt təhvil almaq istədikdə",
+      "B": "Yük göndərən və alan razılaşdığı zaman",
+      "C": "Çatışmazlıq əlaməti olmadıqda və yükalanın yoxlama vasitəsi olmadıqda",
+      "D": "Daşıyıcı sürəti və təcili vəziyyətə görə təhvil verməli olduqda"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 132,
+    "question_text": "Qarışıq yük daşımaları nə vaxt baş verir?",
+    "options": {
+      "A": "Yalnız bir nəqliyyat vasitəsi ilə daşındıqda",
+      "B": "Ən azı iki nəqliyyat növü istifadə edildikdə",
+      "C": "Yalnız beynəlxalq daşımalarda",
+      "D": "Yük göndərən və yükalan eyni şəhərdə olduqda"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 133,
+    "question_text": "Yükün təhvil alındığını yükalan necə təsdiq edir?",
+    "options": {
+      "A": "Yalnız şifahi razılaşma ilə",
+      "B": "Elektron poçtla",
+      "C": "Telefon zəngi ilə",
+      "D": "Əmtəə-nəqliyyat qaiməsində imza və möhürlə"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 134,
+    "question_text": "Daşıyıcı yükün çəkisindəki fərqə görə nə vaxt məsuliyyət daşımır?",
+    "options": {
+      "A": "Həmişə",
+      "B": "Çəki fərqi təbii azalma normasını keçmirsə",
+      "C": "Yükalan etiraz etmirsə",
+      "D": "Yük göndərən razılaşdıqda"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 135,
+    "question_text": "Qarışıq daşımalar üçün nə tələb olunur?",
+    "options": {
+      "A": "Yalnız şifahi razılaşma",
+      "B": "Vahid nəqliyyat sənədi",
+      "C": "Çoxlu daşıyıcılar",
+      "D": "Xüsusi icazə"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 136,
+    "question_text": "Qeyri-əmtəə təyinatlı yük üçün daşıyıcı nə vaxt təhvil verməkdən azad oluna bilər?",
+    "options": {
+      "A": "Həmişə",
+      "B": "Yük göndərən ödəniş etdikdə",
+      "C": "Yalnız yükalan razılaşdıqda",
+      "D": "Beynəlxalq daşımalar istisna olmaqla"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 137,
+    "question_text": "Qarışıq daşımalar zamanı daşıyıcılar nə etməlidir?",
+    "options": {
+      "A": "Heç nə etməməlidir",
+      "B": "Digər daşıyıcılarla müqavilə bağlamalıdır",
+      "C": "Yükü geri qaytarmalıdır",
+      "D": "Əlavə ödəniş tələb etməlidir"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 138,
+    "question_text": "Yükalan yükü almaqdan nə vaxt imtina edə bilər?",
+    "options": {
+      "A": "Yük gecikdikdə",
+      "B": "Yük xarab olub istifadə oluna bilmədikdə",
+      "C": "Yükün qiyməti baha olduqda",
+      "D": "Daşıyıcı razılaşdıqda"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 139,
+    "question_text": "Yükalan yükü almaqdan imtina etdikdə nə etməlidir?",
+    "options": {
+      "A": "Şifahi məlumat verməlidir",
+      "B": "Heç nə etməməlidir",
+      "C": "Yalnız telefonla məlumat verməlidir",
+      "D": "Əmtəə-nəqliyyat qaiməsində qeyd etməlidir"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 140,
+    "question_text": "Yükalan yükü rədd etdikdə daşıyıcı nə etməlidir?",
+    "options": {
+      "A": "Yükü atmalıdır",
+      "B": "Yük göndərənin yazılı göstərişlərini almalıdır",
+      "C": "Dərhal yükü geri qaytarmalıdır",
+      "D": "Yükü satmalıdır"
+    },
+    "correct_answer": "B"
+  },
+    {
+    "question_number": 141,
+    "question_text": "Avtonəqliyyat vasitəsinin yükləmə müddəti nə vaxtdan hesablanır?",
+    "options": {
+      "A": "Vasitə yükləmə üçün verildiyi vaxtdan",
+      "B": "Yük hazır olduqda",
+      "C": "Müqavilə bağlandıqda",
+      "D": "Yükalan sifariş verdikdə"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 142,
+    "question_text": "Yükün boşaldılması nə vaxt başa çatmış sayılır?",
+    "options": {
+      "A": "Yük yerə qoyulub fiziki olaraq təhvil verildikdə",
+      "B": "Yük alan yükü vizual olaraq təsdiqlədikdə",
+      "C": "Bütün zəruri sənədlər sürücüyə təqdim edildikdə",
+      "D": "Sürücü vəzifəsini bitirib hərəkət etməyə hazır olduqda"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 143,
+    "question_text": "Yükalanın imtinası zamanı əlavə xərcləri kim ödəyir?",
+    "options": {
+      "A": "Yükalan",
+      "B": "Yük göndərən",
+      "C": "Daşıyıcı",
+      "D": "Sürücü"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 144,
+    "question_text": "Avtonəqliyyat vasitəsinin boşaldılma müddəti nə vaxtdan hesablanır?",
+    "options": {
+      "A": "Vasitə boşaldılma yerinə gəldikdə",
+      "B": "Yükalan yükü qəbul etdikdə",
+      "C": "Yük yerə endirildikdə",
+      "D": "Əmtəə-nəqliyyat qaiməsi yük alana təqdim edildikdə"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 145,
+    "question_text": "Yükləmə və boşaldılma vaxtları haqqında məlumat harada qeyd olunur?",
+    "options": {
+      "A": "Ayrıca vərəqdə",
+      "B": "Müqavilədə",
+      "C": "Əmtəə-nəqliyyat qaiməsində",
+      "D": "Sürücünün jurnalında"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 146,
+    "question_text": "Təhlükəli yüklərin daşınması zamanı yükgöndərən nə etməlidir?",
+    "options": {
+      "A": "Yük alanı daşınma zamanı mümkün risklər barədə məlumatlandırmalıdır",
+      "B": "Əmtəə-nəqliyyat qaiməsində təhlükəli yük barədə məlumatları göstərməlidir",
+      "C": "Yüklə bağlı hüquqi icazələri polis və ya müvafiq orqandan almalıdır",
+      "D": "Daşımaya uyğun xüsusi nəqliyyat vasitəsini təmin etməlidir"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 147,
+    "question_text": "Təhlükəli yüklərin daşınması qaydası necə müəyyən edilir?",
+    "options": {
+      "A": "Daşıyıcının müstəqil qərarı ilə müəyyən edilə bilər",
+      "B": "Beynəlxalq daşımalar üçün razılaşmalar və müqavilələr əsasında müəyyən olunur",
+      "C": "Azərbaycan Respublikası normativ hüquqi aktların tələblərinə uyğun",
+      "D": "Yük göndərən və yük alan tərəflərin razılaşmasına əsasən tənzimlənir"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 148,
+    "question_text": "İriqabaritli və ağırçəkili yüklər hansı marşrutla daşınmalıdır?",
+    "options": {
+      "A": "Müxtəlif marşrutlar üzrə sərbəst şəkildə daşına bilər",
+      "B": "Əvvəlcədən təyin edilmiş xüsusi marşrutla",
+      "C": "Daşımalar yalnız ən qısa marşrut üzrə həyata keçirilir",
+      "D": "Yüklər yalnız dəmir yolu xətti üzrə daşına bilər"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 149,
+    "question_text": "Məhdud miqdarda təhlükəli yüklərin daşınması ilə bağlı aşağıdakılardan hansı doğrudur?",
+    "options": {
+      "A": "Xüsusi icazə tələb olunur",
+      "B": "Yalnız qeyri-şəhər ərazisində daşınmasına icazə verilir",
+      "C": "Müəyyən şərtlər daxilində təhlükəsiz yük kimi daşına bilər",
+      "D": "Yalnız dövlət müəssisələri tərəfindən daşınmasına icazə verilir"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 150,
+    "question_text": "İriqabaritli və ağırçəkili avtonəqliyyat vasitələrinin hərəkət etməsinə görə ödənişlərin dərəcələrini kim müəyyən edir?",
+    "options": {
+      "A": "Müvafiq icra hakimiyyəti orqanı",
+      "B": "Daşıyıcı tərəfindən tətbiq olunan tariflər əsasında",
+      "C": "Yük göndərən tərəfindən təklif olunan ödənişlər əsasında",
+      "D": "Yol polisi tərəfindən müəyyən edilən ödənişlər əsasında"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 151,
+    "question_text": "Təhlükəli yüklərin daşınması zamanı yükün qablaşdırılması və nişanlanması ilə bağlı aşağıdakılardan hansı doğrudur?",
+    "options": {
+      "A": "Müvafiq tələblərə əməl edilməlidir",
+      "B": "Xüsusi qablaşdırma və nişanlanma tələbləri mövcud deyil",
+      "C": "Tələblər yalnız beynəlxalq daşımalar zamanı tətbiq olunur",
+      "D": "Tələblər yalnız radioaktiv materialların daşınmasında tətbiq olunur"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 152,
+    "question_text": "İriqabaritli və ağırçəkili yüklərin daşınmasına icazə verən orqan hansıdır?",
+    "options": {
+      "A": "Bələdiyyə tərəfindən müəyyən edilən icazələr əsasında",
+      "B": "Müvafiq icra hakimiyyəti orqanı",
+      "C": "Yol Polisi tərəfindən verilən icazələr əsasında",
+      "D": "Fövqəladə Hallar Nazirliyi tərəfindən təsdiqlənən icazələr əsasında"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 153,
+    "question_text": "Təhlükəli yüklərin daşınması ilə məşğul olan hüquqi şəxslər nə etməlidir?",
+    "options": {
+      "A": "Heç bir icazə almaq lazım deyil",
+      "B": "Xüsusi razılıq (lisenziya) almalıdırlar",
+      "C": "Yalnız vergi qeydiyyatından keçməlidirlər",
+      "D": "Yalnız Dövlət Yol Polisi ilə razılaşmalıdırlar"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 154,
+    "question_text": "Beynəlxalq daşımalar hansı əsaslarla yerinə yetirilir?",
+    "options": {
+      "A": "Azərbaycan Respublikasının qanunvericiliyinə uyğun",
+      "B": "Azərbaycan Respublikasının qanunvericiliyinə və beynəlxalq müqavilələrə uyğun",
+      "C": "Beynəlxalq müqavilələr və razılaşmalara əsaslanaraq həyata keçirilir",
+      "D": "Daşıyıcıların daxili əməliyyat qaydalarına əsasən həyata keçirilir"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 155,
+    "question_text": "Xarici avtomobil daşıyıcılar Azərbaycan ərazisində nə edə bilməz?",
+    "options": {
+      "A": "Beynəlxalq daşımalar",
+      "B": "Sərnişin daşımaları",
+      "C": "Tranzit daşımalar",
+      "D": "Ölkədaxili daşımalar"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 156,
+    "question_text": "İcazə sistemi tətbiq edilən dövlətlərə daşımalar nə əsasında yerinə yetirilir?",
+    "options": {
+      "A": "Şifahi razılaşma əsasında",
+      "B": "\"İcazə\" blankları əsasında",
+      "C": "Elektron qeyd əsasında",
+      "D": "Vergi ödənişi əsasında"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 157,
+    "question_text": "Müqavilə öhdəliklərinin yerinə yetirilməməsinə görə məsuliyyət necə müəyyən edilir?",
+    "options": {
+      "A": "Müqavilə ilə",
+      "B": "Beynəlxalq qaydalarla",
+      "C": "Qanunvericiliklə və müqavilə ilə",
+      "D": "Məhkəmə qərarı ilə"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 158,
+    "question_text": "Beynəlxalq müqavilələrin şərtlərinin yerinə yetirilməsini kim təmin edir?",
+    "options": {
+      "A": "Daşıyıcılar",
+      "B": "Sığorta şirkətləri",
+      "C": "Xarici dövlət orqanları",
+      "D": "Müvafiq icra hakimiyyəti orqanı"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 159,
+    "question_text": "Məsuliyyətin məhdudlaşdırılması barədə tərəflərin razılaşması nə vaxt etibarsızdır?",
+    "options": {
+      "A": "Qanunvericiliklə nəzərdə tutulmuş hallar istisna olmaqla",
+      "B": "Həmişə etibarsızdır",
+      "C": "Beynəlxalq daşımalarda",
+      "D": "Yük daşımalarında"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 160,
+    "question_text": "Beynəlxalq daşımaların təşkilində əsas hüquqi baza nədir?",
+    "options": {
+      "A": "Xarici dövlətlərin qanunvericiliyi",
+      "B": "Avropa İttifaqının qaydaları",
+      "C": "Daşıyıcıların daxili normaları",
+      "D": "Azərbaycan qanunvericiliyi və beynəlxalq müqavilələr"
+    },
+    "correct_answer": "D"
+  },
+    {
+    "question_number": 161,
+    "question_text": "Tranzit daşımalar hansı kateqoriyaya aiddir?",
+    "options": {
+      "A": "Ölkədaxili daşımalar",
+      "B": "Beynəlxalq daşımalar",
+      "C": "Şəhərdaxili daşımalar",
+      "D": "Xüsusi daşımalar"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 162,
+    "question_text": "Məsuliyyətin məhdudlaşdırılması barədə razılaşma nə vaxt qüvvədədir?",
+    "options": {
+      "A": "Hər vəziyyətdə avtomatik olaraq tətbiq olunur",
+      "B": "Heç bir şəraitdə qüvvəyə minmir",
+      "C": "Qanunvericiliklə nəzərdə tutulmuş hallarda",
+      "D": "Sərnişin daşımaları zamanı spesifik hallarda tətbiq olunur"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 163,
+    "question_text": "Beynəlxalq daşımaların təşkili zamanı əsas hüquqi mənbə nədir?",
+    "options": {
+      "A": "Qanunvericilik və beynəlxalq müqavilələr",
+      "B": "Müqavilələr",
+      "C": "Daxili qaydalar",
+      "D": "Məhkəmə qərarları"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 164,
+    "question_text": "Daşıyıcı avtomobili yükləmək üçün vaxtında təqdim etmədikdə nə baş verir?",
+    "options": {
+      "A": "Heç bir məsuliyyət daşımır",
+      "B": "Qanunvericiliklə müəyyən edilmiş məsuliyyət daşıyır",
+      "C": "İnzibati cərimə ödəyir",
+      "D": "Müqavilə cəriməsi ödəyir"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 165,
+    "question_text": "Daşıyıcı yük və ya baqajın itirilməsinə görə nə vaxt məsuliyyət daşımır?",
+    "options": {
+      "A": "Həmişə məsuliyyət daşıyır",
+      "B": "Yükalan gecikdikdə",
+      "C": "Yük göndərən səhv etdikdə",
+      "D": "Zərərin öz təqsiri olmadan baş verdiyini sübut etdikdə"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 166,
+    "question_text": "Qiyməti elan edilmiş yük itirildikdə daşıyıcı hansı məbləğdə zərəri ödəyir?",
+    "options": {
+      "A": "Həqiqi dəyəri qədər",
+      "B": "Elan olunmuş qiyməti qədər",
+      "C": "Orta bazar qiyməti qədər",
+      "D": "Sığorta məbləği qədər"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 167,
+    "question_text": "Yük müşayiət edən sənədlərin düzgünlüyünü yoxlamaq kimin vəzifəsidir?",
+    "options": {
+      "A": "Daşıyıcının",
+      "B": "Yükalanın",
+      "C": "Yükgöndərənin",
+      "D": "Gömrük orqanlarının"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 168,
+    "question_text": "Daşıyıcı yük zədələndikdə hansı halda tam dəyəri ödəyir?",
+    "options": {
+      "A": "Həmişə tam dəyəri ödəyir",
+      "B": "Sığorta şirkəti ödədikdə",
+      "C": "Yükalan tələb etdikdə",
+      "D": "Zədələnmiş yükü bərpa etmək mümkün olmadıqda"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 169,
+    "question_text": "Qeyri-əmtəə təyinatlı yüklərin qəbulu necə rəsmiləşir?",
+    "options": {
+      "A": "Ölçmə aktı və ya çəkmə aktı ilə",
+      "B": "Şifahi razılaşma ilə",
+      "C": "Elektron qeyd ilə",
+      "D": "Müqavilə ilə"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 170,
+    "question_text": "Daşıyıcı məsuliyyətdən nə vaxt azad olunur?",
+    "options": {
+      "A": "Həmişə məsuliyyət daşıyır",
+      "B": "Qarşıdurulan qüvvə təsir etdikdə",
+      "C": "Yük göndərən gecikdikdə",
+      "D": "Yükalan razılaşdıqda"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 171,
+    "question_text": "Yük müşayiət edən sənədlər itirildikdə məsuliyyət kimə aiddir?",
+    "options": {
+      "A": "Yükgöndərənə",
+      "B": "Daşıyıcıya",
+      "C": "Yük alana",
+      "D": "Sürücüyə"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 172,
+    "question_text": "Daşıyıcı elan olunmuş qiymətdən az ödəmək üçün nə etməlidir?",
+    "options": {
+      "A": "Ödənişi qəbul etməyərək heç bir tədbir görməməlidir",
+      "B": "Mübahisəni həll etmək üçün məhkəməyə müraciət etməlidir",
+      "C": "Həqiqi dəyərin elan olunmuş qiymətdən aşağı olduğunu sübut etməlidir",
+      "D": "Qiymətin düzgünlüyünü müəyyən etmək üçün ekspertiza sifariş etməlidir"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 173,
+    "question_text": "Qeyri-əmtəə yüklərin daşınması qaydası hansı sənədlə müəyyən edilir?",
+    "options": {
+      "A": "Mülki Məcəllə ilə",
+      "B": "Konstitusiya ilə",
+      "C": "Yüklərin Daşınması Qaydaları ilə",
+      "D": "Beynəlxalq müqavilələrlə"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 174,
+    "question_text": "Yük göndərən yükü nə vaxta qədər hazırlamalıdır?",
+    "options": {
+      "A": "Yükalan gələnədək",
+      "B": "Ödəniş edilənədək",
+      "C": "Müqavilə bağlananadək",
+      "D": "Avtonəqliyyat vasitəsi təqdim edilənədək"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 175,
+    "question_text": "Yük göndərən yükün qiymətini necə elan edə bilər?",
+    "options": {
+      "A": "İstənilən qiymətə",
+      "B": "Öz istəyinə görə",
+      "C": "Bazar qiymətindən aşağı",
+      "D": "Həqiqi dəyərindən artıq olmayan məbləğdə"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 176,
+    "question_text": "Yük daşınma üçün nə vaxt qəbul edilmiş sayılır?",
+    "options": {
+      "A": "Yük fiziki olaraq avtomobilə yüklənəndə",
+      "B": "Daşıma haqqı ödəndikdə",
+      "C": "Yük alan şəxs yükü qəbul etdikdə",
+      "D": "Sürücü tərəfindən əmtəə-nəqliyyat qaiməsi imzalanıb verildikdə"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 177,
+    "question_text": "Yük göndərən nə vaxt daşıyıcıya zərər ödəməlidir?",
+    "options": {
+      "A": "Qayda və müqavilə pozulduqda",
+      "B": "Həmişə",
+      "C": "Yük gecikdikdə",
+      "D": "Yük zədələndikdə"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 178,
+    "question_text": "Daşıyıcı yükü qəbul edərkən nəyi yoxlamalıdır?",
+    "options": {
+      "A": "Yükün mənşəyini",
+      "B": "Qablaşdırmanı və xarici görünüşü",
+      "C": "Yükün sahibini",
+      "D": "Yükün keyfiyyətini"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 179,
+    "question_text": "Yükün həqiqi dəyəri necə müəyyən edilir?",
+    "options": {
+      "A": "Ekspert yoxlaması ilə",
+      "B": "Bazar qiymətinə görə",
+      "C": "Daşınma müqaviləsində göstərilmiş qiymətə əsasən",
+      "D": "Daşıyıcının təxmininə görə"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 180,
+    "question_text": "Yükləmə işini adətən kim həyata keçirir?",
+    "options": {
+      "A": "Daşıyıcı",
+      "B": "Yükgöndərən",
+      "C": "Yükalan",
+      "D": "Sürücü"
+    },
+    "correct_answer": "B"
+  },
+    {
+    "question_number": 181,
+    "question_text": "Sistem və konteynerlərdə olan yüklərin ümumi çəkisi harada göstərilir?",
+    "options": {
+      "A": "Müqavilədə",
+      "B": "Sifarişdə",
+      "C": "Ayrıca aktda",
+      "D": "Əmtəə-nəqliyyat qaiməsində"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 182,
+    "question_text": "Müxtəlif növ yüklərin daşınma üçün hazırlanması qaydası necə müəyyən edilir?",
+    "options": {
+      "A": "Daşıyıcının qaydaları ilə",
+      "B": "Yüklərin Daşınması Qaydaları ilə",
+      "C": "Yük göndərənin istəyinə görə",
+      "D": "Beynəlxalq standartlarla"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 183,
+    "question_text": "Avtobusun yola düşməsinin gecikməsinə görə daşıyıcı nə vaxt məsuliyyət daşımır?",
+    "options": {
+      "A": "Qarşıdurulan qüvvənin təsiri nəticəsində baş verdikdə",
+      "B": "Gecikmənin yaranma səbəbləri daşıyıcıdan asılı olmadıqda",
+      "C": "Marşrutun icrasında dəyişikliklər öncədən nəzərdə tutulmadıqda",
+      "D": "Yol hərəkəti prosesində gözlənilməz maneələr meydana çıxdıqda"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 184,
+    "question_text": "Sərnişin gecikmə səbəbi ilə daşımandan imtina etdikdə daşıyıcı nə etməlidir?",
+    "options": {
+      "A": "Sərnişinə əvvəlcədən məlumat verildiyi halda xidmət göstərməməlidir",
+      "B": "Daşınma haqqını tam qaytarmalıdır",
+      "C": "Ödənişin bir hissəsini geri qaytarmaqla məbləği tənzimləməlidir",
+      "D": "Geri qaytarılan məbləğdən əlavə rüsum tutulmasını tələb etməlidir"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 185,
+    "question_text": "Sərnişinin sağlamlığına vurulmuş zərərə görə daşıyıcı nə vaxt məsuliyyət daşımır?",
+    "options": {
+      "A": "Zərər baş versə də təhlükəsizlik tədbirləri tam təmin olunduqda",
+      "B": "Hava və yol şəraiti gözlənilmədən dəyişdikdə",
+      "C": "Zərərçəkənin təqsiri nəticəsində baş verdikdə",
+      "D": "Sərnişinin səhhətində mövcud fərdi risklər nəzərə çarpdıqda"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 186,
+    "question_text": "Gecikməyə görə dəbbə pulu necə müəyyən edilir?",
+    "options": {
+      "A": "Sərnişin və Baqaj Daşınması Qaydaları ilə",
+      "B": "Daşıyıcının tətbiq etdiyi ümumi tarif qaydalarına əsasən",
+      "C": "Sərnişinin tələb etdiyi məbləğ nəzərə alınmaqla",
+      "D": "Müraciət daxil olduqdan sonra aidiyyəti qurumların rəyi nəzərə alınmaqla"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 187,
+    "question_text": "Sərnişinin həyatına vurulmuş zərər üçün daşıyıcı hansı məsuliyyət daşıyır?",
+    "options": {
+      "A": "İnzibati məsuliyyət",
+      "B": "Həbs cəzası",
+      "C": "Heç bir məsuliyyət",
+      "D": "Maddi məsuliyyət"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 188,
+    "question_text": "Həyat və sağlamlığa vurulmuş zərər üçün müqavilədə nə nəzərdə tutula bilər?",
+    "options": {
+      "A": "Məsuliyyətin azaldılması",
+      "B": "Üzr istəmə",
+      "C": "Məsuliyyətin ləğv edilməsi",
+      "D": "Daha yüksək maddi məsuliyyət"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 189,
+    "question_text": "Şəhərdaxili daşımalarda gecikməyə görə daşıyıcı necə məsuliyyət daşıyır?",
+    "options": {
+      "A": "Həmişə dəbbə pulu ödəyir",
+      "B": "50% dəbbə pulu ödəyir",
+      "C": "Bu qayda onlara şamil edilmir",
+      "D": "Sərnişin tələb etdikdə"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 190,
+    "question_text": "Daşıyıcı zərərin qarşıdurulan qüvvə nəticəsində baş verdiyini sübut etdikdə nə baş verir?",
+    "options": {
+      "A": "Həmişə məsuliyyət daşıyır",
+      "B": "Məsuliyyətdən azad olunur",
+      "C": "Yarısını ödəyir",
+      "D": "İnzibati cərimə ödəyir"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 191,
+    "question_text": "Gecikmə halında dəbbə pulu kimə ödənilir?",
+    "options": {
+      "A": "Sərnişinə",
+      "B": "Yük göndərənə",
+      "C": "Dövlət büdcəsinə",
+      "D": "Sığorta şirkətinə"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 192,
+    "question_text": "Sərnişinin sağlamlığına vurulmuş zərərin ödənilməsi qaydası necə müəyyən edilir?",
+    "options": {
+      "A": "Daşıyıcının daxili prosedurlarına əsaslanan ümumi tənzimləmələr çərçivəsində",
+      "B": "Azərbaycan Respublikasının qanunvericiliyinə uyğun",
+      "C": "Sərnişinin müraciətində göstərilən əsaslandırılmış tələblər nəzərə alınmaqla",
+      "D": "Sığorta təşkilatlarının tətbiq etdiyi müvafiq şərtlər və tənzimləmələr əsasında"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 193,
+    "question_text": "Sifarişçi daşıyıcı qarşısında nə vaxt məsuliyyət daşıyır?",
+    "options": {
+      "A": "Müqavilə şərtləri pozulduqda",
+      "B": "Heç vaxt məsuliyyət daşımır",
+      "C": "Yük gecikdikdə",
+      "D": "Yük zədələndikdə"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 194,
+    "question_text": "Yük müşayiət edən sənədlərdə yanlış məlumat olduqda məsuliyyət kimə aiddir?",
+    "options": {
+      "A": "Daşıyıcıya",
+      "B": "Sürücü",
+      "C": "Yükalan",
+      "D": "Yükgöndərənə"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 195,
+    "question_text": "Sifarişçi nə vaxt məsuliyyətdən azad olunur?",
+    "options": {
+      "A": "Həmişə məsuliyyət daşıyır",
+      "B": "Qarşıdurulan qüvvənin təsiri olduqda",
+      "C": "Yük göndərən səhv etdikdə",
+      "D": "Daşıyıcı razılaşdıqda"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 196,
+    "question_text": "Yük daşınması müqavilələrindən irəli gələn iddia müddəti nə qədərdir?",
+    "options": {
+      "A": "6 ay",
+      "B": "1 il",
+      "C": "2 il",
+      "D": "3 il"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 197,
+    "question_text": "Sərnişin daşınması müqavilələrindən irəli gələn iddia müddəti nə qədərdir?",
+    "options": {
+      "A": "6 ay",
+      "B": "3 ay",
+      "C": "1 il",
+      "D": "2 il"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 198,
+    "question_text": "Daşımaların məhdudlaşdırılması sifarişçini necə təsir edir?",
+    "options": {
+      "A": "Məsuliyyəti artırır",
+      "B": "Heç bir təsiri yoxdur",
+      "C": "Məsuliyyətdən azad edir",
+      "D": "Müqaviləni ləğv edir"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 199,
+    "question_text": "Pretenziya vermə qaydası hansı sənədlə müəyyən edilir?",
+    "options": {
+      "A": "Sərnişin və Yük Daşınması Qaydaları ilə",
+      "B": "Mülki hüquqi münasibətləri tənzimləyən ümumi normalara əsasən",
+      "C": "Konstitusiyada göstərilən ümumi hüquqi prinsiplərə uyğun olaraq",
+      "D": "Müvafiq beynəlxalq sənədlərdə nəzərdə tutulan ümumi müddəalara əsasən"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 200,
+    "question_text": "Üçüncü şəxslərə vurulmuş zərərə görə məsuliyyət kimə aiddir?",
+    "options": {
+      "A": "Daşıyıcıya",
+      "B": "Yükgöndərənə",
+      "C": "Yükalan",
+      "D": "Sürücü"
+    },
+    "correct_answer": "B"
+  },
+    {
+    "question_number": 201,
+    "question_text": "Ekspeditor kimin hesabına iş görür?",
+    "options": {
+      "A": "Öz hesabına",
+      "B": "Yük göndərənin hesabına",
+      "C": "Daşıyıcının hesabına",
+      "D": "Yük alanın hesabına"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 202,
+    "question_text": "Ekspeditor daşıyıcıları seçərkən necə davranmalıdır?",
+    "options": {
+      "A": "Öz istəyinə görə",
+      "B": "Ən ucuz seçim etməlidir",
+      "C": "Lazımi vicdanlılıq göstərməlidir",
+      "D": "Tanış daşıyıcıları seçməlidir"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 203,
+    "question_text": "Ekspeditorun muzdu nədən ibarət ola bilər?",
+    "options": {
+      "A": "Sabit məbləğ",
+      "B": "Komisyon haqqı",
+      "C": "Daşıma xərcləri",
+      "D": "Daşıyıcıların muzdlarından faiz"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 204,
+    "question_text": "Ekspeditor daşımanı özü həyata keçirdikdə nə baş verir?",
+    "options": {
+      "A": "Ekspeditor fəaliyyətinin yalnız xidmətlərin əlaqələndirilməsi hissəsini dəyişir",
+      "B": "Müqavilə öhdəliklərinin icrasında fərqli prosedurlar tətbiq olunur",
+      "C": "Yük göndərənin funksiyalarını müəyyən şərtlər daxilində yerinə yetirən tərəfə çevrilir",
+      "D": "Daşıyıcının hüquq və vəzifələrinə malik olur"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 205,
+    "question_text": "Ekspeditor yük göndərənə nə barədə məlumat verməlidir?",
+    "options": {
+      "A": "Öz şəxsi işləri barədə",
+      "B": "Digər müştəriləri barədə",
+      "C": "Qarşıya çıxan bütün çətinliklər barədə",
+      "D": "Daşıyıcıların gəlirləri barədə"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 206,
+    "question_text": "Ekspeditorun hüquqlarına nə daxildir?",
+    "options": {
+      "A": "Yük göndərənin göstərişlərini dəyişdirmək",
+      "B": "Xidmətləri üçün muzd almaq",
+      "C": "Daşıyıcıları hədələmək",
+      "D": "Yükü saxlamaq"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 207,
+    "question_text": "Ekspeditor bir neçə yük göndərənin əşyalarını nə vaxt qruplaşdıra bilər?",
+    "options": {
+      "A": "Heç vaxt",
+      "B": "Aralıq və son təyinat yerləri eyni olduqda",
+      "C": "Yük göndərənlər razılaşdıqda",
+      "D": "Daşıyıcı icazə verdikdə"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 208,
+    "question_text": "Yük göndərən daşıyıcıya aşağıdakılardan hansını mütləq göstərməlidir?",
+    "options": {
+      "A": "Yük alanın ünvanını",
+      "B": "Öz şəxsi gəlir məlumatlarını",
+      "C": "Daşıyıcının vergi nömrəsini",
+      "D": "Yükün istehsalçısının adını"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 209,
+    "question_text": "Sərnişin daşınması müqaviləsi nə vaxt bağlanmış sayılır?",
+    "options": {
+      "A": "Sərnişin səfər barədə düşündüyü zaman",
+      "B": "Sərnişin gediş bileti aldığı anda",
+      "C": "Sərnişin səfərə başladığı gün",
+      "D": "Daşıyıcı sərnişini qəbul etdiyi zaman"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 210,
+    "question_text": "Daşımanın qiyməti necə müəyyən edilir?",
+    "options": {
+      "A": "Tarif qiyməti ilə",
+      "B": "Sərnişin tərəfindən təklif edilir",
+      "C": "Daşıyıcının şəxsi qərarı ilə",
+      "D": "Hökumət orqanları tərəfindən"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 211,
+    "question_text": "Yük göndərən daşıyıcıya yük barədə nəyi dəqiq göstərməlidir?",
+    "options": {
+      "A": "Yükün xarici rəngini",
+      "B": "Yükün alıcısının şəxsi məlumatlarını",
+      "C": "Yükün brutto çəkisini",
+      "D": "Yükün istehsal tarixini"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 212,
+    "question_text": "Sərnişin daşınması müqaviləsinə görə daşıyıcının öhdəliyi nədir?",
+    "options": {
+      "A": "Sərnişinə iş yeri təmin etmək",
+      "B": "Sərnişinə pulsuz yemək vermək",
+      "C": "Sərnişini təyinat yerinə çatdırmaq",
+      "D": "Sərnişinin şəxsi əşyalarını saxlamaq"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 213,
+    "question_text": "Yük göndərən daşıyıcıya çatdırılma yeri barədə nə etməlidir?",
+    "options": {
+      "A": "İşarələrlə göstərməlidir",
+      "B": "Məlumat verməməlidir",
+      "C": "Şifahi şəkildə bildirməlidir",
+      "D": "Dəqiq şəkildə göstərməlidir"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 214,
+    "question_text": "Sərnişin daşınması müqaviləsi nə növ müqaviləyə aiddir?",
+    "options": {
+      "A": "İcarə müqaviləsinə",
+      "B": "Sığorta müqaviləsinə",
+      "C": "Tapşırıq müqaviləsinə",
+      "D": "Satış müqaviləsinə"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 215,
+    "question_text": "Yük göndərənin göstərməli olduğu məlumatlara nə daxildir?",
+    "options": {
+      "A": "Yükün göndərilmə vaxtı",
+      "B": "Yük alanın şəxsi adı",
+      "C": "Yükün ümumi çəkisi",
+      "D": "Yükün göndərilmə vaxtı və nəqliyyat növü"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 216,
+    "question_text": "Sərnişin gedişi başqa şəxsə nə vaxt əvəz edə bilər?",
+    "options": {
+      "A": "Gediş başladıqdan sonra",
+      "B": "Daşıma başlayanadək",
+      "C": "Bilet aldıqdan sonra",
+      "D": "Daşıyıcı icazə verdikdə"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 217,
+    "question_text": "Daşıyıcı başqa şəxsin iştirakına nə vaxt etiraz edə bilər?",
+    "options": {
+      "A": "Başqa şəxsin iştirakına münasibətdə heç bir məhdudiyyət tətbiq etmədikdə",
+      "B": "Sərnişin əlavə şəxsin iştirakını qəbul etmədikdə",
+      "C": "Üçüncü şəxs daşımanın tələblərinə uyğun gəlmədikdə",
+      "D": "Bilet satışı zamanı əlavə məhdudiyyətlər yarananda"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 218,
+    "question_text": "Sərnişin müqaviləni ləğv etdikdə daşıyıcı nə etmək hüququna malikdir?",
+    "options": {
+      "A": "Şərtləşdirilmiş haqqı almaq",
+      "B": "Məhkəməyə müraciət etmək",
+      "C": "Əlavə cərimə tələb etmək",
+      "D": "Ağlabatan kompensasiya tələb etmək"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 219,
+    "question_text": "Kompensasiyanın miqdarı necə müəyyən edilir?",
+    "options": {
+      "A": "Qənaət edilən xərclər və itirilmiş gəlir əsasında",
+      "B": "Daşıyıcı tərəfindən tətbiq edilən özəl qaydalar əsasında",
+      "C": "Sərnişinin ödədiyi tarif və xidmət dəyərinə uyğun olaraq",
+      "D": "Sərnişinin şəxsi gəlir göstəricilərinə əsasən"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 220,
+    "question_text": "Daşıyıcı başqa şəxsin iştirakı ilə bağlı nə tələb edə bilər?",
+    "options": {
+      "A": "İştirak üçün əlavə ödəniş tətbiq etməyi tələb edə bilər",
+      "B": "Yaranan əlavə xərclərin əvəzini",
+      "C": "Sərnişindən əvvəlcədən ödəniş alınmasını tələb edə bilər",
+      "D": "Təhlükəsizlik və məsuliyyət zəmanətini tələb edə bilər"
+    },
+    "correct_answer": "B"
+  },
+    {
+    "question_number": 221,
+    "question_text": "Müqavilədə kompensasiya necə müəyyən edilə bilər?",
+    "options": {
+      "A": "Sabit məbləğlə",
+      "B": "Sərnişinin gəlirinə görə",
+      "C": "Daşıyıcının xərclərinə görə",
+      "D": "Daşımanın dəyərindən faiz dərəcəsi ilə"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 222,
+    "question_text": "Sərnişin müqaviləni ləğv etdikdə daşıyıcı nə itirir?",
+    "options": {
+      "A": "Mövcud və gələcək müştəri bazasını",
+      "B": "Ləğv zamanı əldə edə biləcəyi bütün gəliri",
+      "C": "Şərtləşdirilmiş haqqı almaq hüququnu",
+      "D": "Daşıma fəaliyyəti üçün verilmiş lisenziyanı"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 223,
+    "question_text": "Kompensasiya hesablanarkən nə nəzərə alınır?",
+    "options": {
+      "A": "Qənaət edilən xərclər və mümkün gəlir",
+      "B": "Daşıyıcının şəxsi xərcləri",
+      "C": "Yanacaq xərcləri",
+      "D": "Sərnişinin səyahət məqsədi"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 224,
+    "question_text": "Daşıyıcı başqa şəxsin iştirakına nə üçün etiraz edə bilər?",
+    "options": {
+      "A": "Şəxsi səbəblərə görə",
+      "B": "Qanuni göstərişlər mane olduqda",
+      "C": "Yeni sərnişin gənc olduqda",
+      "D": "Yeni sərnişin yaşlı olduqda"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 225,
+    "question_text": "Müqavilənin ləğvi ilə bağlı kompensasiya hansı əsasla hesablana bilər?",
+    "options": {
+      "A": "Sərnişinin reallaşmayan səyahət müddətinə uyğun olaraq",
+      "B": "Hər nəqliyyat növü üçün müəyyən edilmiş standart faizlə",
+      "C": "Məhkəmənin verdiyi qərara əsaslanaraq",
+      "D": "Daşıyıcının ixtiyarı ilə"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 226,
+    "question_text": "Daşıyıcının məsuliyyətinin azaldılması hansı halda mümkündür?",
+    "options": {
+      "A": "Yük göndərənin bilavasitə təqsiri sübuta yetirildikdə",
+      "B": "Yükün daşınması üçün istifadə olunan nəqliyyat vasitəsinin texniki səbəblərlə işləməməsi",
+      "C": "Yükün təyinat məntəqəsinə çatdırılması zamanı gözlənilməz infrastruktur problemləri",
+      "D": "Yük alanın qeyd-edilən müddətdə yükü təhvil almaması nəticəsində"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 227,
+    "question_text": "Sərnişin daşıma müqaviləsini qüsur əsasında ləğv etdikdə aşağıdakılardan hansı hüquqa malikdir?",
+    "options": {
+      "A": "Müqavilənin ləğvindən sonra baş verən bütün gecikmə xərclərinin ödənilməsini tələb",
+      "B": "Özünü təhlükəyə məruz qoymayacağı ən yaxın yerdə nəqliyyat vasitəsini tərk etmək",
+      "C": "Alternativ daşıyıcı tərəfindən həyata keçiriləcək daşımanın bütün xərclərinin ödənilməsi",
+      "D": "Daşıyıcının lisenziyasının ləğv edilməsi üçün müvafiq orqanlara müraciət etmək"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 228,
+    "question_text": "Yükün itirilməsi halında daşıyıcının məsuliyyəti hansı şərtdə başlayır?",
+    "options": {
+      "A": "Yükün müqavilədə göstərilən çatdırılma tarixindən bir həftə sonra",
+      "B": "Yükün təyinat məntəqəsinə çatdırıla bilməyəcəyi qənaətinə varıldıqda",
+      "C": "Yük göndərənin yükün itirildiyi barədə rəsmi şikayət etdiyi andan",
+      "D": "Yükün daşıyıcı tərəfindən qəbulundan sonra üç ay ərzində çatdırılmaması halında"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 229,
+    "question_text": "Daşıma qüsurunun aradan qaldırılması prosesində sərnişin hansı hüquqlara malikdir?",
+    "options": {
+      "A": "Daşımanın dəyərinin ağlabatan dərəcədə aşağı salınmasını tələb etmək",
+      "B": "Müqaviləni qeyri-müəyyən müddətə təxirə salmaq və ya tamamilə ləğv etmək",
+      "C": "Daşıyıcı tərəfindən bütün gələcək daşımaların pulsuz həyata keçirilməsini tələb etmək",
+      "D": "Daşıyıcının fəaliyyət lisenziyasının ləğvi üçün sifarişçi qarşısında təzyiq göstərmək"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 230,
+    "question_text": "Yük alanın zədələrin bildirmə müddəti ilə bağlı aşağıdakılardan hansı doğrudur?",
+    "options": {
+      "A": "Zədələr yükün təhvil alınmasından sonra 30 gün ərzində aşkar edilməli və bildirilməlidir",
+      "B": "Zədələr aşkar edildikdən sonra dərhal, lakin çatdırılmadan ən geci səkkiz gün ərzində bildiriş verilməlidir",
+      "C": "Zədələrin bildirilməsi üçün yalnız notarial təsdiq edilmiş sənədlər əsas hesab olunur",
+      "D": "Zədələr yalnız yükün tam açılması və yoxlanılması zamanı aşkar edilə bilər"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 231,
+    "question_text": "Daşıyıcının məsuliyyətinin istisnaları sırasına aşağıdakılardan hansı daxil deyil?",
+    "options": {
+      "A": "Yük göndərənin bilavasitə təqsiri nəticəsində yaranmış zədələr",
+      "B": "Daşıyıcının peşəkar fəaliyyəti zamanı gözlənilən adi risklər",
+      "C": "Qarşıdurulan qüvvə halları nəticəsində baş vermiş zədələr",
+      "D": "Yükün təbii xüsusiyyətlərindən irəli gələn dəyişikliklər"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 232,
+    "question_text": "Sərnişin daşıma müqaviləsinin ləğvi ilə bağlı aşağıdakı ifadələrdən hansı yanlışdır?",
+    "options": {
+      "A": "Müqavilənin ləğvi daşıyıcının şərtləşdirilmiş haqqı almaq hüququnu avtomatik olaraq ləğv edir",
+      "B": "Kompensasiya qənaət edilən xərclər və itirilmiş gəlir əsasında hesablanır",
+      "C": "Daşıyıcı ağlabatan kompensasiya tələb etmək hüququna malikdir",
+      "D": "Sərnişin müqaviləni ləğv etdikdə daşıyıcı heç bir kompensasiya tələb edə bilməz"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 233,
+    "question_text": "Daşıyıcıya qarşı iddiaların qaldırılması ilə bağlı aşağıdakı hallardan hansında müddət məhdudiyyətləri tətbiq edilmir?",
+    "options": {
+      "A": "Yükün zahirən görünən zədələri hallarında müəyyən edilmiş bildiriş müddətləri",
+      "B": "Daşıyıcıya qəsd və ya kobud ehtiyyatsızlıq üçün məsuliyyət daşıyırsa",
+      "C": "Yükün qismən itirilməsi hallarında tətbiq olunan ümumi müddətlər",
+      "D": "Çatdırmanın gecikdirilməsi hallarında qüvvədə olan müddətlər"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 234,
+    "question_text": "Daşımanın qüsurla həyata keçirildiyi halda sərnişin üçün ən mühüm şərt aşağıdakılardan hansıdır?",
+    "options": {
+      "A": "Qüsur barədə dərhal daşıyıcıya bildiriş vermək",
+      "B": "Bütün digər sərnişinlərlə birlikdə hərəkət etmək",
+      "C": "Müqaviləni avtomatik olaraq ləğv etmək",
+      "D": "Əlavə ödəniş etmədən alternativ nəqliyyat tələb etmək"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 235,
+    "question_text": "Daşıyıcı yükə girov hüququnu həyata keçirdikdə, yükün çatdırılması hansı şərtlə tələb oluna bilər?",
+    "options": {
+      "A": "Yük göndərənin əlavə zəmanət verməsi halında",
+      "B": "Yük alanın daşıma haqqının qalan hissəsini ödəməsi halında",
+      "C": "Mübahisəli məbləğin məhkəmədə depozitə qoyulması halında",
+      "D": "Daşıyıcı ilə yük alan arasında yeni müqavilə bağlanması halında"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 236,
+    "question_text": "Qaimənin (əmtəə-nəqliyyat qaiməsinin) təsdiq etdiyi hallardan biri deyil:",
+    "options": {
+      "A": "Yük göndərən ilə daşıyıcı arasında müqavilənin olması",
+      "B": "Yükün keyfiyyətinin müqaviləyə uyğun olduğunun təsdiqi",
+      "C": "Daşıyıcının yükə girov hüququnun olması",
+      "D": "Yük alan tərəfindən yükün qəbul edilməsi"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 237,
+    "question_text": "Daşıyıcı yükə girov hüququnu nə vaxt əldə edir?",
+    "options": {
+      "A": "Yükün daşımaya qəbul edildiyi andan etibarən",
+      "B": "Yükün təyinat məntəqəsinə çatdığı vaxtdan etibarən",
+      "C": "Yük göndərənin razılığı və icazəsi əsasında",
+      "D": "Özünə çatan daşıma haqqı və xərclərin kompensasiyası əsasında"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 238,
+    "question_text": "Qaimədə mütləq göstərilməsi tələb olunan məlumatlara aşağıdakılardan hansı daxildir?",
+    "options": {
+      "A": "Yükün sığorta dəyəri və şərtləri",
+      "B": "Yük göndərənin və daşıyıcının adı və ünvanı",
+      "C": "Yükün boşaldılması üçün xüsusi texniki tələblər",
+      "D": "Yükün mənşəyi haqqında məlumat"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 239,
+    "question_text": "Qaimənin üç orijinal nüsxəsi necə paylanır?",
+    "options": {
+      "A": "Bir nüsxəsi yük göndərənə, ikinci nüsxəsi yük alana, üçüncü nüsxəsi daşıyıcıya verilir",
+      "B": "Bir nüsxəsi daşıyıcıda, digər iki nüsxəsi isə yük alana verilir",
+      "C": "Hər üç nüsxə də yük göndərəndə qalır",
+      "D": "Bir nüsxəsi yük göndərənə, ikinci nüsxəsi yüklə birlikdə, üçüncü nüsxəsi daşıyıcıya verilir"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 240,
+    "question_text": "Qaimədəki məlumatların dəqiqliyi və tamlığı üçün məsuliyyət daşıyan şəxs kimdir?",
+    "options": {
+      "A": "Daşıyıcı",
+      "B": "Yük alan",
+      "C": "Yük göndərən",
+      "D": "Sığorta şirkəti"
+    },
+    "correct_answer": "C"
+  },
+    {
+    "question_number": 241,
+    "question_text": "Yük göndərən üçün məsuliyyət daşıdığı qablaşdırma qüsuru növü hansıdır?",
+    "options": {
+      "A": "Bütün növ qablaşdırma qüsurları",
+      "B": "Zahirən görünməyən qablaşdırma qüsurları",
+      "C": "Yalnız daşıyıcı tərəfindən aşkar edilən qüsurlar",
+      "D": "Yük alan tərəfindən bildirilən bütün qüsurlar"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 242,
+    "question_text": "Daşıyıcı yükü daşımaya qəbul edərkən hansı qüsurların nəticələri üçün məsuliyyət daşıyır?",
+    "options": {
+      "A": "Bütün növ qablaşdırma qüsurları üçün",
+      "B": "Heç bir qüsur üçün məsuliyyət daşımır",
+      "C": "Yalnız yük göndərənin bildirdiyi qüsurlar üçün",
+      "D": "Zahirən görünən qüsurlar mövcud olduqda"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question_number": 243,
+    "question_text": "Qaimə ilə bağlı aşağıdakı ifadələrdən hansı doğrudur?",
+    "options": {
+      "A": "Qaimə yalnız yük göndərən və daşıyıcı arasında müqaviləni sübut edir",
+      "B": "Qaimə daşıyıcının yükə girov hüququnu da təsdiq edir",
+      "C": "Qaimə yükün keyfiyyətinə zəmanət verir",
+      "D": "Qaimə yalnız yük alan tərəfindən təsdiq edilir"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 244,
+    "question_text": "Daşıma müqaviləsi əsasən hansı qrupa aid müqavilələrə daxildir?",
+    "options": {
+      "A": "Xidmət göstərilməsi üzrə müqavilələr",
+      "B": "Əmlakın ötürülməsi üzrə müqavilələr",
+      "C": "İnvestisiya müqavilələri",
+      "D": "Təminat müqavilələri"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 245,
+    "question_text": "Azərbaycan Respublikasının nəqliyyat sisteminə aşağıdakılardan hansı daxil deyil?",
+    "options": {
+      "A": "Dəmir yolu nəqliyyatı",
+      "B": "Avtomobil nəqliyyatı",
+      "C": "Metro nəqliyyatı",
+      "D": "Dəniz nəqliyyatı"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_number": 246,
+    "question_text": "Daşıma müqaviləsinin əsas tənzimləmə mənbəyi hesab olunur:",
+    "options": {
+      "A": "Nazirlər Kabinetinin qərarları",
+      "B": "Qanunlar",
+      "C": "Yerli özünüidarəetmə aktları",
+      "D": "Beynəlxalq müqavilələr"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 247,
+    "question_text": "Mülki Məcəllənin XLVI fəslində sərnişin daşınması müqaviləsi hansı maddələrdə nizamlanır?",
+    "options": {
+      "A": "842-849-cu maddələr",
+      "B": "850-861-ci maddələr",
+      "C": "830-841-ci maddələr",
+      "D": "862-870-ci maddələr"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 248,
+    "question_text": "Yük daşımalarının təşkili haqqında müqavilə hansı halda bağlanır?",
+    "options": {
+      "A": "Tək-tük daşımaların həyata keçirilməsi zərurəti yarandıqda",
+      "B": "Müntəzəm daşımaların yerinə yetirilməsi zərurəti yarandıqda",
+      "C": "Təcili yük daşınması tələb olunduqda",
+      "D": "Yalnız beynəlxalq daşımalar aparıldıqda"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_number": 249,
+    "question_text": "Yük daşımalarının təşkili haqqında müqavilə ilə bağlı aşağıdakı ifadələrdən hansı düzgündür?",
+    "options": {
+      "A": "Bu müqavilə çərçivə (haşiyə) müqaviləsidir",
+      "B": "Bu müqavilə konkret yük daşınması müqaviləsini əvəz edir",
+      "C": "Bu müqavilə yalnız dəniz nəqliyyatında tətbiq olunur",
+      "D": "Bu müqavilə yükün daşınması prosesini birbaşa tənzimləyir"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_number": 250,
+    "question_text": "Yük daşımalarının təşkili haqqında müqaviləni bağlayan tərəflər kimlərdir?",
+    "options": {
+      "A": "Daşıyıcı və yük alan",
+      "B": "Yükgöndərən və daşıyıcı",
+      "C": "Yük alan və yük göndərən",
+      "D": "Daşıyıcı və sığorta şirkəti"
+    },
+    "correct_answer": "B"
+  }
+        ]; // Siz buraya suallarınızı əlavə edin
+
+        // Oyun dəyişənləri
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let quizStarted = false;
+        let userName = '';
+        let timerInterval;
+        const totalTime = 40;
+        let timeLeft = totalTime;
+        let isTimerPaused = false;
+        let autoNextTimeout;
+
+        // DOM elementləri
+        const startContainer = document.getElementById('start-container');
+        const quizHeader = document.getElementById('quiz-header');
+        const quizContainer = document.getElementById('quiz-container');
+        const resultContainer = document.getElementById('result-container');
+        const questionElement = document.getElementById('question');
+        const optionsContainer = document.getElementById('options-container');
+        const progressElement = document.getElementById('progress');
+        const questionCounterElement = document.getElementById('question-counter');
+        const timerDisplayElement = document.getElementById('timer-display');
+        const timerBarElement = document.getElementById('timer-bar');
+        const nextBtn = document.getElementById('next-btn');
+        const timerToggleBtn = document.getElementById('timer-toggle-btn');
+        const autoNextMessage = document.getElementById('auto-next-message');
+        const userGreeting = document.getElementById('user-greeting');
+        const progressCircles = document.getElementById('progress-circles');
+        const statsDetails = document.getElementById('stats-details');
+
+        // ====== ƏSAS DƏYİŞİKLİKLƏR ======
+        // 1. Avtomatik giriş sistemi
+        window.onload = function() {
+            // LocalStorage-dən istifadəçi məlumatlarını yoxla
+            const savedUsername = localStorage.getItem('quizUsername');
+            const savedIsLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            
+            if (savedIsLoggedIn && savedUsername) {
+                // Əvvəlki giriş məlumatları var
+                userName = savedUsername;
+                userGreeting.innerHTML = `<strong>${userName}</strong> olaraq giriş etdiniz!`;
+            } else {
+                // Yeni giriş - təsadüfi ad
+                const guestNames = ['Qonaq', 'İstifadəçi', 'Tələbə', 'Tədqiqatçı', 'Biliksevər'];
+                userName = guestNames[Math.floor(Math.random() * guestNames.length)];
+                localStorage.setItem('quizUsername', userName);
+                localStorage.setItem('isLoggedIn', 'true');
+                userGreeting.innerHTML = `<strong>${userName}</strong> olaraq giriş etdiniz!`;
+            }
+            
+            // Particles yarat
+            createParticles();
+            
+            // Progress circles yarat
+            createProgressCircles();
+        };
+
+        // ====== PARTİCLE SİSTEMİ ======
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 20}s`;
+                particle.style.animationDuration = `${15 + Math.random() * 10}s`;
+                particle.style.opacity = Math.random() * 0.5 + 0.3;
+                particle.style.width = particle.style.height = `${Math.random() * 6 + 2}px`;
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // ====== PROGRESS CIRCLES ======
+        function createProgressCircles() {
+            const totalQuestions = allQuestions.length;
+            progressCircles.innerHTML = '';
+            for (let i = 0; i < totalQuestions; i++) {
+                const circle = document.createElement('div');
+                circle.className = 'progress-circle';
+                circle.id = `circle-${i}`;
+                progressCircles.appendChild(circle);
+            }
+        }
+
+        function updateProgressCircles() {
+            const circles = document.querySelectorAll('.progress-circle');
+            circles.forEach((circle, index) => {
+                circle.classList.remove('active');
+                if (index === currentQuestionIndex) {
+                    circle.classList.add('active');
+                }
+                
+                // Əvvəlki cavabları rənglə
+                if (userAnswers[index]) {
+                    if (userAnswers[index].correct) {
+                        circle.classList.add('correct');
+                        circle.classList.remove('incorrect');
+                    } else {
+                        circle.classList.add('incorrect');
+                        circle.classList.remove('correct');
+                    }
+                }
+            });
+        }
+
+        // ====== TIMER FUNCTIONS ======
+        function resetTimer() {
+            stopTimer();
+            timeLeft = totalTime;
+            timerDisplayElement.textContent = `${timeLeft}s`;
+            timerBarElement.style.width = '100%';
+            startTimer();
+        }
+
+        function startTimer() {
+            if (timerInterval) return;
+            isTimerPaused = false;
+            timerToggleBtn.innerHTML = '<i class="fas fa-pause"></i>';
+
+            timerInterval = setInterval(() => {
+                if (!isTimerPaused) {
+                    timeLeft--;
+                    timerDisplayElement.textContent = `${timeLeft}s`;
+                    timerBarElement.style.width = `${(timeLeft / totalTime) * 100}%`;
+
+                    if (timeLeft <= 0) {
+                        handleAnswer(null, allQuestions[currentQuestionIndex].correct_answer, null);
+                    }
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+        
+        function toggleTimer() {
+            if (isTimerPaused) {
+                isTimerPaused = false;
+                timerToggleBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                startTimer();
+            } else {
+                isTimerPaused = true;
+                timerToggleBtn.innerHTML = '<i class="fas fa-play"></i>';
+                stopTimer();
+            }
+        }
+
+        // ====== QUIZ FUNCTIONS ======
+        function loadQuestion(questionIndex) {
+            clearTimeout(autoNextTimeout);
+            autoNextMessage.style.display = 'none';
+            
+            const questions = allQuestions;
+            
+            if (questionIndex >= questions.length) {
+                showResult();
+                return;
+            }
+
+            const currentQuestion = questions[questionIndex];
+            
+            questionElement.innerHTML = `<span style="color: var(--accent-pink);">${currentQuestion.question_number}.</span> ${currentQuestion.question_text}`;
+            progressElement.textContent = `Sual ${questionIndex + 1} / ${questions.length}`;
+            questionCounterElement.textContent = `${questionIndex + 1} / ${questions.length}`;
+
+            optionsContainer.innerHTML = '';
+            nextBtn.style.display = 'none';
+
+            const optionLetters = ['A', 'B', 'C', 'D'];
+            optionLetters.forEach((letter) => {
+                const optionText = currentQuestion.options[letter];
+                if (optionText) {
+                    const button = document.createElement('button');
+                    button.className = 'option-btn';
+                    button.dataset.answer = letter;
+                    button.innerHTML = `<span class="option-letter">${letter}</span> ${optionText}`;
+                    
+                    button.addEventListener('click', () => handleAnswer(letter, currentQuestion.correct_answer, button));
+                    
+                    optionsContainer.appendChild(button);
+                }
+            });
+
+            resetTimer();
+            updateProgressCircles();
+        }
+        
+        function handleAnswer(selectedAnswer, correctAnswer, selectedButton) {
+            stopTimer();
+            
+            Array.from(optionsContainer.children).forEach(btn => {
+                btn.disabled = true;
+            });
+            
+            let isCorrect = selectedAnswer === correctAnswer;
+
+            userAnswers.push({
+                question: allQuestions[currentQuestionIndex].question_number,
+                correct: isCorrect,
+                userAnswer: selectedAnswer
+            });
+
+            // Cavabları rənglə
+            Array.from(optionsContainer.children).forEach(btn => {
+                const letter = btn.dataset.answer;
+                if (letter === correctAnswer) {
+                    btn.classList.add('correct');
+                } else if (letter === selectedAnswer && letter !== correctAnswer) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            // Avtomatik növbəti suala keçid
+            autoNextMessage.textContent = isCorrect ? "✅ Düzgün cavab! Növbəti suala keçir..." : "❌ Yanlış cavab! Növbəti suala keçir...";
+            autoNextMessage.style.display = 'block';
+            autoNextMessage.style.color = isCorrect ? 'var(--accent-green)' : 'var(--accent-pink)';
+            
+            autoNextTimeout = setTimeout(() => {
+                nextQuestion();
+            }, 1500);
+            
+            // Progress circles yenilə
+            updateProgressCircles();
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < allQuestions.length) {
+                loadQuestion(currentQuestionIndex);
+            } else {
+                showResult();
+            }
+        }
+        
+        function showResult() {
+            stopTimer();
+            clearTimeout(autoNextTimeout);
+            quizHeader.style.display = 'none';
+            quizContainer.style.display = 'none';
+            resultContainer.style.display = 'block';
+
+            const correctCount = userAnswers.filter(a => a.correct).length;
+            const totalQuestions = allQuestions.length;
+            const percentage = ((correctCount / totalQuestions) * 100).toFixed(1);
+            
+            // Skor
+            document.getElementById('score').innerHTML = `
+                <div style="font-size: 1.8rem; color: var(--secondary-blue); margin-bottom: 10px;">
+                    ${userName}
+                </div>
+                <div style="font-size: 1.3rem; color: var(--accent-pink); margin-bottom: 15px;">
+                    ${totalQuestions} sualdan ${correctCount} düzgün
+                </div>
+                <div style="font-size: 3rem; color: var(--primary-blue); font-weight: 800;">
+                    ${percentage}%
+                </div>
+            `;
+            
+            // Statistika
+            let statsHTML = `
+                <div style="margin-bottom: 15px;">
+                    <i class="fas fa-check-circle" style="color: var(--accent-green); margin-right: 10px;"></i>
+                    <strong>Düzgün cavablar:</strong> ${correctCount}
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <i class="fas fa-times-circle" style="color: var(--accent-pink); margin-right: 10px;"></i>
+                    <strong>Yanlış cavablar:</strong> ${totalQuestions - correctCount}
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <i class="fas fa-percentage" style="color: var(--primary-blue); margin-right: 10px;"></i>
+                    <strong>Uğur faizi:</strong> ${percentage}%
+                </div>
+            `;
+            
+            if (percentage >= 80) {
+                statsHTML += `
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(6, 214, 160, 0.1); border-radius: 10px; border-left: 4px solid var(--accent-green);">
+                        <i class="fas fa-trophy" style="color: var(--accent-yellow); margin-right: 10px;"></i>
+                        <strong>ƏLA NƏTİCƏ!</strong> Təbriklər!
+                    </div>
+                `;
+            } else if (percentage >= 60) {
+                statsHTML += `
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(67, 97, 238, 0.1); border-radius: 10px; border-left: 4px solid var(--primary-blue);">
+                        <i class="fas fa-star" style="color: var(--accent-yellow); margin-right: 10px;"></i>
+                        <strong>YAXŞI NƏTİCƏ!</strong> Davam edin!
+                    </div>
+                `;
+            }
+            
+            statsDetails.innerHTML = statsHTML;
+        }
+        
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            
+            startContainer.style.display = 'none';
+            quizHeader.style.display = 'grid';
+            quizContainer.style.display = 'block';
+            resultContainer.style.display = 'none';
+            
+            document.getElementById('username-display').textContent = userName;
+            loadQuestion(currentQuestionIndex);
+            createProgressCircles();
+        }
+
+        // ====== EVENT LISTENERS ======
+        document.getElementById('start-btn').addEventListener('click', () => {
+            startContainer.style.display = 'none';
+            quizHeader.style.display = 'grid';
+            quizContainer.style.display = 'block';
+            document.getElementById('username-display').textContent = userName;
+            loadQuestion(currentQuestionIndex);
+        });
+
+        document.getElementById('next-btn').addEventListener('click', nextQuestion);
+        document.getElementById('timer-toggle-btn').addEventListener('click', toggleTimer);
+        document.getElementById('restart-btn').addEventListener('click', restartQuiz);
+
+        // ====== KEYBOARD CONTROLS ======
+        document.addEventListener('keydown', (e) => {
+            if (!quizContainer.style.display || quizContainer.style.display === 'none') return;
+            
+            // 1-4 rəqəmləri ilə cavab seçmək
+            if (e.key >= '1' && e.key <= '4') {
+                const index = parseInt(e.key) - 1;
+                const buttons = document.querySelectorAll('.option-btn');
+                if (buttons[index] && !buttons[index].disabled) {
+                    const answer = buttons[index].dataset.answer;
+                    const correctAnswer = allQuestions[currentQuestionIndex].correct_answer;
+                    buttons[index].click();
+                }
+            }
+            
+            // Space - taymeri dayandır/davam et
+            if (e.key === ' ') {
+                e.preventDefault();
+                toggleTimer();
+            }
+            
+            // Enter - növbəti suala keç
+            if (e.key === 'Enter' && nextBtn.style.display !== 'none') {
+                nextBtn.click();
+            }
+            
+            // N - növbəti suala keç
+            if (e.key === 'n' || e.key === 'N') {
+                if (nextBtn.style.display !== 'none') {
+                    nextBtn.click();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

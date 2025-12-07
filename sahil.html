@@ -1,0 +1,3610 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Quiz Game</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+        /* Daha parlaq rənglər və Glass Effect Dizayn - MOBİL UYUMLU */
+        :root {
+            --primary-blue: #4361ee;
+            --secondary-blue: #3a0ca3;
+            --accent-pink: #f72585;
+            --accent-yellow: #ffd166;
+            --accent-green: #06d6a0;
+            --accent-purple: #7209b7;
+            --light-bg: #f8f9ff;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --shadow-color: rgba(67, 97, 238, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 25%, #7209b7 50%, #f72585 75%, #ffd166 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 10px;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating Circles Background - DAHA KİÇİK */
+        .floating-circles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(30px);
+            opacity: 0.25;
+            animation: float 30s infinite linear;
+        }
+        
+        .circle:nth-child(1) {
+            width: 150px;
+            height: 150px;
+            background: var(--accent-pink);
+            top: 10%;
+            left: 5%;
+            animation-duration: 35s;
+        }
+        
+        .circle:nth-child(2) {
+            width: 180px;
+            height: 180px;
+            background: var(--primary-blue);
+            top: 60%;
+            right: 5%;
+            animation-duration: 40s;
+            animation-direction: reverse;
+        }
+        
+        .circle:nth-child(3) {
+            width: 120px;
+            height: 120px;
+            background: var(--accent-yellow);
+            bottom: 10%;
+            left: 15%;
+            animation-duration: 30s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(30px, 20px) rotate(90deg); }
+            50% { transform: translate(0, 40px) rotate(180deg); }
+            75% { transform: translate(-30px, 20px) rotate(270deg); }
+        }
+
+        /* Glass Container - DAHA KİÇİK */
+        .glass-container {
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            box-shadow: 
+                0 10px 30px var(--shadow-color),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 450px;
+            margin: 5px auto;
+            padding: 15px;
+        }
+
+        .glass-card {
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 14px;
+            box-shadow: 
+                0 8px 20px rgba(0, 0, 0, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            padding: 18px;
+            margin-bottom: 12px;
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            padding: 8px;
+        }
+
+        /* HEADER - YAN-YANA FLEX DÜZENİ (ƏSAS DƏYİŞİKLİK) */
+        .quiz-header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 8px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            width: 100%;
+            backdrop-filter: blur(8px) saturate(180%);
+            -webkit-backdrop-filter: blur(8px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .header-item {
+            padding: 8px 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(67, 97, 238, 0.1);
+        }
+
+        .header-label {
+            font-size: 0.65rem;
+            color: var(--primary-blue);
+            margin-bottom: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            line-height: 1.2;
+        }
+
+        .header-value {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--secondary-blue);
+            font-family: 'Poppins', sans-serif;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+            width: 100%;
+            line-height: 1.2;
+        }
+
+        #username-display {
+            color: var(--accent-pink);
+            font-size: 0.95rem;
+            font-weight: 800;
+        }
+
+        #question-counter {
+            color: var(--primary-blue);
+            font-size: 0.95rem;
+            font-weight: 800;
+        }
+
+        #timer-display {
+            color: var(--accent-pink);
+            font-family: 'Poppins', monospace;
+            font-size: 0.95rem;
+            font-weight: 800;
+        }
+
+        /* Start Container - DAHA KİÇİK */
+        .start-container {
+            text-align: center;
+            padding: 25px 18px;
+        }
+
+        .start-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-pink), var(--accent-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .start-subtitle {
+            font-size: 0.9rem;
+            color: var(--secondary-blue);
+            margin-bottom: 20px;
+            opacity: 0.9;
+            line-height: 1.3;
+        }
+
+        .user-info {
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: var(--secondary-blue);
+            padding: 12px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+        }
+
+        /* Question Container */
+        .question-container {
+            margin-bottom: 15px;
+            padding: 18px;
+        }
+
+        .question {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            font-weight: 600;
+            color: var(--secondary-blue);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 16px;
+            border-radius: 10px;
+            border-left: 3px solid var(--primary-blue);
+        }
+
+        /* Options - DAHA KİÇİK */
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1.5px solid rgba(67, 97, 238, 0.2);
+            border-radius: 10px;
+            padding: 14px 16px;
+            color: var(--secondary-blue);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: rgba(67, 97, 238, 0.1);
+            transform: translateX(3px);
+            border-color: var(--primary-blue);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .option-letter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border-radius: 8px;
+            margin-right: 12px;
+            font-weight: bold;
+            color: white;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            min-width: 28px;
+        }
+
+        /* Answer States */
+        .option-btn.correct {
+            background: linear-gradient(135deg, rgba(6, 214, 160, 0.12), rgba(6, 214, 160, 0.2));
+            border-color: var(--accent-green);
+            color: #0a8754;
+            animation: pulse-green 0.5s ease-in-out;
+        }
+
+        .option-btn.incorrect {
+            background: linear-gradient(135deg, rgba(247, 37, 133, 0.12), rgba(247, 37, 133, 0.2));
+            border-color: var(--accent-pink);
+            color: #b5174e;
+            animation: pulse-red 0.5s ease-in-out;
+        }
+
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(6, 214, 160, 0.3); }
+            70% { box-shadow: 0 0 0 8px rgba(6, 214, 160, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(6, 214, 160, 0); }
+        }
+
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(247, 37, 133, 0.3); }
+            70% { box-shadow: 0 0 0 8px rgba(247, 37, 133, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(247, 37, 133, 0); }
+        }
+
+        /* Timer - DAHA KİÇİK */
+        .timer-container {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 3px;
+            margin: 15px 0 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .timer-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-pink), var(--accent-yellow));
+            width: 100%;
+            transition: width 1s linear;
+            border-radius: 3px;
+        }
+
+        /* Buttons - DAHA KİÇİK */
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+            color: white;
+            font-size: 0.95rem;
+            padding: 14px 25px;
+            margin-top: 12px;
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.25);
+        }
+
+        .btn-start:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.35);
+        }
+
+        .btn-start:active {
+            transform: translateY(0);
+        }
+
+        /* Controls - YENİ FLEX DÜZENİ */
+        .controls-bottom {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .icon-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1.5px solid rgba(67, 97, 238, 0.3);
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--primary-blue);
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .icon-btn:hover {
+            background: var(--primary-blue);
+            color: white;
+            transform: scale(1.05);
+            border-color: var(--primary-blue);
+        }
+
+        #next-btn {
+            flex: 1;
+            max-width: none;
+            width: auto;
+            margin: 0;
+            padding: 12px 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Result Container - DAHA KİÇİK */
+        .result-container {
+            text-align: center;
+            display: none;
+            padding: 25px 18px;
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .score {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            color: var(--primary-blue);
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 18px;
+            border-radius: 14px;
+            display: inline-block;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .progress {
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            color: var(--secondary-blue);
+            font-weight: 600;
+        }
+
+        /* Auto Next Message */
+        .auto-next-message {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: var(--primary-blue);
+            font-weight: 600;
+            opacity: 0;
+            animation: fadeInOut 1.2s ease-in-out;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            display: inline-block;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.5; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1.01); }
+        }
+
+        /* Progress Circles - DAHA KİÇİK */
+        .progress-circles {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+            padding: 0 8px;
+        }
+
+        .progress-circle {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .progress-circle.active {
+            background: var(--primary-blue);
+            transform: scale(1.3);
+        }
+
+        .progress-circle.correct {
+            background: var(--accent-green);
+        }
+
+        .progress-circle.incorrect {
+            background: var(--accent-pink);
+        }
+
+        /* Particles - AZALDIRILMIŞ */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: floatParticle 25s infinite linear;
+            opacity: 0.3;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* ========== MEDIA QUERIES ========== */
+        /* MOBİL ÜÇÜN TƏNZİMLƏMƏ */
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+                align-items: flex-start;
+                min-height: 100vh;
+                overflow-y: auto;
+            }
+
+            .container {
+                padding: 5px;
+            }
+
+            .glass-container {
+                border-radius: 16px;
+                padding: 12px;
+                margin: 3px auto;
+            }
+
+            /* HEADER MOBİL ÜÇÜN */
+            .quiz-header {
+                padding: 10px 12px;
+                gap: 6px;
+                margin-bottom: 12px;
+            }
+            
+            .header-item {
+                padding: 6px 8px;
+            }
+            
+            .header-label {
+                font-size: 0.6rem;
+                margin-bottom: 3px;
+            }
+            
+            .header-value {
+                font-size: 0.85rem;
+            }
+            
+            #username-display,
+            #question-counter,
+            #timer-display {
+                font-size: 0.85rem;
+            }
+
+            .start-title {
+                font-size: 1.4rem;
+                margin-bottom: 10px;
+            }
+
+            .start-subtitle {
+                font-size: 0.85rem;
+                margin-bottom: 15px;
+            }
+
+            .question {
+                font-size: 0.95rem;
+                padding: 14px;
+                margin-bottom: 15px;
+                line-height: 1.3;
+            }
+
+            .option-btn {
+                padding: 12px 14px;
+                font-size: 0.85rem;
+                line-height: 1.2;
+            }
+
+            .option-letter {
+                width: 26px;
+                height: 26px;
+                font-size: 0.8rem;
+                margin-right: 10px;
+                min-width: 26px;
+            }
+
+            .btn {
+                padding: 11px 18px;
+                font-size: 0.85rem;
+                max-width: 260px;
+            }
+
+            .btn-start {
+                padding: 12px 22px;
+                font-size: 0.9rem;
+            }
+
+            .result-title {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .score {
+                font-size: 1.3rem;
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+
+            .controls-bottom {
+                margin-top: 15px;
+                padding-top: 12px;
+                gap: 12px;
+            }
+
+            .icon-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1.1rem;
+            }
+
+            #next-btn {
+                padding: 11px 18px;
+                font-size: 0.85rem;
+            }
+
+            .timer-container {
+                margin: 12px 0 15px;
+            }
+
+            .progress-circles {
+                gap: 4px;
+                margin-top: 10px;
+            }
+
+            .progress-circle {
+                width: 7px;
+                height: 7px;
+            }
+        }
+
+        /* Çox kiçik ekranlar üçün */
+        @media (max-width: 360px) {
+            .quiz-header {
+                gap: 4px;
+                padding: 8px 10px;
+            }
+            
+            .header-label {
+                font-size: 0.55rem;
+                margin-bottom: 2px;
+                letter-spacing: 0.3px;
+            }
+            
+            .header-value {
+                font-size: 0.8rem;
+            }
+            
+            .header-item {
+                padding: 5px 7px;
+            }
+            
+            #username-display,
+            #question-counter,
+            #timer-display {
+                font-size: 0.8rem;
+            }
+
+            .start-title {
+                font-size: 1.3rem;
+            }
+
+            .question {
+                font-size: 0.9rem;
+                padding: 12px;
+            }
+
+            .option-btn {
+                padding: 10px 12px;
+                font-size: 0.8rem;
+            }
+
+            .option-letter {
+                width: 24px;
+                height: 24px;
+                font-size: 0.75rem;
+                margin-right: 8px;
+                min-width: 24px;
+            }
+        }
+
+        /* Tablet üçün */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .glass-container {
+                max-width: 420px;
+                padding: 18px;
+            }
+
+            .quiz-header {
+                padding: 15px;
+                gap: 12px;
+            }
+
+            .header-label {
+                font-size: 0.7rem;
+            }
+
+            .header-value {
+                font-size: 1rem;
+            }
+
+            #username-display,
+            #question-counter,
+            #timer-display {
+                font-size: 1rem;
+            }
+
+            .start-title {
+                font-size: 1.8rem;
+            }
+
+            .question {
+                font-size: 1.1rem;
+            }
+
+            .option-btn {
+                font-size: 0.95rem;
+                padding: 15px 18px;
+            }
+        }
+
+        /* Desktop üçün */
+        @media (min-width: 769px) {
+            body {
+                align-items: center;
+                padding: 20px;
+            }
+
+            .glass-container {
+                max-width: 500px;
+                padding: 20px;
+            }
+
+            .quiz-header {
+                gap: 15px;
+            }
+
+            .controls-bottom {
+                gap: 20px;
+            }
+        }
+
+        /* Landscape rejimi üçün */
+        @media (max-width: 768px) and (orientation: landscape) {
+            body {
+                padding: 5px;
+                align-items: flex-start;
+            }
+
+            .glass-container {
+                max-width: 98%;
+                margin: 3px auto;
+                padding: 10px;
+            }
+
+            .quiz-header {
+                padding: 10px;
+                gap: 8px;
+                margin-bottom: 10px;
+            }
+
+            .header-label {
+                font-size: 0.5rem;
+            }
+
+            .header-value {
+                font-size: 0.75rem;
+            }
+
+            #username-display,
+            #question-counter,
+            #timer-display {
+                font-size: 0.75rem;
+            }
+
+            .start-container {
+                padding: 15px 10px;
+            }
+
+            .question-container {
+                padding: 12px;
+            }
+
+            .options-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .option-btn {
+                padding: 10px 12px;
+                font-size: 0.8rem;
+                min-height: 60px;
+            }
+
+            .option-letter {
+                width: 22px;
+                height: 22px;
+                font-size: 0.75rem;
+                margin-right: 8px;
+            }
+
+            .controls-bottom {
+                margin-top: 12px;
+                padding-top: 10px;
+                gap: 10px;
+            }
+
+            .question {
+                font-size: 0.9rem;
+                padding: 12px;
+                margin-bottom: 12px;
+            }
+        }
+
+        /* Yüksək ekranlar üçün */
+        @media (min-height: 800px) and (max-width: 480px) {
+            .glass-container {
+                margin-top: 20px;
+            }
+        }
+
+        /* Aşağı scroll problemi üçün */
+        .quiz-container {
+            min-height: calc(100vh - 40px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .question-container {
+            flex: 1;
+        }
+
+        /* Header-in yan-yana olmasını təmin etmək üçün əlavə CSS */
+        .quiz-header {
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+        }
+
+        .header-item {
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Background -->
+    <div class="floating-circles">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+    
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Main Container -->
+    <div class="container glass-container">
+        <!-- Start Screen -->
+        <div class="start-container" id="start-container">
+            <h1 class="start-title">🌟 PREMIUM QUIZ 🌟</h1>
+            <p class="start-subtitle">Bilik sınağınıza xoş gəldiniz!</p>
+            
+            <div class="user-info glass-card">
+                <i class="fas fa-user-circle" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 10px;"></i>
+                <p id="user-greeting">Siz artıq giriş etmisiniz!</p>
+                <p style="font-size: 1rem; color: var(--accent-pink); margin-top: 10px;">
+                    <i class="fas fa-shield-alt"></i> Avtomatik giriş aktivdir
+                </p>
+            </div>
+            
+            <button class="btn btn-start" id="start-btn">
+                <i class="fas fa-play-circle" style="margin-right: 10px;"></i>KVİZƏ BAŞLA
+            </button>
+        </div>
+        
+        <!-- Quiz Header -->
+        <div class="quiz-header glass-card" id="quiz-header" style="display: none;">
+            <div class="header-item">
+                <div class="header-label">İSTİFADƏÇİ</div>
+                <div class="header-value" id="username-display">Qonaq</div>
+            </div>
+            <div class="header-item">
+                <div class="header-label">SUAL</div>
+                <div class="header-value" id="question-counter">1/250</div>
+            </div>
+            <div class="header-item">
+                <div class="header-label">VAXT</div>
+                <div class="header-value" id="timer-display">40s</div>
+            </div>
+        </div>
+        
+        <!-- Quiz Container -->
+        <div class="quiz-container" id="quiz-container" style="display: none;">
+            <!-- Progress Circles -->
+            <div class="progress-circles" id="progress-circles"></div>
+            
+            <!-- Progress Text -->
+            <div class="progress" id="progress">Sual 1 / 250</div>
+            
+            <!-- Timer -->
+            <div class="timer-container">
+                <div class="timer-bar" id="timer-bar"></div>
+            </div>
+            
+            <!-- Question -->
+            <div class="question-container glass-card">
+                <div class="question" id="question">Sual yüklənir...</div>
+                
+                <!-- Options -->
+                <div class="options-container" id="options-container"></div>
+                
+                <!-- Auto Next Message -->
+                <div class="auto-next-message" id="auto-next-message" style="display: none;"></div>
+            </div>
+            
+            <!-- Controls -->
+            <div class="controls-bottom">
+                <button class="btn btn-start" id="next-btn" style="display: none;">
+                    <i class="fas fa-forward" style="margin-right: 8px;"></i>NÖVBƏTİ SUAL
+                </button>
+                <div class="icon-btn" id="timer-toggle-btn" title="Vaxtı Dayandır/Davam et">
+                    <i class="fas fa-pause"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Result Container -->
+        <div class="result-container" id="result-container">
+            <h2 class="result-title">🎉 KVIZ TAMAMLANDI! 🎉</h2>
+            
+            <div class="score" id="score"></div>
+            
+            <!-- Stats -->
+            <div class="glass-card" style="padding: 30px; margin: 30px auto; max-width: 500px;">
+                <h3 style="color: var(--primary-blue); margin-bottom: 20px; font-size: 1.5rem;">
+                    <i class="fas fa-chart-bar" style="margin-right: 10px;"></i>STATİSTİKA
+                </h3>
+                <div id="stats-details" style="text-align: left; line-height: 2;">
+                    <!-- Stats will be inserted here -->
+                </div>
+            </div>
+            
+            <button class="btn btn-start" id="restart-btn">
+                <i class="fas fa-redo" style="margin-right: 10px;"></i>YENİDƏN BAŞLA
+            </button>
+        </div>
+    </div>
+
+<script>
+        // Sual məlumatları
+   const allQuestions = [
+    {
+        "question_number": 1,
+        "question_text": "Nəqliyyat sisteminin əsas vəzifəsi aşağıdakılardan hansısıdır?",
+        "options": {
+            "a": "Yük daşımalarının həyata keçirilməsi",
+            "b": "Xalq təsərrüfatının və əhalinin yük və sərnişin daşımalarına olan tələbatının tam və vaxtında ödənilməsi",
+            "c": "Nəqliyyat sisteminin iş səmərəliliyinin artırılması",
+            "d": "Ekoloji tələblərə cavab verən daşımaların təşkili"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 2,
+        "question_text": "Nəqliyyat növü hansı əsas alt sistemlərdən ibarətdir?",
+        "options": {
+            "a": "Planlaşdırma, icra, nəzarət",
+            "b": "İdarəetmə, daşıma prosesi, texniki təminat",
+            "c": "Maliyyə, texniki, kadr",
+            "d": "İstehsal, satış, xidmət"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 3,
+        "question_text": "İdarəetmə alt sisteminin əsas vəzifəsi nədir?",
+        "options": {
+            "a": "Nəqliyyat vasitələrinin təmiri",
+            "b": "Daşıma prosesinin birbaşa təşkili",
+            "c": "Xarici və daxili koordinasiya, hüquqi və maliyyə təminatı",
+            "d": "Sərnişinlərin daşınma vaxtının optimallaşdırılması"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 4,
+        "question_text": "Texniki istismarın əsas vəzifəsi aşağıdakılardan hansısıdır?",
+        "options": {
+            "a": "Daşıma prosesinin sürətinin artırılması",
+            "b": "Optimal məsrəflə işlək hərəkət tərkibi ilə təmin etmək",
+            "c": "Yeni nəqliyyat vasitələrinin istehsalı",
+            "d": "Sərnişin daşımalarının keyfiyyətinin yaxşılaşdırılması"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 5,
+        "question_text": "\"Nəqliyyat vasitələrinin texniki istismarı\" elminin əsas məqsədlərindən biri deyil?",
+        "options": {
+            "a": "İstismar etibarlılığının verilmiş səviyyədə saxlanılması",
+            "b": "Maddi və əmək məsrəflərinin optimallaşdırılması",
+            "c": "Yeni nəqliyyat vasitələrinin layihələndirilməsi",
+            "d": "Ətraf mühitə mənfi təsirin minimuma endirilməsi"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 6,
+        "question_text": "Nəqliyyat vasitələrinin işləmə qabiliyyətinin saxlanılmasının əsas yollarından biri nədir?",
+        "options": {
+            "a": "Yalnız vaxtaşırı təmirlər",
+            "b": "Texniki qulluq və təmir sisteminin həyata keçirilməsi",
+            "c": "Yalnız yanacaq keyfiyyətinin yaxşılaşdırılması",
+            "d": "Sürücülərin ixtisasının artırılması"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 7,
+        "question_text": "Mətndə verilən məlumata əsasən, yük avtomobilinin bütün istismar dövründə ən böyük xərclər hansına düşür?",
+        "options": {
+            "a": "Konstruktiv-texnoloji xərclər",
+            "b": "İstismar xərcləri",
+            "c": "Əsaslı təmir xərcləri",
+            "d": "Layihələndirmə xərcləri"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 8,
+        "question_text": "Texniki istismarın əsas məqsədlərindən biri deyil?",
+        "options": {
+            "a": "Yük və sərnişin daşımalarını müntəzəm və təhlükəsiz təmin etmək",
+            "b": "Nəqliyyatın konstruksiyasından nəzərdə tutulmuş texniki imkanlardan maksimum istifadə etmək",
+            "c": "Yeni nəqliyyat vasitələrinin layihələndirilməsi",
+            "d": "Material və əmək xərclərini optimal qiymətə gətirmək"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 9,
+        "question_text": "Avtomobilin layihələndirilməsindən silinməsinə qədər olan xərclərin təxminən neçə faizi texniki istismarın payına düşür?",
+        "options": {
+            "a": "25-35%",
+            "b": "40-50%",
+            "c": "75-85%",
+            "d": "90-95%"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 10,
+        "question_text": "Nəqliyyat vasitələrinin texniki istismarı ilə bağlı problemlərdən biri deyil?",
+        "options": {
+            "a": "İstismar prosesində böyük miqdarda material və əmək xərclərinin tələb olunması",
+            "b": "Yeni nəqliyyat yollarının tikilməsi",
+            "c": "Ətraf mühitə mənfi təsirlər",
+            "d": "Konstruksiyaların mürəkkəbləşməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 11,
+        "question_text": "\"İstismar keyfiyyətləri\" anlayışına dair düzgün ifadəni seçin:",
+        "options": {
+            "a": "Nəqliyyat vasitəsinin qiymətini müəyyən edir",
+            "b": "Nəqliyyat vasitəsinin texniki imkanlarını müəyyən edən texniki göstəricilərdir",
+            "c": "İstehsal keyfiyyətini göstərir",
+            "d": "Təmir xərclərini təsir edir"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 12,
+        "question_text": "Nəqliyyat vasitələrinin əsas istismar keyfiyyətlərindən biri olan \"yanacaq qənaətliliyi\" necə qiymətləndirilir?",
+        "options": {
+            "a": "Mühərrik gücü ilə",
+            "b": "Saatlıq və xüsusi yanacaq sərfləri ilə",
+            "c": "Orta sürətlə",
+            "d": "Yük tutumu ilə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 13,
+        "question_text": "Nəqliyyat vasitəsinin texniki vəziyyəti necə təyin olunur?",
+        "options": {
+            "a": "Xarici görünüşü ilə",
+            "b": "İstismar xüsusiyyətlərinin toplusu və parametrlərin normalara uyğunluq dərəcəsi ilə",
+            "c": "Yürüşü ilə",
+            "d": "İstismar müddəti ilə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 14,
+        "question_text": "Struktur parametrlərin hansı qiymətləri arasındakı fərq elementin qalıq resursunu müəyyən edir?",
+        "options": {
+            "a": "Nominal və başlanğıc qiymətlər arasında",
+            "b": "Cari və buraxıla bilən sərhəd qiymətlər arasında",
+            "c": "Başlanğıc və nominal qiymətlər arasında",
+            "d": "Həddi və nominal qiymətlər arasında"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 15,
+        "question_text": "Dolayı diaqnostika parametrlərinin istifadə səbəbi nədir?",
+        "options": {
+            "a": "Onlar daha dəqiq ölçmə verir",
+            "b": "Bir çox aqreqatı sökmədən texniki vəziyyəti qiymətləndirmək üçün",
+            "c": "Onlar daha asan ölçülür",
+            "d": "Onlar daha ucuz başa gəlir"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 16,
+        "question_text": "Avtomobilin texniki vəziyyəti ilə bağlı aşağıdakılardan hansı doğrudur?",
+        "options": {
+            "a": "Üç vəziyyətdə ola bilər",
+            "b": "Saz, nasaz lakin işlək, və nasaz işləksiz ola bilər",
+            "c": "Saz və nasaz ola bilər",
+            "d": "İşlək və işləksiz ola bilər"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 17,
+        "question_text": "Tormoz mexanizminin misalında texniki qulluğun əsas məqsədi nədir?",
+        "options": {
+            "a": "Yeni detalların quraşdırılması",
+            "b": "Parametrləri nominal qiymətlərinə yaxınlaşdırmaq",
+            "c": "Mexanizmin tam dəyişdirilməsi",
+            "d": "Görünüşün yaxşılaşdırılması"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 18,
+        "question_text": "Nəqliyyat vasitəsinin işləmə qabiliyyəti nə deməkdir?",
+        "options": {
+            "a": "Yeni olması",
+            "b": "Parametrlərin texniki sənədlərdə göstərilən hüdudlarda olması",
+            "c": "Mühərrikin işləməsi",
+            "d": "Sürüş üçün yararlı olması"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 19,
+        "question_text": "Struktur parametrlərə nə daxildir?",
+        "options": {
+            "a": "Rəng və görünüş",
+            "b": "Həndəsi parametrlər və işçi proses parametrləri",
+            "c": "Qiymət və dəyər",
+            "d": "İstismar müddəti"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 20,
+        "question_text": "İmtina və nasazlıq anlayışları arasındakı əsas fərq nədir?",
+        "options": {
+            "a": "İkisi eyni anlamı verir",
+            "b": "Nasazlıq halında nəqliyyat vasitəsi işləmə qabiliyyətini saxlaya bilər",
+            "c": "İmtina həmişə nasazlıqdan daha ciddi olur",
+            "d": "Nasazlıq yalnız xarici görünüşü əhatə edir"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 21,
+        "question_text": "Qəfildən baş verən imtinalara aşağıdakılardan hansı nümunədir?",
+        "options": {
+            "a": "Detalların tədricən yeyilməsi",
+            "b": "Hidravlik sistemdə şlanqın deşilməsi",
+            "c": "Rəngin tədricən solması",
+            "d": "Mühərrik gücünün azalması"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 22,
+        "question_text": "Təhlükəli imtinalar əsasən hansı sistemlərdə baş verir?",
+        "options": {
+            "a": "Hərəkət təhlükəsizliyini təmin edən sistemlərdə",
+            "b": "Yanacaq sistemində",
+            "c": "İşıqlandırma sistemində",
+            "d": "Səs siqnalında"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 23,
+        "question_text": "Konstruktiv imtinaların əsas səbəbi nədir?",
+        "options": {
+            "a": "İstismar qaydalarının pozulması",
+            "b": "Layihələndirmə zamanı buraxılan səhvlər",
+            "c": "Texniki qulluğun vaxtında aparılmaması",
+            "d": "Yığılma zamanı şərtlərə riayət edilməməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 24,
+        "question_text": "Asılı olan imtinalar üçün düzgün nümunəni göstərin:",
+        "options": {
+            "a": "Porşen üzüyünün sınması nəticəsində silindr divarının cızılması",
+            "b": "Şinlərin deşilməsi",
+            "c": "Lampanın yanmaması",
+            "d": "Rəngin solması"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 25,
+        "question_text": "İstismar imtinalarının əsas səbəbi nədir?",
+        "options": {
+            "a": "Zavodda yığılma xətaları",
+            "b": "Layihələndirmə qüsurları",
+            "c": "Normal istismar şəraitinə uyğun olmayan iş rejimləri",
+            "d": "Materialların keyfiyyətsiz olması"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 26,
+        "question_text": "İmtinaların təsadüfi kəmiyyətlər sayılmasının səbəbi nədir?",
+        "options": {
+            "a": "Onların həmişə eyni növ olması",
+            "b": "Baş vermə anının əvvəlcədən müəyyən edilə bilməməsi",
+            "c": "Yalnız köhnə nəqliyyat vasitələrində baş verməsi",
+            "d": "Sadəcə istismar xətalarından yaranması"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 27,
+        "question_text": "Texniki qulluq və təmir arasındakı əsas fərq nədir?",
+        "options": {
+            "a": "Hər ikisi eyni məqsəd daşıyır",
+            "b": "Texniki qulluq profilaktik, təmir isə bərpaedici xarakter daşıyır",
+            "c": "Təmir texniki qulluqdan daha tez-tez aparılır",
+            "d": "Texniki qulluq yalnız böyük müəssisələrdə aparılır"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 28,
+        "question_text": "Şkvorenin resursu ilə bağlı misaldan çıxarılan əsas nəticə nədir?",
+        "options": {
+            "a": "Şkvoren heç vaxt dəyişdirilməməlidir",
+            "b": "Yağlama periodikliyi detalların ömür uzunluğuna birbaşa təsir edir",
+            "c": "Şkvorenin resursu yalnız yol şəraitindən asılıdır",
+            "d": "Yağlama yalnız qışda vacibdir"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 29,
+        "question_text": "Texniki qulluğun əsas məqsədi nədir?",
+        "options": {
+            "a": "Avtomobili tamamilə yeniləmək",
+            "b": "Nasazlıqların qarşısını almaq və işləmə qabiliyyətini saxlamaq",
+            "c": "Yalnız yanacaq sərfiyyatını azaltmaq",
+            "d": "Avtomobilin qiymətini artırmaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 30,
+        "question_text": "Təmirin texniki qulluqdan fərqli olaraq əsas xüsusiyyəti nədir?",
+        "options": {
+            "a": "Planlı şəkildə aparılması",
+            "b": "Tələbata görə (ehtiyac olduqda) yerinə yetirilməsi",
+            "c": "Yalnız müəssisədə aparılması",
+            "d": "Yalnız kiçik işləri əhatə etməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 31,
+        "question_text": "İşləmə qabiliyyəti anlayışına dair düzgün ifadəni seçin:",
+        "options": {
+            "a": "Avtomobilin yeni olması",
+            "b": "Parametrlərin texniki sənədlərdə göstərilən tələblərə uyğun olması",
+            "c": "Yalnız mühərrikin işləməsi",
+            "d": "Avtomobilin rənginin yaxşı olması"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 32,
+        "question_text": "Resurs anlayışı nəyi ifadə edir?",
+        "options": {
+            "a": "Avtomobilin qiymətini",
+            "b": "İstismarın başlanğıcından silinməsinə qədər olan işləmə müddətini",
+            "c": "Yalnız təmir üçün lazım olan vaxtı",
+            "d": "İstismar materiallarının miqdarını"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 33,
+        "question_text": "İstismar zamanı nəqliyyat vasitələrinin texniki vəziyyətinin dəyişməsinin əsas səbəblərindən biri deyil:",
+        "options": {
+            "a": "Detallarda yeyilmə prosesi",
+            "b": "Hissələrdə korroziyanın əmələ gəlməsi",
+            "c": "Avtomobilin rənginin solması",
+            "d": "Detalların təbii köhnəlməsi"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 34,
+        "question_text": "Sürtünmə növləri ilə bağlı düzgün uyğunluğu tapın:",
+        "options": {
+            "a": "Diyirlənmə sürtünməsi - dişli çarx ötürmələrində",
+            "b": "Sürüşmə sürtünməsi - dirsəkli valın şatun boyunlarında",
+            "c": "Mürəkkəb sürtünmə - kürəli yastıqlarda",
+            "d": "Quru sürtənmə - mühərrik detallarında"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 35,
+        "question_text": "Sürtünmə əmsalının (f) düzgün təyini hansıdır?",
+        "options": {
+            "a": "Xarici qüvvələrin sürtünmə qüvvəsinə nisbəti",
+            "b": "Sürtünmə qüvvəsinin normal qüvvəyə nisbəti",
+            "c": "Detalların sürətinin yükə nisbəti",
+            "d": "Yağın qalınlığının səthə nisbəti"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 36,
+        "question_text": "Mayeli sürtünmə üçün düzgün şərti göstərin:",
+        "options": {
+            "a": "Sürtünən səthlər arasında heç bir yağ olmaması",
+            "b": "Yağ qatının qalınlığı səth çıxıntılarının hündürlüyündən böyük olması",
+            "c": "Yağ təbəqəsinin qalınlığının 0,1 mkm olması",
+            "d": "Sürtünmənin yalnız quru şəraitdə baş verməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 37,
+        "question_text": "Yeyilmə prosesinin əsas səbəbi nədir?",
+        "options": {
+            "a": "Detalların temperatur dəyişikliyinə məruz qalması",
+            "b": "Detalların səthlərinin sürtünməyə məruz qalması",
+            "c": "Materialların keyfiyyətsiz olması",
+            "d": "Yağların fiziki-kimyəvi xüsusiyyətləri"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 38,
+        "question_text": "Sərhəd sürtünməsi üçün xarakterik olan halı göstərin:",
+        "options": {
+            "a": "Sürtünən səthlər arasında heç bir yağ olmaması",
+            "b": "Yağ qatının çox qalın olması",
+            "c": "Yağ təbəqəsinin qalınlığının təxminən 0,1 mkm olması",
+            "d": "Sürtünmənin yalnız dişli çarxlarda baş verməsi"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 39,
+        "question_text": "Yeyilmə tempi necə ölçülür?",
+        "options": {
+            "a": "mq/saat ilə",
+            "b": "mm³/saat ilə",
+            "c": "mk/km ilə",
+            "d": "mk/saat ilə"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 40,
+        "question_text": "Quru sürtünməyə aid düzgün nümunəni seçin:",
+        "options": {
+            "a": "Mühərrik detalları arasındakı sürtünmə",
+            "b": "Tormoz sistemindəki sürtünmə",
+            "c": "Dişli çarxların dişləri arasındakı sürtünmə",
+            "d": "Transmissiya aqreqatlarındakı sürtünmə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 41,
+        "question_text": "Abraziv yeyilməyə aid düzgün nümunəni seçin:",
+        "options": {
+            "a": "Dirsəkli valın şatun boyunlarında yeyilmə",
+            "b": "Şkvoren-oymaq birləşmələrində toz təsiri ilə yeyilmə",
+            "c": "Reduktor dişlilərində mikroçatlamalar",
+            "d": "Klapan oturma səthlərində kövrəkləşmə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 42,
+        "question_text": "Plastik deformasiya nəticəsində yaranan yeyilmənin əsas xüsusiyyəti nədir?",
+        "options": {
+            "a": "Detalların çəkisinin dəyişməsi",
+            "b": "Detalların ölçülərinin dəyişməsi, çəkisinin sabit qalması",
+            "c": "Səthdə mikroçatlamaların əmələ gəlməsi",
+            "d": "Metal hissəciklərinin köçürülməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 43,
+        "question_text": "Molekulyar-mexaniki yeyilmənin əsas səbəbi nədir?",
+        "options": {
+            "a": "Toz və palçıq hissəciklərinin təsiri",
+            "b": "Sürtünən səthlərdə metal hissəciklərinin ilişməsi",
+            "c": "Yüksək temperaturun təsiri",
+            "d": "Kimyəvi reaksiyaların baş verməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 44,
+        "question_text": "Korrozion-mexaniki yeyilmə harada daha çox müşahidə olunur?",
+        "options": {
+            "a": "Transmissiya aqreqatlarında",
+            "b": "Mühərrikin silindr-porşen qrupunda",
+            "c": "Sükan mexanizmlərində",
+            "d": "Tormoz sistemlərdə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 45,
+        "question_text": "Mikrometr üsulunun əsas mənfi cəhəti nədir?",
+        "options": {
+            "a": "Çox bahalı olması",
+            "b": "Mexanizmlərin sökülüb-yığılmasını tələb etməsi",
+            "c": "Yalnız kiçik detallarda tətbiq olunması",
+            "d": "Nəticələrin çox dəqiq olmaması"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 46,
+        "question_text": "Spektral analiz üsulunun üstünlüyü nədir?",
+        "options": {
+            "a": "Ən ucuz üsul olması",
+            "b": "Detalların ayrılıqda yeyilmə dərəcəsini təyin edə bilməsi",
+            "c": "Sökülmə-yığma işləri tələb etməməsi",
+            "d": "Bütün materiallarda eyni dəqiqliklə işləməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 47,
+        "question_text": "Elektrokimyəvi korroziya üçün düzgün şərti göstərin:",
+        "options": {
+            "a": "Yalnız quru şəraitdə baş verməsi",
+            "b": "Elektrolit mühitində baş verməsi",
+            "c": "Yalnız yüksək temperaturda baş verməsi",
+            "d": "Yalnız dəmirdən hazırlanmış detallarda baş verməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 48,
+        "question_text": "Nəqliyyat vasitələrinin texniki vəziyyətinə təsir edən əsas amillərdən biri deyil?",
+        "options": {
+            "a": "Konstruksiyanın keyfiyyəti",
+            "b": "İstismar materiallarının keyfiyyəti",
+            "c": "Sürücünün yaşı",
+            "d": "Texniki qulluq keyfiyyəti"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 49,
+        "question_text": "Konstruktiv-texnoloji amillərə nə daxildir?",
+        "options": {
+            "a": "Detalların material keyfiyyəti",
+            "b": "Konstruksiyanın təkmilləşdirilməsi və yığılma keyfiyyəti",
+            "c": "İstismar şəraiti",
+            "d": "Texniki qulluq periodikliyi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 50,
+        "question_text": "Konstruksiyanın təkmilləşdirilməsi anlayışıə nə daxildir?",
+        "options": {
+            "a": "Mühərrik gücünün artırılması",
+            "b": "İstismar keyfiyyətlərinin yaxşılaşdırılması",
+            "c": "Yanacaq sərfiyyatının azaldılması",
+            "d": "Xarici görünüşün yaxşılaşdırılması"
+        },
+        "correct_answer": "b"
+    },
+        {
+        "question_number": 51,
+        "question_text": "Detalların hazırlanmasında yeyilməyə davamlılıq üçün ən çox hansı materiallardan istifadə edilir?",
+        "options": {
+            "a": "Alüminium",
+            "b": "Karbonlu poladlar",
+            "c": "Çuqun",
+            "d": "Plastik materiallar"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 52,
+        "question_text": "Zərbəli yüklər altında işləyən detallar üçün hansı materiallar daha uyğundur?",
+        "options": {
+            "a": "Yüksək karbonlu poladlar",
+            "b": "Az karbonlu legirləyici poladlar",
+            "c": "Təmiz alüminium",
+            "d": "Adi çuqun"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 53,
+        "question_text": "Detalların ömür uzunluğuna hansı amillər mənfi təsir edir?",
+        "options": {
+            "a": "Termiki emalın düzgün aparılmaması",
+            "b": "Materialın yüksək keyfiyyətli olması",
+            "c": "Konstruksiyanın sadə olması",
+            "d": "Yağlamanın vaxtında aparılması"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 54,
+        "question_text": "Konstruksiyanın texniki qulluq baxımından sərfəli olması nə deməkdir?",
+        "options": {
+            "a": "Qiymətinin aşağı olması",
+            "b": "Profilaktik işlərin minimum xərclə yerinə yetirilməsi",
+            "c": "Tez təmir olunması",
+            "d": "Nadir hallarda təmir tələb etməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 55,
+        "question_text": "İstismar materiallarının keyfiyyəti əsasən nə ilə müəyyən edilir?",
+        "options": {
+            "a": "Qiyməti ilə",
+            "b": "Fiziki-kimyəvi parametrlərinin standartlara uyğunluğu ilə",
+            "c": "Rəngi ilə",
+            "d": "İstehsalçı ölkə ilə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 56,
+        "question_text": "Benzinin fraksiya tərkibi əsasən nəyi xarakterizə edir?",
+        "options": {
+            "a": "Benzinin qiymətini",
+            "b": "Buxarlanma qabiliyyətini",
+            "c": "Benzinin rəngini",
+            "d": "Benzinin sıxlığını"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 57,
+        "question_text": "Benzinin qovulma temperaturu həddindən aşağı olduqda hansı problem yaranır?",
+        "options": {
+            "a": "Mühərrik işə düşmür",
+            "b": "Buxar tıxacı əmələ gəlir",
+            "c": "Yanacaq sərfi azalır",
+            "d": "Detalların yeyilməsi dayanır"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 58,
+        "question_text": "Detonasiya ilə yanma zamanı alovun yayılma sürəti nə qədər olur?",
+        "options": {
+            "a": "50-100 m/san",
+            "b": "1500-2500 m/san",
+            "c": "100-500 m/san",
+            "d": "3000-4000 m/san"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 59,
+        "question_text": "Benzinin detonasiyaya qarşı davamlılığı nə ilə qiymətləndirilir?",
+        "options": {
+            "a": "Setan ədədi ilə",
+            "b": "Oktan ədədi ilə",
+            "c": "Karbon ədədi ilə",
+            "d": "Benzin sıxlığı ilə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 60,
+        "question_text": "Oktan ədədi yüksəldikdə benzinin keyfiyyətinə nə təsir edir?",
+        "options": {
+            "a": "Yanacaq sərfi artır",
+            "b": "Detonasiyaya davamlılıq artır",
+            "c": "Buxarlanma azalır",
+            "d": "Rəngi dəyişir"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 61,
+        "question_text": "Benzinin tərkibində nə olması onun detonasiya davamlılığını aşağı salır?",
+        "options": {
+            "a": "Aromatik karbohidrogenlər",
+            "b": "Kükürdlü birləşmələr",
+            "c": "İzoparafinlər",
+            "d": "Antidetonatorlar"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 62,
+        "question_text": "Dizel yanacağının öz-özünə alışma qabiliyyəti nə ilə qiymətləndirilir?",
+        "options": {
+            "a": "Oktan ədədi ilə",
+            "b": "Setan ədədi ilə",
+            "c": "Karbon ədədi ilə",
+            "d": "Özlülük indeksi ilə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 63,
+        "question_text": "Dizel yanacağının özlülüyü normadan kiçik olduqda hansı problem yaranır?",
+        "options": {
+            "a": "Forsunka və yanacaq nasosundan sızmalar olur",
+            "b": "Yanacaq sərfi azalır",
+            "c": "Mühərrik daha səlis işləyir",
+            "d": "Qurum əmələ gəlməsi dayanır"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 64,
+        "question_text": "Mühərrik yağlarının əsas funksiyası nədir?",
+        "options": {
+            "a": "Yalnız sürtünməni azaltmaq",
+            "b": "Sürtünən səthlər arasında yağ qatı yaratmaq",
+            "c": "Yalnız temperaturu aşağı saxlamaq",
+            "d": "Yalnız korroziyanın qarşısını almaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 65,
+        "question_text": "Plastik yağların əsas istifadə sahəsi haradır?",
+        "options": {
+            "a": "Mühərrik daxilində",
+            "b": "Açıq birləşmələrdə",
+            "c": "Transmissiya aqreqatlarında",
+            "d": "Soyutma sistemində"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 66,
+        "question_text": "Soyuducu mayelərin codluğu (sərtliyi) nə deməkdir?",
+        "options": {
+            "a": "Suyun temperatur dəyişmə qabiliyyəti",
+            "b": "Suda kalsium və maqnezium duzlarının miqdarı",
+            "c": "Suyun donma temperaturu",
+            "d": "Suyun oksidləşmə qabiliyyəti"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 67,
+        "question_text": "Yol şəraitinin avtomobilin texniki vəziyyətinə təsiri ilə bağlı düzgün ifadəni seçin:",
+        "options": {
+            "a": "Yaxşı yollarda avtomobilin texniki sürəti pis yollardan daha yüksək olur",
+            "b": "Pis yollarda detalların yeyilmə dərəcəsi artır",
+            "c": "Yol şəraiti yalnız yanacaq sərfinə təsir edir",
+            "d": "Yol şəraiti yalnız sürətə təsir edir"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 68,
+        "question_text": "Mühərrikin iş rejimi ilə detalların yeyilməsi arasında necə əlaqə var?",
+        "options": {
+            "a": "Dövrlər sayı artdıqca yeyilmə həmişə azalır",
+            "b": "1200-2000 dövr/san intervalında minimum yeyilmə müşahidə olunur",
+            "c": "Aşağı dövrlərdə yeyilmə minimum olur",
+            "d": "Yüksək dövrlərdə yeyilmə heç dəyişmir"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 69,
+        "question_text": "İqlim şəraitinin avtomobilə təsiri ilə bağlı düzgün ifadəni seçin:",
+        "options": {
+            "a": "Aşağı temperaturlarda imtinaların sayı artır",
+            "b": "Yüksək temperaturlar detalların yeyilməsini azaldır",
+            "c": "İqlim şəraiti yalnız yanacaq sərfinə təsir edir",
+            "d": "Rütubət yalnız kuzova təsir edir"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 70,
+        "question_text": "Mühərrikin optimal istilik rejimi hansı temperatur intervalında saxlanılmalıdır?",
+        "options": {
+            "a": "50-60°C",
+            "b": "80-90°C",
+            "c": "100-110°C",
+            "d": "70-75°C"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 71,
+        "question_text": "İdarəetmə üsullarından hansı yanacaq qənaəti ilə müşayiət olunur?",
+        "options": {
+            "a": "Sabit sürət üsulu",
+            "b": "İmpulsiv idarəetmə üsulu",
+            "c": "Qarışıq idarəetmə üsulu",
+            "d": "Yüksək sürət üsulu"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 72,
+        "question_text": "İdarəetmə ustalığının avtomobilə təsiri necə olur?",
+        "options": {
+            "a": "Yalnız yanacaq sərfinə təsir edir",
+            "b": "Təmirlər arası yürüşü 60% artıra bilir",
+            "c": "Yalnız sürətə təsir edir",
+            "d": "Detalların yeyilməsinə təsiri yoxdur"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 73,
+        "question_text": "Saxlanma üsulunun avtomobilin texniki vəziyyətinə təsiri necə olur?",
+        "options": {
+            "a": "Yalnız kuzova təsir edir",
+            "b": "Açıq meydançalarda saxlanıldıqda soyuq havanın təsiri artır",
+            "c": "Saxlanma üsulunun heç bir təsiri yoxdur",
+            "d": "Yalnız yanacaq sisteminə təsir edir"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 74,
+        "question_text": "Ressorun ömür uzunluğu yol şəraitindən necə təsirlənir?",
+        "options": {
+            "a": "Pis yollarda ömür uzunluğu 10 dəfə azalır",
+            "b": "Yol şəraitindən asılı deyil",
+            "c": "Yalnız sürətdən asılıdır",
+            "d": "Yaxşı yollarda daha tez sıradan çıxır"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 75,
+        "question_text": "Texniki qulluğun əsas məqsədi nədir?",
+        "options": {
+            "a": "Avtomobili tamamilə yeniləmək",
+            "b": "Hərəkət tərkibində baş verə biləcək nasazlıqların qarşısını almaq",
+            "c": "Yanacaq sərfiyyatını azaltmaq",
+            "d": "Avtomobilin qiymətini artırmaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 76,
+        "question_text": "Texniki qulluq işləri necə yerinə yetirilməlidir?",
+        "options": {
+            "a": "Təsadüfi vaxtlarda",
+            "b": "Əvvəlcədən tərtib edilmiş qrafik əsasında",
+            "c": "Qış aylarında",
+            "d": "Böyük səhvlər olduqda"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 77,
+        "question_text": "Şinlərdə təzyiqin normadan 20% aşağı olması nəticəsində nə baş verir?",
+        "options": {
+            "a": "Yanacaq sərfi azalır",
+            "b": "Şinlərin yürüşü 25% azalır",
+            "c": "Avtomobilin sürəti artır",
+            "d": "Tormozlama yolu qısalır"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 78,
+        "question_text": "Təmirin keyfiyyəti əsasən nədən asılıdır?",
+        "options": {
+            "a": "Detalların qiymətindən",
+            "b": "Yığılma texnologiyası və nizamlama işlərinin düzgünlüyündən",
+            "c": "İşçilərin sayından",
+            "d": "Təmir müddətindən"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 79,
+        "question_text": "Mühərrikin resursu avtomobilin əsaslı təmir yürüşünün neçə faizini təşkil edir?",
+        "options": {
+            "a": "30-40%",
+            "b": "60-70%",
+            "c": "80-90%",
+            "d": "40-50%"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 80,
+        "question_text": "Yağlama sisteminin təkmilləşdirilməsi nəyə kömək edir?",
+        "options": {
+            "a": "Yanacaq sərfiyyatının azalmasına",
+            "b": "Detalların yeyilməsinin azalmasına və dinamiki qüvvələrin qarşısının alınmasına",
+            "c": "Mühərrik sürətinin artmasına",
+            "d": "Temperaturun aşağı düşməsinə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 81,
+        "question_text": "Mühərrikin normal temperatur rejimini saxlamaq üçün nədən istifadə edilir?",
+        "options": {
+            "a": "Yağ nasosu",
+            "b": "Termostat",
+            "c": "Süzgəc",
+            "d": "Ventilyator"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 82,
+        "question_text": "Etibarlılıq nəzəriyyəsinin əsas məqsədi nədir?",
+        "options": {
+            "a": "Avtomobillərin qiymətini hesablamaq",
+            "b": "Maşın və mexanizmlərin köhnəlmə proseslərini öyrənmək",
+            "c": "Yanacaq sərfiyyatını azaltmaq",
+            "d": "Təmir xərclərini hesablamaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 83,
+        "question_text": "Etibarlılıq nəzəriyyəsində hansı riyazi üsullardan istifadə olunur?",
+        "options": {
+            "a": "Cəbr",
+            "b": "Ehtimal nəzəriyyəsi və statistik üsullar",
+            "c": "Həndəsə",
+            "d": "Triqonometriya"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 84,
+        "question_text": "Statistik məlumatların əsas üsullarından biri deyil:",
+        "options": {
+            "a": "Real istismar şəraitində məlumatların toplanması",
+            "b": "Xüsusi sınaqların aparılması",
+            "c": "İstehsalçı şirkətin məlumatları",
+            "d": "Sürətləndirilmiş sınaqlar"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 85,
+        "question_text": "Real istismar şəraitində statistik məlumatların əsas üstünlüyü nədir?",
+        "options": {
+            "a": "Bütün istismar amillərini nəzərə alır",
+            "b": "Daha sürətli alınır",
+            "c": "Daha az xərc tələb edir",
+            "d": "Daha dəqiq nəticələr verir"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 86,
+        "question_text": "Xüsusi sınaqların aparılmasının əsas mənfi cəhəti nədir?",
+        "options": {
+            "a": "Sınaqların təşkili mürəkkəb və çətindir",
+            "b": "Nəticələr etibarsızdır",
+            "c": "Kiçik detallar üçün keçərlidir",
+            "d": "Çox vaxt aparılmır"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 87,
+        "question_text": "Stend sınaqlarının əsas məqsədi nədir?",
+        "options": {
+            "a": "Mühərrikin gücünü ölçmək",
+            "b": "Konstruksiyanın real istismar şəraitinə uyğunluğunu yoxlamaq",
+            "c": "Yanacaq sərfiyyatını hesablamaq",
+            "d": "Sürəti ölçmək"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 88,
+        "question_text": "İstismar sınaqlarının aparılma məqsədi nədir?",
+        "options": {
+            "a": "Avtomobilin rəngini yoxlamaq",
+            "b": "Konstruksiyanın real şəraitdə etibarlılığını yoxlamaq",
+            "c": "Sürücülərin ixtisasını yoxlamaq",
+            "d": "Yanacaq keyfiyyətini yoxlamaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 89,
+        "question_text": "Etibarlılığın tərifinə əsasən, nəqliyyat vasitəsi nə vaxt etibarlı sayılır?",
+        "options": {
+            "a": "Yalnız yeni olduqda",
+            "b": "Verilmiş şəraitdə və yürüşdə normaları saxlamaqla öz funksiyasını yerinə yetirə bildikdə",
+            "c": "Yalnız təmir edildikdə",
+            "d": "Yalnız yüksək sürətlə hərəkət etdikdə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 90,
+        "question_text": "İmtinasızlıq anlayışı nəyi ifadə edir?",
+        "options": {
+            "a": "Avtomobilin tez-tez təmirdə olması",
+            "b": "Müəyyən vaxt və ya yürüşdə fasiləsiz işləmə qabiliyyəti",
+            "c": "Avtomobilin ucuz olması",
+            "d": "Avtomobilin yüksək sürətə çata bilməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 91,
+        "question_text": "Ömüruzunluğun əsas parametrlərindən biri deyil:",
+        "options": {
+            "a": "Əsaslı təmirə qədər orta resurs",
+            "b": "Qamma-faizli resurs",
+            "c": "İmtinaların intensivliyi",
+            "d": "Orta təmirlər arası yürüş"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 92,
+        "question_text": "Təmirəyararlılıq nə deməkdir?",
+        "options": {
+            "a": "Avtomobilin heç vaxt təmirə ehtiyacı olmaması",
+            "b": "İmtinaların minimum vaxtda aradan qaldırılması",
+            "c": "Avtomobilin qiymətinin aşağı olması",
+            "d": "Avtomobilin yalnız kiçik təmirlərə ehtiyacı olması"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 93,
+        "question_text": "Aşağıdakılardan hansı təmirəyararlılıq xüsusiyyətlərindən deyil?",
+        "options": {
+            "a": "Konstruksiyanın TQ və təmirə əlverişli olması",
+            "b": "Elementlərin qarşılıqlı əvəz olunması",
+            "c": "Avtomobilin rənginin solmaz olması",
+            "d": "Aqreqat və detalların unifikasiyası"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 94,
+        "question_text": "Bərpa olunmayan elementlərə nümunə verin:",
+        "options": {
+            "a": "Dirsəkli val",
+            "b": "Silindrlər bloku",
+            "c": "Tormoz qəlibləri",
+            "d": "Ötürmələr qutusu"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 95,
+        "question_text": "Qorunma qabiliyyəti əsasən nədən asılıdır?",
+        "options": {
+            "a": "Avtomobilin markasından",
+            "b": "İqlim şəraitindən",
+            "c": "Sürücünün ixtisasından",
+            "d": "Yanacağın keyfiyyətindən"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 96,
+        "question_text": "Bərpa olunmayan elementlərin əsas etibarlılıq göstəricilərinə daxildir:",
+        "options": {
+            "a": "Orta bərpa olunma vaxtı",
+            "b": "İmtinasız işləmə ehtimalı",
+            "c": "Texniki hazırlıq əmsalı",
+            "d": "TQ-un xüsusi əmək tutumu"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 97,
+        "question_text": "Hərəkət tərkibinin texniki vəziyyətinin təyini üsullarına daxil deyil:",
+        "options": {
+            "a": "Vizual müşahidələr",
+            "b": "Bilavasitə ölçmə əməliyyatları",
+            "c": "Sürücünün fikir bildirməsi",
+            "d": "Xarici təzahürlərə görə qiymətləndirmə"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 98,
+        "question_text": "Diaqnostikanın əsas üstünlüyü nədir?",
+        "options": {
+            "a": "Avtomobili sökmədən texniki vəziyyəti təyin etmək",
+            "b": "Daha az vaxt aparması",
+            "c": "Xərclərin az olması",
+            "d": "Bütün növ nasazlıqları aşkar etməsi"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 99,
+        "question_text": "Texniki qulluq və təmir sisteminin əsas vəzifəsi nədir?",
+        "options": {
+            "a": "Avtomobillərin sayını artırmaq",
+            "b": "Etibarlılığı normal səviyyədə saxlamaq və texniki hazırlıq əmsalını yüksəltmək",
+            "c": "Yanacaq sərfiyyatını minimuma endirmək",
+            "d": "Sürücülərin ixtisasını yoxlamaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 100,
+        "question_text": "Texniki qulluq və təmir sistemində profilaktik xarakterli təsirlər nəyi təşkil edir?",
+        "options": {
+            "a": "Təmiri",
+            "b": "Texniki qulluğu",
+            "c": "Sürücü ixtisasını",
+            "d": "Yanacaq keyfiyyətini"
+        },
+        "correct_answer": "b"
+    },
+        {
+        "question_number": 101,
+        "question_text": "Texniki qulluq və təmir normaları əsasən harada verilir?",
+        "options": {
+            "a": "Sürücülük vəsiqəsində",
+            "b": "Avtomobil nəqliyyatının texniki qulluğu və təmiri Əsasnaməsində",
+            "c": "Zavod təlimatlarında",
+            "d": "İstismar kitabçasında"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 102,
+        "question_text": "Gündəlik qulluğun əsas vəzifəsi nədir?",
+        "options": {
+            "a": "Avtomobilin mühərrikinin təmiri",
+            "b": "Hərəkət təhlükəsizliyini təmin etmək və avtomobili istismar materialları ilə təmin etmək",
+            "c": "Aqreqatların əsaslı təmirini həyata keçirmək",
+            "d": "Sürücülərin ixtisasını yoxlamaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 103,
+        "question_text": "TQ-1 və TQ-2 işləri arasındakı əsas fərq nədir?",
+        "options": {
+            "a": "TQ-1 qışda aparılır",
+            "b": "TQ-2 işlərinin həcmi TQ-1-dən xeyli böyükdür",
+            "c": "TQ-1 yük maşınları üçün nəzərdə tutulub",
+            "d": "TQ-2 vizual yoxlamadan ibarətdir"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 104,
+        "question_text": "Mövsümi texniki qulluq nə vaxt aparılır?",
+        "options": {
+            "a": "Hər ay",
+            "b": "İldə iki dəfə",
+            "c": "Hər həftə",
+            "d": "Qış aylarında"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 105,
+        "question_text": "Əsaslı təmir nə zaman həyata keçirilir?",
+        "options": {
+            "a": "TQ-2-dən sonra",
+            "b": "Avtomobilin itirilmiş işləmə qabiliyyətini bərpa etmək üçün",
+            "c": "Yeni avtomobillərdə",
+            "d": "Hər 1000 km-dən bir"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 106,
+        "question_text": "Baza detalı anlayışına aid deyil:",
+        "options": {
+            "a": "Mühərrik üçün silindrlər bloku",
+            "b": "Avtomobilin rəngi",
+            "c": "Körpü üçün tir",
+            "d": "Kabinə üçün karkas"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 107,
+        "question_text": "Cari təmirin əsas vəzifəsi nədir?",
+        "options": {
+            "a": "Avtomobili tamamilə yeniləmək",
+            "b": "İşləmə qabiliyyətini növbəti TQ-2-yə qədər saxlamaq",
+            "c": "Xarici görünüşü yaxşılaşdırmaq",
+            "d": "Baza detallarını əvəz etmək"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 108,
+        "question_text": "Dəmir yolu nəqliyyatında TQ-3-ün əsas məqsədi nədir?",
+        "options": {
+            "a": "Vaqonların rənglərini yeniləmək",
+            "b": "Lokomotivlərin fasiləsiz və təhlükəsiz hərəkətini təmin etmək",
+            "c": "Sürücülərin ixtisasını yoxlamaq",
+            "d": "Yanacaq sərfiyyatını azaltmaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 109,
+        "question_text": "Dəmir yolu nəqliyyatında əsaslı təmir növlərinə daxildir:",
+        "options": {
+            "a": "Təkərlərin dəyişdirilməsi",
+            "b": "ƏT-1 və ƏT-2",
+            "c": "Gündəlik qulluq",
+            "d": "Elektrik sisteminin yoxlanması"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 110,
+        "question_text": "Xəbərdar edici təmirin xarakterik xüsusiyyəti nədir?",
+        "options": {
+            "a": "Qəzadan sonra aparılır",
+            "b": "İmtinaların qabaqcadan qarşısını almaq üçün planlaşdırılır",
+            "c": "Yeni lokomotivlərdə həyata keçirilir",
+            "d": "İlində bir dəfə aparılır"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 111,
+        "question_text": "TQ və CT-in optimal rejiminin əsas məqsədi nədir?",
+        "options": {
+            "a": "Avtomobillərin sayını artırmaq",
+            "b": "Etibarlılığı təmin edərək xərcləri minimuma endirmək",
+            "c": "Sürücülərin iş yükünü azaltmaq",
+            "d": "Yanacaq sərfiyyatını maksimuma çatdırmaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 112,
+        "question_text": "Optimal rejimin təyin edilməsində əsas amil nədir?",
+        "options": {
+            "a": "Avtomobilin rəngi",
+            "b": "TQ və CT xərclərinin cəminin minimum qiyməti",
+            "c": "Sürücünün ixtisası",
+            "d": "İstismar müddəti"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 113,
+        "question_text": "TQ periodikliyi artdıqda nə baş verir?",
+        "options": {
+            "a": "CT xərcləri azalır",
+            "b": "Detalların ömür uzunluğu aşağı düşür",
+            "c": "Yanacaq sərfi artır",
+            "d": "Avtomobilin sürəti yüksəlir"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 114,
+        "question_text": "Texniki-iqtisadi üsulun mahiyyəti nədir?",
+        "options": {
+            "a": "Yalnız TQ xərclərini hesablamaq",
+            "b": "Xüsusi xərclərin cəminin minimumuna uyğun periodikliyi tapmaq",
+            "c": "Yalnız CT xərclərini azaltmaq",
+            "d": "Avtomobillərin sayını hesablamaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 115,
+        "question_text": "Korreksiya edilmiş rejim nəyi təmin edir?",
+        "options": {
+            "a": "Avtomobillərin rənginin dəyişdirilməsi",
+            "b": "Müəyyən istismar şəraitinə uyğun iş siyahısının dəqiqləşdirilməsi",
+            "c": "Sürücülərin maaşının artırılması",
+            "d": "Yanacaq keyfiyyətinin yaxşılaşdırılması"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 116,
+        "question_text": "Tez-tez təkrar olunan əməliyyatlara nümunə verin:",
+        "options": {
+            "a": "Əsaslı təmir",
+            "b": "TQ-1-də yerinə yetirilən işlər",
+            "c": "Mövsümi texniki qulluq",
+            "d": "İlkin qulluq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 117,
+        "question_text": "Diaqnostika stendlərində nə müəyyən edilə bilər?",
+        "options": {
+            "a": "Yalnız avtomobilin rəngi",
+            "b": "Mühərrikin güc göstəriciləri və yanacaq sərfi",
+            "c": "Sürücünün ixtisası",
+            "d": "Yolun keyfiyyəti"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 118,
+        "question_text": "Texniki istismarın son məqsədi nədir?",
+        "options": {
+            "a": "Avtomobillərin sayını artırmaq",
+            "b": "Daşımaların maya dəyərini aşağı salmaq",
+            "c": "Sürücülərin sayını çoxaltmaq",
+            "d": "Yanacaq sərfiyyatını artırmaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 119,
+        "question_text": "Texniki hazırlıq əmsalı nəyi xarakterizə edir?",
+        "options": {
+            "a": "Sürücülərin ixtisas səviyyəsini",
+            "b": "Parkda texniki cəhətdən saz avtomobillərin nisbətini",
+            "c": "Yanacağın keyfiyyətini",
+            "d": "Yolların vəziyyətini"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 120,
+        "question_text": "Avtomobil texniki cəhətdən saz olduğu halda istismara buraxıla bilməməsinin səbəbi ola bilər:",
+        "options": {
+            "a": "Avtomobilin çox yeni olması",
+            "b": "İstismar materiallarının olmaması",
+            "c": "Sürücünün həddən artıq təcrübəli olması",
+            "d": "Yolların çox yaxşı vəziyyətdə olması"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 121,
+        "question_text": "Diaqnostikanın əsas məqsədi nədir?",
+        "options": {
+            "a": "Avtomobillərin rəngini yoxlamaq",
+            "b": "Avtomobilin texniki vəziyyətini sökmədən təyin etmək və qalıq resursunu proqnozlaşdırmaq",
+            "c": "Sürücülərin ixtisasını yoxlamaq",
+            "d": "Yanacaq keyfiyyətini artırmaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 122,
+        "question_text": "Diaqnostikanın iqtisadi faydalarına daxil deyil:",
+        "options": {
+            "a": "Cari təmir xərclərinin azalması",
+            "b": "Yanacaq sərfiyyatının aşağı düşməsi",
+            "c": "Avtomobillərin sayının artması",
+            "d": "Ehtiyat hissələrinin sərfinin azalması"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 123,
+        "question_text": "Diaqnostika prosesi əsasən nəyi təmin edir?",
+        "options": {
+            "a": "Yalnız avtomobilin sürətini artırır",
+            "b": "Gizli imtinaların vaxtında aşkar edilməsini",
+            "c": "Sürücülərin iş vaxtını azaldır",
+            "d": "Yolların keyfiyyətini yaxşılaşdırır"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 124,
+        "question_text": "Struktur parametrlər nəyi xarakterizə edir?",
+        "options": {
+            "a": "Yalnız avtomobilin rəngini",
+            "b": "Mexanizmin elementləri arasında əlaqəni və qarşılıqlı hərəkəti",
+            "c": "Sürücünün ixtisas səviyyəsini",
+            "d": "Yanacağın keyfiyyətini"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 125,
+        "question_text": "Diaqnostik əlamətlərə aid deyil:",
+        "options": {
+            "a": "Mühərrikin işlənmiş qazlarının tərkibi",
+            "b": "Transmissiyada titrəyişlər",
+            "c": "Avtomobilin qiyməti",
+            "d": "Tormozlamanın keyfiyyəti"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 126,
+        "question_text": "Diaqnostik parametrlərin əsas tələblərindən biri nədir?",
+        "options": {
+            "a": "Rənginin gözəl olması",
+            "b": "Həssas olması",
+            "c": "Qiymətinin aşağı olması",
+            "d": "Yalnız təmir zamanı ölçülməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 127,
+        "question_text": "Ümumi diaqnostik parametrlər nəyi qiymətləndirir?",
+        "options": {
+            "a": "Yalnız təkərlərin vəziyyətini",
+            "b": "Avtomobilin texniki vəziyyətini bütövlükdə",
+            "c": "Yalnız sürücünün ixtisasını",
+            "d": "Yalnız yanacaq sərfiyyatını"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 128,
+        "question_text": "Diaqnostik parametrlərin eyni mənalı olması nə deməkdir?",
+        "options": {
+            "a": "Parametrin rənginin dəyişməsi",
+            "b": "Parametrin bir istiqamətdə dəyişməsi",
+            "c": "Parametrin heç dəyişməməsi",
+            "d": "Parametrin təsadüfi dəyişməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 129,
+        "question_text": "Texniki diaqnostikanın əsas funksiyalarına daxil deyil:",
+        "options": {
+            "a": "Nasazlıqların səbəblərini təyin etmək",
+            "b": "Avtomobillərin qiymətini müəyyən etmək",
+            "c": "Profilaktik təsirlərə nəzarət etmək",
+            "d": "İmtinasız işləmə resursunu proqnozlaşdırmaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 130,
+        "question_text": "Diaqnostikanın əsas məqsədi nədir?",
+        "options": {
+            "a": "Avtomobillərin rəngini yoxlamaq",
+            "b": "Avtomobilin texniki vəziyyətini qiymətləndirib lazımi təmir zonasını müəyyən etmək",
+            "c": "Sürücülərin ixtisasını yoxlamaq",
+            "d": "Yanacaq keyfiyyətini artırmaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 131,
+        "question_text": "D-1 diaqnostikası əsasən nəyi yoxlayır?",
+        "options": {
+            "a": "Avtomobilin rəngini",
+            "b": "Hərəkət təhlükəsizliyini təmin edən mexanizmləri",
+            "c": "Sürücünün sənədini",
+            "d": "Yanacaq sərfiyyatını"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 132,
+        "question_text": "Nəzarət diaqnostikası (ND) hansı məqsədlə istifadə olunur?",
+        "options": {
+            "a": "Yalnız yeni avtomobilləri yoxlamaq",
+            "b": "TQ və CT-də görülən işlərin keyfiyyətinə nəzarət etmək",
+            "c": "Sürücülərin iş vaxtını hesablamaq",
+            "d": "Avtomobillərin qiymətini müəyyən etmək"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 133,
+        "question_text": "D-2 diaqnostikası üçün nə cür avadanlıq tələb olunur?",
+        "options": {
+            "a": "Yalnız vizual yoxlama cihazları",
+            "b": "Dinamometrik stendlər və qaçış barabanları",
+            "c": "Yalnız termometrlər",
+            "d": "Yalnız təzyiq ölçən cihazlar"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 134,
+        "question_text": "Diaqnostikanın iqtisadi səmərəliliyi nədən asılıdır?",
+        "options": {
+            "a": "Yalnız avtomobillərin sayından",
+            "b": "Avadanlığın istifadə dərəcəsindən və texnoloji prosesin təşkilindən",
+            "c": "Yalnız sürücülərin maaşından",
+            "d": "Yalnız yanacağın qiymətindən"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 135,
+        "question_text": "Diaqnostika prosesinin mahiyyəti nədir?",
+        "options": {
+            "a": "Avtomobillərin rəngini yoxlamaq",
+            "b": "Diaqnostik parametrləri ölçüb texniki vəziyyət haqqında nəticə çıxarmaq",
+            "c": "Sürücülərin ixtisasını qiymətləndirmək",
+            "d": "Yanacaq keyfiyyətini təhlil etmək"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 136,
+        "question_text": "Diaqnostik matrisanın əsas məqsədi nədir?",
+        "options": {
+            "a": "Avtomobillərin qiymətini hesablamaq",
+            "b": "Nasazlıqlar və diaqnostik parametrlər arasında əlaqəni göstərmək",
+            "c": "Sürücülərin iş vaxtını qeyd etmək",
+            "d": "Yolların keyfiyyətini qiymətləndirmək"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 137,
+        "question_text": "Kompleks diaqnostik parametrlər nə vaxt istifadə olunur?",
+        "options": {
+            "a": "Yalnız yeni avtomobillərdə",
+            "b": "Bir neçə nasazlıq eyni parametrə təsir etdikdə",
+            "c": "Yalnız təmir zamanı",
+            "d": "Sürücü istədikdə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 138,
+        "question_text": "Ümumi diaqnostikanın əsas məqsədi nədir?",
+        "options": {
+            "a": "Yalnız avtomobilin rəngini yoxlamaq",
+            "b": "Avtomobilin bütövlükdə texniki vəziyyətini müəyyən etmək",
+            "c": "Sürücülərin ixtisasını qiymətləndirmək",
+            "d": "Yanacaq keyfiyyətini təhlil etmək"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 139,
+        "question_text": "Ekspress-diaqnostika nə vaxt aparılır?",
+        "options": {
+            "a": "Yalnız əsaslı təmirdən sonra",
+            "b": "Avtomobil xəttə çıxmazdan qabaq",
+            "c": "Yalnız qış aylarında",
+            "d": "Hər həftə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 140,
+        "question_text": "Xüsusi diaqnostika nəyi müəyyən edir?",
+        "options": {
+            "a": "Yalnız avtomobilin qiymətini",
+            "b": "Konkret nasaz aqreqatı və səbəblərini",
+            "c": "Yalnız yanacaq sərfiyyatını",
+            "d": "Sürücünün ixtisas səviyyəsini"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 141,
+        "question_text": "Stasionar diaqnostika necə aparılır?",
+        "options": {
+            "a": "Yolda hərəkət zamanı",
+            "b": "Laboratoriya şəraitində stendlərdə",
+            "c": "Sürücünün evində",
+            "d": "Yalnız qarajda"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 142,
+        "question_text": "Nəzarət diaqnostikasının əsas məqsədi nədir?",
+        "options": {
+            "a": "Avtomobillərin sayını hesablamaq",
+            "b": "TQ və CT işlərinin keyfiyyətinə nəzarət etmək",
+            "c": "Yanacaq qiymətlərini müqayisə etmək",
+            "d": "Sürücülərin iş vaxtını qeyd etmək"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 143,
+        "question_text": "Diaqnostika prosesində hansı prinsipə əməl etmək lazımdır?",
+        "options": {
+            "a": "Xüsusidən ümumiyə doğru",
+            "b": "Ümumidən xüsusiyə doğru",
+            "c": "Yalnız təmir zamanı",
+            "d": "Yalnız yeni avtomobillərdə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 144,
+        "question_text": "Diaqnostika üsulunu müəyyən etmək üçün nə qurulur?",
+        "options": {
+            "a": "Yalnız avtomobilin rəng sxemi",
+            "b": "Sistemin struktur blok sxemi",
+            "c": "Sürücülərin iş qrafiki",
+            "d": "Yanacaq sərfiyyatı cədvəli"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 145,
+        "question_text": "İşçi proseslərinə görə diaqnostika üsulu nəyi qiymətləndirir?",
+        "options": {
+            "a": "Yalnız avtomobilin sürətini",
+            "b": "Avtomobilin kompleks işləmə qabiliyyətini",
+            "c": "Yalnız şinlərin vəziyyətini",
+            "d": "Sürücünün ixtisas səviyyəsini"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 146,
+        "question_text": "Struktur blok sxeminin əsas məqsədi nədir?",
+        "options": {
+            "a": "Avtomobillərin sayını hesablamaq",
+            "b": "Elementlər və diaqnostik parametrlər arasında əlaqəni göstərmək",
+            "c": "Yanacaq qiymətlərini müqayisə etmək",
+            "d": "Təmir xərclərini azaltmaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 147,
+        "question_text": "Diaqnostika avadanlığının əsas vəzifəsi nədir?",
+        "options": {
+            "a": "Avtomobillərin rəngini dəyişmək",
+            "b": "Diaqnostik parametrləri ölçmək",
+            "c": "Sürücülərin ixtisasını yoxlamaq",
+            "d": "Yanacaq keyfiyyətini artırmaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 148,
+        "question_text": "İlk diaqnostika vasitələrinin əsas çatışmazlığı nə idi?",
+        "options": {
+            "a": "Çox bahalı olması",
+            "b": "Ayrı-ayrı aqreqatları yoxlaya bilməsi",
+            "c": "Yeni avtomobillərdə işləməsi",
+            "d": "Qış aylarında istifadə edilməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 149,
+        "question_text": "Dinamometrik stendlər əsasən nə üçün istifadə olunur?",
+        "options": {
+            "a": "Avtomobilin rəngini yoxlamaq",
+            "b": "Avtomobilin dartıcı keyfiyyətlərini və tormoz sistemini yoxlamaq",
+            "c": "Sürücülərin sürətini ölçmək",
+            "d": "Yanacaq sərfiyyatını hesablamaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 150,
+        "question_text": "Müasir diaqnostikanın inkişaf istiqaməti nədir?",
+        "options": {
+            "a": "Əl ilə ölçmə cihazları",
+            "b": "Avtomatik diaqnostika sistemlərinin yaradılması",
+            "c": "Vizual yoxlamalar",
+            "d": "Sürücülərin ixtisasının artırılması"
+        },
+        "correct_answer": "b"
+    },
+        {
+        "question_number": 151,
+        "question_text": "Diaqnostik avadanlıqların əsas vəzifəsi nədir?",
+        "options": {
+            "a": "Avtomobillərin rəngini yaxşılaşdırmaq",
+            "b": "Diaqnostik parametrləri ölçmək və texniki vəziyyəti müəyyən etmək",
+            "c": "Sürücülərin iş vaxtını qeyd etmək",
+            "d": "Yanacaq qiymətlərini müqayisə etmək"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 152,
+        "question_text": "Xarici DTV-lərə aid xüsusiyyət nədir?",
+        "options": {
+            "a": "Avtomobilin konstruksiyasına daxil olması",
+            "b": "Stasionar və səyyar tipli olması",
+            "c": "Yalnız təmir zamanı istifadə edilməsi",
+            "d": "Yalnız yeni avtomobillərdə işləməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 153,
+        "question_text": "Özündə DTV-lər nədən ibarətdir?",
+        "options": {
+            "a": "Yalnız ölçmə cihazlarından",
+            "b": "Vericilərdən, ölçmə qurğusundan və mikroprosessordan",
+            "c": "Yalnız səs-küy ölçən cihazlardan",
+            "d": "Yalnız işıq siqnallarından"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 154,
+        "question_text": "Quraşdırılan DTV-lərin əsas üstünlüyü nədir?",
+        "options": {
+            "a": "Həmişə avtomobildə qalması",
+            "b": "Az sayda olmaqla səmərəli diaqnostika təmin etməsi",
+            "c": "Yalnız yüksək sürətli avtomobillərdə işləməsi",
+            "d": "Yalnız qış aylarında istifadə edilməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 155,
+        "question_text": "Müasir diaqnostika standartlarına misal verin:",
+        "options": {
+            "a": "KS-4856",
+            "b": "AVRO-3 və AVRO-4",
+            "c": "LV-39CDA",
+            "d": "CD-3"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 156,
+        "question_text": "İstismar materiallarının keyfiyyəti əsasən nə ilə müəyyən edilir?",
+        "options": {
+            "a": "Rəngi ilə",
+            "b": "Fiziki-kimyəvi parametrlərin standartlara uyğunluğu ilə",
+            "c": "Qiyməti ilə",
+            "d": "İstehsalçı ölkə ilə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 157,
+        "question_text": "Benzinin fraksiya tərkibi əsasən nəyi xarakterizə edir?",
+        "options": {
+            "a": "Qiymətini",
+            "b": "Buxarlanma qabiliyyətini",
+            "c": "Rəngini",
+            "d": "Özlülüyünü"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 158,
+        "question_text": "Benzinin qovulma temperaturu həddindən aşağı olduqda hansı problem yaranır?",
+        "options": {
+            "a": "Mühərrik işə düşmür",
+            "b": "Buxar tıxacı əmələ gəlir",
+            "c": "Yanacaq sərfi azalır",
+            "d": "Detalların yeyilməsi dayanır"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 159,
+        "question_text": "Detonasiya ilə yanma zamanı alovun yayılma sürəti nə qədər olur?",
+        "options": {
+            "a": "50-100 m/san",
+            "b": "1500-2500 m/san",
+            "c": "100-500 m/san",
+            "d": "3000-4000 m/san"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 160,
+        "question_text": "Benzinin detonasiyaya qarşı davamlılığı nə ilə qiymətləndirilir?",
+        "options": {
+            "a": "Setan ədədi ilə",
+            "b": "Oktan ədədi ilə",
+            "c": "Karbon ədədi ilə",
+            "d": "Özlülük indeksi ilə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 161,
+        "question_text": "Oktan ədədi yüksəldikdə benzinin keyfiyyətinə nə təsir edir?",
+        "options": {
+            "a": "Yanacaq sərfi artır",
+            "b": "Detonasiyaya davamlılıq artır",
+            "c": "Buxarlanma azalır",
+            "d": "Rəngi dəyişir"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 162,
+        "question_text": "Benzinin tərkibində nə olması onun detonasiya davamlılığını aşağı salır?",
+        "options": {
+            "a": "Aromatik karbohidrogenlər",
+            "b": "Kükürdlü birləşmələr",
+            "c": "İzoparafinlər",
+            "d": "Antidetonatorlar"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 163,
+        "question_text": "Dizel yanacağının öz-özünə alışma qabiliyyəti nə ilə qiymətləndirilir?",
+        "options": {
+            "a": "Oktan ədədi ilə",
+            "b": "Setan ədədi ilə",
+            "c": "Karbon ədədi ilə",
+            "d": "Özlülük indeksi ilə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 164,
+        "question_text": "Dizel yanacağının özlülüyü normadan kiçik olduqda hansı problem yaranır?",
+        "options": {
+            "a": "Forsunka və yanacaq nasosundan sızmalar olur",
+            "b": "Yanacaq sərfi azalır",
+            "c": "Mühərrik daha səlis işləyir",
+            "d": "Qurum əmələ gəlməsi dayanır"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 165,
+        "question_text": "Mühərrik yağlarının əsas funksiyası nədir?",
+        "options": {
+            "a": "Sürtünməni azaltmaq",
+            "b": "Sürtünən səthlər arasında yağ qatı yaratmaq",
+            "c": "Temperaturu aşağı saxlamaq",
+            "d": "Korroziyanın qarşısını almaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 166,
+        "question_text": "Kiçik özlülüyə malik yağların üstünlüyü nədir?",
+        "options": {
+            "a": "Qurum əmələ gətirməsi",
+            "b": "Mühərrikin işə salma anındakı yeyilmələri azaltması",
+            "c": "Yağın sərfini artırması",
+            "d": "Lak birləşmələri yaratması"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 167,
+        "question_text": "Yağların korroziya xüsusiyyətləri nə ilə qiymətləndirilir?",
+        "options": {
+            "a": "Rəngi ilə",
+            "b": "Suda həll olunan turşuların miqdarı ilə",
+            "c": "Qiyməti ilə",
+            "d": "Özlülüyü ilə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 168,
+        "question_text": "Qurumun yaranma sürətinə nə təsir edir?",
+        "options": {
+            "a": "Yalnız yağın keyfiyyəti",
+            "b": "Yanacağın keyfiyyəti və işçi qarışığın tərkibi",
+            "c": "Yalnız temperatur",
+            "d": "Yalnız sürət"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 169,
+        "question_text": "Transmissiya yağlarının əsas xüsusiyyəti nə olmalıdır?",
+        "options": {
+            "a": "Aşağı özlülük",
+            "b": "Yüksək xüsusi təzyiqlərdə işləmə qabiliyyəti",
+            "c": "Açıq rəng",
+            "d": "Aşağı qiymət"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 170,
+        "question_text": "Porşen üzüklərinin ömür uzunluğunu artırmaq üçün nə edilir?",
+        "options": {
+            "a": "Böyük ölçülü etmək",
+            "b": "Xromdan nazik qat çəkmək",
+            "c": "Qiymətini artırmaq",
+            "d": "Rəngini dəyişmək"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 171,
+        "question_text": "Texniki qulluğun texnoloji prosesinin əsas məqsədi nədir?",
+        "options": {
+            "a": "İşçilərin sayını artırmaq",
+            "b": "Minimum vaxtda yüksək keyfiyyətli iş yerinə yetirmək",
+            "c": "Yanacaq sərfiyyatını azaltmaq",
+            "d": "Avtomobillərin sayını çoxaltmaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 172,
+        "question_text": "Əməliyyat anlayışı nəyi əhatə edir?",
+        "options": {
+            "a": "Yuma işləri",
+            "b": "Kompleks şəkildə ardıcıl yerinə yetirilən təsirlərin cəmini",
+            "c": "Təmir işləri",
+            "d": "Sürücülərin işi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 173,
+        "question_text": "Diaqnostika və nizamlama işlərinə nə daxildir?",
+        "options": {
+            "a": "Avtomobilin yuyulması",
+            "b": "Aqreqatların işləmə qabiliyyətinin yoxlanılması və nizamlanması",
+            "c": "Yanacaq doldurulması",
+            "d": "Şinlərin dəyişdirilməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 174,
+        "question_text": "Bərkitmə işləri nəyi əhatə edir?",
+        "options": {
+            "a": "Yağların dəyişdirilməsi",
+            "b": "Bərkitmə elementlərinin yoxlanılması və əvəz edilməsi",
+            "c": "Elektrik sistemi",
+            "d": "Sükan idarəsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 175,
+        "question_text": "Elektrotexniki işlərə nə daxildir?",
+        "options": {
+            "a": "Şin təzyiqinin yoxlanılması",
+            "b": "Elektrik avadanlığının diaqnostikası və nizamlanması",
+            "c": "Mühərrikin təmiri",
+            "d": "Karqo yerlərinin təmizlənməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 176,
+        "question_text": "Yağlama işlərinə nə daxildir?",
+        "options": {
+            "a": "Şinlərin dəyişdirilməsi",
+            "b": "Karter yağlarının dəyişdirilməsi və süzgəclərin təmizlənməsi",
+            "c": "Karqo yerlərinin təmizlənməsi",
+            "d": "Elektrik sisteminin yoxlanılması"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 177,
+        "question_text": "Şin işlərinə nə daxildir?",
+        "options": {
+            "a": "Mühərrikin təmiri",
+            "b": "Şin təzyiqinin yoxlanılması və protektorun təmizlənməsi",
+            "c": "Yağların dəyişdirilməsi",
+            "d": "Elektrik sisteminin nizamlanması"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 178,
+        "question_text": "İşçi postu nədir?",
+        "options": {
+            "a": "Sürücülərin istirahət yeri",
+            "b": "Müəyyən işlərin yerinə yetirildiyi avadanlıqlı istehsalat sahəsi",
+            "c": "Anbar sahəsi",
+            "d": "Ofis otağı"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 179,
+        "question_text": "Cari təmir nə vaxt yerinə yetirilir?",
+        "options": {
+            "a": "Planlaşdırılmış şəkildə hər ay",
+            "b": "Tələbata görə imtina və nasazlıq olduqda",
+            "c": "Qış aylarında",
+            "d": "Yeni avtomobillərdə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 180,
+        "question_text": "Cari təmirin əsas məqsədi nədir?",
+        "options": {
+            "a": "Avtomobili tamamilə yeniləmək",
+            "b": "İstismar keyfiyyətlərini pisləşmədən saxlamaq",
+            "c": "Sürücülərin ixtisasını yoxlamaq",
+            "d": "Yanacaq sərfiyyatını artırmaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 181,
+        "question_text": "Post işlərinə nə daxildir?",
+        "options": {
+            "a": "Anbar işləri",
+            "b": "Sökmə-yığma, bərkitmə və nizamlama işləri",
+            "c": "Ofis işləri",
+            "d": "Yuma işləri"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 182,
+        "question_text": "Hazırlıq işləri harada yerinə yetirilir?",
+        "options": {
+            "a": "Yolda",
+            "b": "İstehsalat sexlərində",
+            "c": "Anbarda",
+            "d": "Ofisdə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 183,
+        "question_text": "Texniki qulluqdan əvvəl nə etmək lazımdır?",
+        "options": {
+            "a": "Sürücünü yoxlamaq",
+            "b": "Avtomobili yığışdırmaq, yumaq və qurutmaq",
+            "c": "Yanacaq doldurmaq",
+            "d": "Sənədləri yoxlamaq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 184,
+        "question_text": "Dəmir yolu nəqliyyatında təmir prosesi nəyə görə təsnif edilir?",
+        "options": {
+            "a": "Rəngə görə",
+            "b": "Təmir olunan hissələrin saxlanılma göstəricilərinə görə",
+            "c": "Sürücülərin yaşına görə",
+            "d": "Yanacağın növünə görə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 185,
+        "question_text": "Vaqonların təmir periodikliyi nəyə əsasən qəbul edilir?",
+        "options": {
+            "a": "Sürücülərin istəyinə görə",
+            "b": "Nəqliyyat Nazirliyinin normativlərinə əsasən",
+            "c": "Hava şəraitinə görə",
+            "d": "Anbarın doluluğuna görə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 186,
+        "question_text": "Yuma-yığışdırma avadanlıqları ixtisaslaşma dərəcəsinə görə necə təsnif edilir?",
+        "options": {
+            "a": "Məhdud ixtisaslaşdırılmış, ixtisaslaşdırılmış və universal",
+            "b": "Stasionar və mobil",
+            "c": "Minik və yük avtomobilləri üçün",
+            "d": "Aşağı və yüksək təzyiqli"
+        },
+        "correct_answer": "a"
+    },
+    {
+        "question_number": 187,
+        "question_text": "Stasionar yuma qurğularının əsas üstünlüyü nədir?",
+        "options": {
+            "a": "Kiçik ölçüləri",
+            "b": "Yüksək məhsuldarlığı",
+            "c": "Quraşdırmanın asanlığı",
+            "d": "Su sərfiyyatının az olması"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 188,
+        "question_text": "Mobil yuma qurğuları əsasən harada istifadə olunur?",
+        "options": {
+            "a": "Yüksək məhsuldarlıq tələb olunan yerlərdə",
+            "b": "Kiçik məhsuldarlıqlı proqramlarda",
+            "c": "Yalnız avtobus parklarında",
+            "d": "Yalnız minik avtomobilləri üçün"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 189,
+        "question_text": "Hidrodinamik (şırnaqlı) yuma üsulunun mahiyyəti nədir?",
+        "options": {
+            "a": "Çirklərin abraziv hissəciklərlə təmizlənməsi",
+            "b": "Mayenin statik basqısının dinamik basqıya çevrilməsi",
+            "c": "Səthin nəmli materialla silinməsi",
+            "d": "Elektrik cərəyanından istifadə edilməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 190,
+        "question_text": "Hidrodinamik yuma üsulunun üstünlüyü NƏ deyil?",
+        "options": {
+            "a": "İstifadənin sadəliyi",
+            "b": "Lak-rəng örtüyünün intensiv dağılması",
+            "c": "Texnoloji rejimlərin asan nizamlanması",
+            "d": "Müxtəlif tipli avtomobillər üçün universallıq"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 191,
+        "question_text": "Hidroabraziv yuma üsulunu hidrodinamik üsuldan fərqləndirən əsas cəhət nədir?",
+        "options": {
+            "a": "Suyun daha yüksək təzyiqlə verilməsi",
+            "b": "Yuyucu mayedə abraziv hissəciklərin olması",
+            "c": "Yuma prosesinin daha uzun müddət çəkməsi",
+            "d": "Yalnız yük maşınlarında tətbiq olunması"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 192,
+        "question_text": "\"Nəm silmə\" üsulunun üstünlüyü nədir?",
+        "options": {
+            "a": "Qurğunun sadə konstruksiyası",
+            "b": "Yuyucu mayenin sərfinin az olması",
+            "c": "Yüksək etibarlılıq",
+            "d": "Bütün növ çirkləri səmərəli təmizləməsi"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 193,
+        "question_text": "OBAG firmasının susuz yuma qurğusu iş prinsipi nəyə əsaslanır?",
+        "options": {
+            "a": "Yüksək təzyiqli hava şırnağına",
+            "b": "Elektrod mikrodalğalarının təsirinə",
+            "c": "Kimyəvi reagentlərə",
+            "d": "Fırçaların mexaniki təsirinə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 194,
+        "question_text": "İtalyan \"IALA\" firmasının fırçasız yuma qurğusu necə işləyir?",
+        "options": {
+            "a": "Yalnız isti hava ilə qurudur",
+            "b": "Mənfi yüklü damcılarla bombardman və müsbət yüklü duşla təmizləyir",
+            "c": "Avtomobili xüsusi qumaşla örtür",
+            "d": "Yüksək təzyiqli isti su ilə yuyur"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 195,
+        "question_text": "Yuma qurğularının səmərəliliyini artırmaq üçün aşağıdakılardan hansı tədbir deyil?",
+        "options": {
+            "a": "Yuyucu maye basqısının artırılması",
+            "b": "Dəyişən hücum bucaqlı qurğuların yaradılması",
+            "c": "Su sərfiyyatının maksimuma çatdırılması",
+            "d": "İşçi suyun dəfələrlə istifadə olunması"
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 196,
+        "question_text": "Avtomobil kuzovunun lak-rəng örtüyünü düzgün yumaq üçün aşağıdakılardan hansı doğrudur?",
+        "options": {
+            "a": "Çirklər tək bir qatdan ibarətdir.",
+            "b": "Soyuq su şırnağı bütün çirk qatlarını tam təmizləyir.",
+            "c": "Çirklər bir neçə təbəqədən ibarət olur və müxtəlif üsullar tələb edir.",
+            "d": "Yuyucu məhlulların istifadəsi mütləq deyil."
+        },
+        "correct_answer": "c"
+    },
+    {
+        "question_number": 197,
+        "question_text": "Yuyucu məhlulun temperaturu niyə 40-45°C-dən çox olmamalıdır?",
+        "options": {
+            "a": "Suyun səthi gərilməsi artdığı üçün",
+            "b": "Kuzovun səth temperaturundan 18-20°C-dən çox olmaması tövsiyə olunduğu üçün",
+            "c": "Enerji sərfiyyatı çox artdığı üçün",
+            "d": "Yuyucu məhlulun təsiri azaldığı üçün"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 198,
+        "question_text": "Yuma işlərində ümumi texnologiya prosesinə aşağıdakılardan hansı daxil deyil?",
+        "options": {
+            "a": "Avtomobilin yuyucu məhlulla ilk isladılması",
+            "b": "Çirk təbəqələrinin mexaniki dağıdılması",
+            "c": "Yuyucu məhlul və suyun qabaqcadan qızdırılması",
+            "d": "Kuzovun yüksək temperaturda qurudulması"
+        },
+        "correct_answer": "d"
+    },
+    {
+        "question_number": 199,
+        "question_text": "Yüksək təzyiqli yuma qurğuları üçün təzyiq həddi nə ilə müəyyən edilir?",
+        "options": {
+            "a": "Yalnız su sərfiyyatı ilə",
+            "b": "Avtomobilin lak-rəng örtüyünün davamlılıq həddi ilə",
+            "c": "Yalnız elektrik enerjisi xərcləri ilə",
+            "d": "Qurğunun ölçüləri ilə"
+        },
+        "correct_answer": "b"
+    },
+    {
+        "question_number": 200,
+        "question_text": "Yumadan sonra çirklənmiş su niyə təmizlənməlidir?",
+        "options": {
+            "a": "Suyun qiyməti artdığı üçün",
+            "b": "Sanitar normalara uyğun olmadığı üçün",
+            "c": "Suyun rəngi dəyişdiyi üçün",
+            "d": "Yuma keyfiyyətini artırmaq üçün"
+        },
+        "correct_answer": "b"
+    }
+    // SONDA VİRGÜL YOXDUR - SON ELEMENT
+];
+
+        // Oyun dəyişənləri
+// Oyun dəyişənləri
+let currentQuestionIndex = 0;
+let userAnswers = [];
+let quizStarted = false;
+let userName = '';
+let timerInterval;
+const totalTime = 40;
+let timeLeft = totalTime;
+let isTimerPaused = false;
+let autoNextTimeout;
+
+// DOM elementləri
+const startContainer = document.getElementById('start-container');
+const quizHeader = document.getElementById('quiz-header');
+const quizContainer = document.getElementById('quiz-container');
+const resultContainer = document.getElementById('result-container');
+const questionElement = document.getElementById('question');
+const optionsContainer = document.getElementById('options-container');
+const progressElement = document.getElementById('progress');
+const questionCounterElement = document.getElementById('question-counter');
+const timerDisplayElement = document.getElementById('timer-display');
+const timerBarElement = document.getElementById('timer-bar');
+const nextBtn = document.getElementById('next-btn');
+const timerToggleBtn = document.getElementById('timer-toggle-btn');
+const autoNextMessage = document.getElementById('auto-next-message');
+const userGreeting = document.getElementById('user-greeting');
+const progressCircles = document.getElementById('progress-circles');
+const statsDetails = document.getElementById('stats-details');
+
+// ====== ƏSAS DƏYİŞİKLİKLƏR ======
+// 1. Avtomatik giriş sistemi
+window.onload = function() {
+    // LocalStorage-dən istifadəçi məlumatlarını yoxla
+    const savedUsername = localStorage.getItem('quizUsername');
+    const savedIsLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    
+    if (savedIsLoggedIn && savedUsername) {
+        // Əvvəlki giriş məlumatları var
+        userName = savedUsername;
+        userGreeting.innerHTML = `<strong>${userName}</strong> olaraq giriş etdiniz!`;
+    } else {
+        // Yeni giriş - təsadüfi ad
+        const guestNames = ['Qonaq', 'İstifadəçi', 'Tələbə', 'Tədqiqatçı', 'Biliksevər'];
+        userName = guestNames[Math.floor(Math.random() * guestNames.length)];
+        localStorage.setItem('quizUsername', userName);
+        localStorage.setItem('isLoggedIn', 'true');
+        userGreeting.innerHTML = `<strong>${userName}</strong> olaraq giriş etdiniz!`;
+    }
+    
+    // Particles yarat
+    createParticles();
+    
+    // Progress circles yarat
+    createProgressCircles();
+    
+    // Event listener-ları əlavə et
+    setupEventListeners();
+};
+
+function setupEventListeners() {
+    // Start button
+    document.getElementById('start-btn').addEventListener('click', () => {
+        console.log('Start button clicked!');
+        startContainer.style.display = 'none';
+        quizHeader.style.display = 'grid';
+        quizContainer.style.display = 'block';
+        document.getElementById('username-display').textContent = userName;
+        loadQuestion(currentQuestionIndex);
+    });
+
+    // Next button
+    document.getElementById('next-btn').addEventListener('click', nextQuestion);
+    
+    // Timer toggle button
+    document.getElementById('timer-toggle-btn').addEventListener('click', toggleTimer);
+    
+    // Restart button
+    document.getElementById('restart-btn').addEventListener('click', restartQuiz);
+}
+
+// ====== PARTİCLE SİSTEMİ ======
+function createParticles() {
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.animationDelay = `${Math.random() * 20}s`;
+        particle.style.animationDuration = `${15 + Math.random() * 10}s`;
+        particle.style.opacity = Math.random() * 0.5 + 0.3;
+        particle.style.width = particle.style.height = `${Math.random() * 6 + 2}px`;
+        particlesContainer.appendChild(particle);
+    }
+}
+
+// ====== PROGRESS CIRCLES ======
+function createProgressCircles() {
+    const totalQuestions = allQuestions.length;
+    progressCircles.innerHTML = '';
+    for (let i = 0; i < totalQuestions; i++) {
+        const circle = document.createElement('div');
+        circle.className = 'progress-circle';
+        circle.id = `circle-${i}`;
+        progressCircles.appendChild(circle);
+    }
+}
+
+function updateProgressCircles() {
+    const circles = document.querySelectorAll('.progress-circle');
+    circles.forEach((circle, index) => {
+        circle.classList.remove('active');
+        if (index === currentQuestionIndex) {
+            circle.classList.add('active');
+        }
+        
+        // Əvvəlki cavabları rənglə
+        if (userAnswers[index]) {
+            if (userAnswers[index].correct) {
+                circle.classList.add('correct');
+                circle.classList.remove('incorrect');
+            } else {
+                circle.classList.add('incorrect');
+                circle.classList.remove('correct');
+            }
+        }
+    });
+}
+
+// ====== TIMER FUNCTIONS ======
+function resetTimer() {
+    stopTimer();
+    timeLeft = totalTime;
+    timerDisplayElement.textContent = `${timeLeft}s`;
+    timerBarElement.style.width = '100%';
+    startTimer();
+}
+
+function startTimer() {
+    if (timerInterval) return;
+    isTimerPaused = false;
+    timerToggleBtn.innerHTML = '<i class="fas fa-pause"></i>';
+
+    timerInterval = setInterval(() => {
+        if (!isTimerPaused) {
+            timeLeft--;
+            timerDisplayElement.textContent = `${timeLeft}s`;
+            timerBarElement.style.width = `${(timeLeft / totalTime) * 100}%`;
+
+            if (timeLeft <= 0) {
+                handleAnswer(null, allQuestions[currentQuestionIndex].correct_answer, null);
+            }
+        }
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+    timerInterval = null;
+}
+
+function toggleTimer() {
+    if (isTimerPaused) {
+        isTimerPaused = false;
+        timerToggleBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        startTimer();
+    } else {
+        isTimerPaused = true;
+        timerToggleBtn.innerHTML = '<i class="fas fa-play"></i>';
+        stopTimer();
+    }
+}
+
+// ====== QUIZ FUNCTIONS ======
+function loadQuestion(questionIndex) {
+    console.log('Loading question:', questionIndex);
+    
+    clearTimeout(autoNextTimeout);
+    autoNextMessage.style.display = 'none';
+    
+    if (questionIndex >= allQuestions.length) {
+        showResult();
+        return;
+    }
+
+    const currentQuestion = allQuestions[questionIndex];
+    
+    questionElement.innerHTML = `<span style="color: var(--accent-pink);">${currentQuestion.question_number}.</span> ${currentQuestion.question_text}`;
+    progressElement.textContent = `Sual ${questionIndex + 1} / ${allQuestions.length}`;
+    questionCounterElement.textContent = `${questionIndex + 1} / ${allQuestions.length}`;
+
+    optionsContainer.innerHTML = '';
+    nextBtn.style.display = 'none';
+
+    const optionLetters = ['a', 'b', 'c', 'd'];
+    optionLetters.forEach((letter) => {
+        const optionText = currentQuestion.options[letter];
+        if (optionText) {
+            const button = document.createElement('button');
+            button.className = 'option-btn';
+            button.dataset.answer = letter;
+            button.innerHTML = `<span class="option-letter">${letter.toUpperCase()}</span> ${optionText}`;
+            
+            button.addEventListener('click', () => handleAnswer(letter, currentQuestion.correct_answer, button));
+            
+            optionsContainer.appendChild(button);
+        }
+    });
+
+    resetTimer();
+    updateProgressCircles();
+}
+
+function handleAnswer(selectedAnswer, correctAnswer, selectedButton) {
+    stopTimer();
+    
+    Array.from(optionsContainer.children).forEach(btn => {
+        btn.disabled = true;
+    });
+    
+    let isCorrect = selectedAnswer === correctAnswer;
+
+    userAnswers.push({
+        question: allQuestions[currentQuestionIndex].question_number,
+        correct: isCorrect,
+        userAnswer: selectedAnswer
+    });
+
+    // Cavabları rənglə
+    Array.from(optionsContainer.children).forEach(btn => {
+        const letter = btn.dataset.answer;
+        if (letter === correctAnswer) {
+            btn.classList.add('correct');
+        } else if (letter === selectedAnswer && letter !== correctAnswer) {
+            btn.classList.add('incorrect');
+        }
+    });
+
+    // Avtomatik növbəti suala keçid
+    autoNextMessage.textContent = isCorrect ? "✅ Düzgün cavab! Növbəti suala keçir..." : "❌ Yanlış cavab! Növbəti suala keçir...";
+    autoNextMessage.style.display = 'block';
+    autoNextMessage.style.color = isCorrect ? 'var(--accent-green)' : 'var(--accent-pink)';
+    
+    autoNextTimeout = setTimeout(() => {
+        nextQuestion();
+    }, 1500);
+    
+    // Progress circles yenilə
+    updateProgressCircles();
+}
+
+function nextQuestion() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < allQuestions.length) {
+        loadQuestion(currentQuestionIndex);
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    stopTimer();
+    clearTimeout(autoNextTimeout);
+    quizHeader.style.display = 'none';
+    quizContainer.style.display = 'none';
+    resultContainer.style.display = 'block';
+
+    const correctCount = userAnswers.filter(a => a.correct).length;
+    const totalQuestions = allQuestions.length;
+    const percentage = ((correctCount / totalQuestions) * 100).toFixed(1);
+    
+    // Skor
+    document.getElementById('score').innerHTML = `
+        <div style="font-size: 1.8rem; color: var(--secondary-blue); margin-bottom: 10px;">
+            ${userName}
+        </div>
+        <div style="font-size: 1.3rem; color: var(--accent-pink); margin-bottom: 15px;">
+            ${totalQuestions} sualdan ${correctCount} düzgün
+        </div>
+        <div style="font-size: 3rem; color: var(--primary-blue); font-weight: 800;">
+            ${percentage}%
+        </div>
+    `;
+    
+    // Statistika
+    let statsHTML = `
+        <div style="margin-bottom: 15px;">
+            <i class="fas fa-check-circle" style="color: var(--accent-green); margin-right: 10px;"></i>
+            <strong>Düzgün cavablar:</strong> ${correctCount}
+        </div>
+        <div style="margin-bottom: 15px;">
+            <i class="fas fa-times-circle" style="color: var(--accent-pink); margin-right: 10px;"></i>
+            <strong>Yanlış cavablar:</strong> ${totalQuestions - correctCount}
+        </div>
+        <div style="margin-bottom: 15px;">
+            <i class="fas fa-percentage" style="color: var(--primary-blue); margin-right: 10px;"></i>
+            <strong>Uğur faizi:</strong> ${percentage}%
+        </div>
+    `;
+    
+    if (percentage >= 80) {
+        statsHTML += `
+            <div style="margin-top: 20px; padding: 15px; background: rgba(6, 214, 160, 0.1); border-radius: 10px; border-left: 4px solid var(--accent-green);">
+                <i class="fas fa-trophy" style="color: var(--accent-yellow); margin-right: 10px;"></i>
+                <strong>ƏLA NƏTİCƏ!</strong> Təbriklər!
+            </div>
+        `;
+    } else if (percentage >= 60) {
+        statsHTML += `
+            <div style="margin-top: 20px; padding: 15px; background: rgba(67, 97, 238, 0.1); border-radius: 10px; border-left: 4px solid var(--primary-blue);">
+                <i class="fas fa-star" style="color: var(--accent-yellow); margin-right: 10px;"></i>
+                <strong>YAXŞI NƏTİCƏ!</strong> Davam edin!
+            </div>
+        `;
+    }
+    
+    statsDetails.innerHTML = statsHTML;
+}
+
+function restartQuiz() {
+    currentQuestionIndex = 0;
+    userAnswers = [];
+    
+    startContainer.style.display = 'none';
+    quizHeader.style.display = 'grid';
+    quizContainer.style.display = 'block';
+    resultContainer.style.display = 'none';
+    
+    document.getElementById('username-display').textContent = userName;
+    loadQuestion(currentQuestionIndex);
+    createProgressCircles();
+}
+
+// ====== KEYBOARD CONTROLS ======
+document.addEventListener('keydown', (e) => {
+    if (!quizContainer.style.display || quizContainer.style.display === 'none') return;
+    
+    // 1-4 rəqəmləri ilə cavab seçmək
+    if (e.key >= '1' && e.key <= '4') {
+        const index = parseInt(e.key) - 1;
+        const buttons = document.querySelectorAll('.option-btn');
+        if (buttons[index] && !buttons[index].disabled) {
+            const answer = buttons[index].dataset.answer;
+            const correctAnswer = allQuestions[currentQuestionIndex].correct_answer;
+            buttons[index].click();
+        }
+    }
+    
+    // Space - taymeri dayandır/davam et
+    if (e.key === ' ') {
+        e.preventDefault();
+        toggleTimer();
+    }
+    
+    // Enter - növbəti suala keç
+    if (e.key === 'Enter' && nextBtn.style.display !== 'none') {
+        nextBtn.click();
+    }
+    
+    // N - növbəti suala keç
+    if (e.key === 'n' || e.key === 'N') {
+        if (nextBtn.style.display !== 'none') {
+            nextBtn.click();
+        }
+    }
+});
+    </script>
+</body>
+</html>
