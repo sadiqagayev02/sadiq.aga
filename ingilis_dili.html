@@ -927,6 +927,25 @@
             align-items: center !important;
             justify-content: center !important;
         }
+
+        /* Başlama sual inputu üçün CSS */
+.start-question-input input:focus {
+    outline: none;
+    border-color: var(--accent-pink);
+    box-shadow: 0 0 10px rgba(255, 0, 100, 0.3);
+}
+
+.start-question-input input::-webkit-inner-spin-button,
+.start-question-input input::-webkit-outer-spin-button {
+    opacity: 1;
+    height: 30px;
+}
+
+/* Progress circles üçün düzəliş */
+.progress-circle.active {
+    border: 2px solid var(--accent-pink);
+    box-shadow: 0 0 10px var(--accent-pink);
+}
     </style>
 </head>
 <body>
@@ -1034,2234 +1053,2767 @@
     </div>
 
 <script>
-        // Sual məlumatları
-            const allQuestions = [
-             {
-  "questions": [
-    {
-      "question_number": 1,
-      "question_text": "Choose the correct definition. (orta) Prevents something bad from happening.",
-      "options": {
-        "a": "Judge",
-        "b": "Avoid",
-        "c": "Attend",
-        "d": "Staff"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 2,
-      "question_text": "Choose the correct definition. (orta) Considered to be acceptable and correct.",
-      "options": {
-        "a": "Respectable",
-        "b": "Invest",
-        "c": "Branded",
-        "d": "Casual"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 3,
-      "question_text": "Choose the correct definition. (orta) Clothes that are for informal situations.",
-      "options": {
-        "a": "Formal",
-        "b": "Branded",
-        "c": "Popular",
-        "d": "Casual"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 4,
-      "question_text": "Choose the correct definition. (orta) To go to or be present at an event or activity.",
-      "options": {
-        "a": "Attend",
-        "b": "Brand",
-        "c": "Fashionable",
-        "d": "Expect"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 5,
-      "question_text": "Choose the correct definition. (orta) Something damaged by pulling it apart.",
-      "options": {
-        "a": "Torn",
-        "b": "Branded",
-        "c": "Casual",
-        "d": "Staff"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 6,
-      "question_text": "Choose the correct definition. (orta) To form an opinion about something, using the information you have.",
-      "options": {
-        "a": "Expect",
-        "b": "Casual",
-        "c": "Judge",
-        "d": "Torn"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 7,
-      "question_text": "Choose the correct definition. (orta) Ideas that are sometimes wrong, about what someone or something is like.",
-      "options": {
-        "a": "Stereotypes",
-        "b": "Confidence",
-        "c": "Staff",
-        "d": "Branded"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 8,
-      "question_text": "Choose the correct definition. (orta) Opinions or feelings that you show by your behaviour.",
-      "options": {
-        "a": "Judge",
-        "b": "Staff",
-        "c": "Casual",
-        "d": "Attitudes"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 9,
-      "question_text": "Choose the correct definition. (orta) The name of a product made by a particular company.",
-      "options": {
-        "a": "Branded",
-        "b": "Casual",
-        "c": "Torn",
-        "d": "Popular"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 10,
-      "question_text": "Choose the correct definition. (orta) To use your money in a way that is good for you.",
-      "options": {
-        "a": "Spend",
-        "b": "Invest",
-        "c": "Attend",
-        "d": "Judge"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 11,
-      "question_text": "Choose the correct definition. (orta) Popular at a particular time.",
-      "options": {
-        "a": "Appropriate",
-        "b": "Casual",
-        "c": "Fashionable",
-        "d": "Torn"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 12,
-      "question_text": "Choose the correct definition. (orta) The people who work for a particular company or organization.",
-      "options": {
-        "a": "Staff",
-        "b": "Attitudes",
-        "c": "Stereotypes",
-        "d": "Confidence"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 13,
-      "question_text": "Choose the correct definition. (orta) To think that something will happen.",
-      "options": {
-        "a": "Judge",
-        "b": "Predict",
-        "c": "Attend",
-        "d": "Expect"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 14,
-      "question_text": "Choose the correct definition. (orta) A set of rules about what people should wear.",
-      "options": {
-        "a": "Dress code",
-        "b": "Casual",
-        "c": "Branded",
-        "d": "Appropriate"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 15,
-      "question_text": "Choose the correct definition. (orta) The belief that you can do things well.",
-      "options": {
-        "a": "Staff",
-        "b": "Attitudes",
-        "c": "Confidence",
-        "d": "Popular"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 16,
-      "question_text": "Complete the sentence.(cetin) I like to wear a suit for work. I think it's important to wear something ___ at work. However, at home I usually wear___ clothes like jeans or a tracksuit.",
-      "options": {
-        "a": "respect / casual",
-        "b": "judge / invest",
-        "c": "branded / casual",
-        "d": "casual/respect"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 17,
-      "question_text": "Complete the sentence.(cetin) I try to ___ listening to the ___ that people have of different countries.",
-      "options": {
-        "a": "staff / attitude",
-        "b": "avoid / stereotypes",
-        "c": "stereotypes / avoid",
-        "d": "attitudes / confidence"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 18,
-      "question_text": "Complete the sentence.(cetin) There are rules about clothes for the people that work in my company. The ___ says all ___ must wear suits.",
-      "options": {
-        "a": "staff, dress code",
-        "b": "brand, staff",
-        "c": "dress code, staff",
-        "d": "confidence, torn"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 19,
-      "question_text": "Complete the sentence.(cetin) My boss thinks it's fine if we wear T-shirts and jeans, but they must be clean and they can't be ___ or have holes in them! He says that if someone is dirty and untidy, it shows a bad ___ to their work.",
-      "options": {
-        "a": "casual / staff",
-        "b": "branded / confidence",
-        "c": "torn / attitude",
-        "d": "popular / brand"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 20,
-      "question_text": "Complete the sentence.(cetin) When he ___ the interview, he came to the office in very nice clothes. We thought he was perfect for the company and we ___ him to be a good worker. However, he was terrible! I'm not going to ___ people by their appearances any more!",
-      "options": {
-        "a": "judged / attend / torn",
-        "b": "invest / torn / casual",
-        "c": "attended / expect / judge",
-        "d": "attend / judge / brand"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 21,
-      "question_text": "Complete the sentence.(cetin) People today want to be ___ and dress in the most popular clothes. They are also happy to pay for expensive clothes just because they have the name of a famous ___ on them!",
-      "options": {
-        "a": "fashionable / branded",
-        "b": "casual / staff",
-        "c": "popular / brand",
-        "d": "appropriate / attitudes"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 22,
-      "question_text": "Complete the sentence.(cetin) I read in a magazine that good clothes can give you ___ and make you feel you can do things well. So I'm going to ___ some money in a few new suits and buy some expensive shoes, too!",
-      "options": {
-        "a": "torn / attend",
-        "b": "confidence / invest",
-        "c": "casual / judge",
-        "d": "attitudes / spend"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 23,
-      "question_text": "Choose the correct variant: The students are___ jeans and T-shirts.",
-      "options": {
-        "a": "wearing",
-        "b": "casual",
-        "c": "branded",
-        "d": "torn"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 24,
-      "question_text": "Choose the correct variant: My dad usually ___ in dark colours.",
-      "options": {
-        "a": "goes",
-        "b": "plays",
-        "c": "studies",
-        "d": "dresses"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 25,
-      "question_text": "Choose the correct variant: What were they___?",
-      "options": {
-        "a": "dress",
-        "b": "wearing",
-        "c": "dresses",
-        "d": "dressed"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 26,
-      "question_text": "Choose the correct variant: It's an informal celebration. You don't have to ___ up.",
-      "options": {
-        "a": "dress",
-        "b": "wears",
-        "c": "wear",
-        "d": "wearing"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 27,
-      "question_text": "Choose the correct variant: My sister needs an hour to ___ in the morning.",
-      "options": {
-        "a": "put on",
-        "b": "dressing",
-        "c": "dressed",
-        "d": "wear"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 28,
-      "question_text": "Choose the correct variant: She ___ a beautiful white dress at her wedding last Saturday.",
-      "options": {
-        "a": "wear",
-        "b": "dress",
-        "c": "wore",
-        "d": "clothes"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 29,
-      "question_text": "Choose the correct variant: I love helping my sister to ___ her baby.",
-      "options": {
-        "a": "dress",
-        "b": "get",
-        "c": "look",
-        "d": "wear"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 30,
-      "question_text": "Choose the correct variant: Don't ___ those football boots in the house!",
-      "options": {
-        "a": "plays",
-        "b": "dresses",
-        "c": "judges",
-        "d": "wear"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 31,
-      "question_text": "Complete the sentence.(cetin) It was very hot so I ___ my coat off.",
-      "options": {
-        "a": "took",
-        "b": "wear",
-        "c": "put",
-        "d": "get"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 32,
-      "question_text": "Complete the sentence.(cetin) Can you see the girl ___ the red dress? That's my sister.",
-      "options": {
-        "a": "on",
-        "b": "in",
-        "c": "with",
-        "d": "at"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 33,
-      "question_text": "Complete the sentence.(cetin) Jack! Put your socks ___ before your shoes!",
-      "options": {
-        "a": "up",
-        "b": "off",
-        "c": "on",
-        "d": "in"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 34,
-      "question_text": "Complete the sentence.(cetin) Do your coat___. It's raining!",
-      "options": {
-        "a": "take",
-        "b": "wear",
-        "c": "up",
-        "d": "put on"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 35,
-      "question_text": "Complete the sentence.(cetin) I don't think you look good ___ that suit.",
-      "options": {
-        "a": "on",
-        "b": "at",
-        "c": "in",
-        "d": "with"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 36,
-      "question_text": "Complete the sentence.(cetin) Pull ___ your sleeves before you wash your hands!",
-      "options": {
-        "a": "off",
-        "b": "down",
-        "c": "up",
-        "d": "on"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 37,
-      "question_text": "Complete the sentence.(cetin) Yes, I like this dress. Can I try it ___ please?",
-      "options": {
-        "a": "in",
-        "b": "with",
-        "c": "off",
-        "d": "on"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 38,
-      "question_text": "Complete the sentence.(cetin) Boys! Take ___ your football boots before you come in the house!",
-      "options": {
-        "a": "on",
-        "b": "in",
-        "c": "up",
-        "d": "off"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 39,
-      "question_text": "Choose the correct definition. (orta) An injury to a part of the body.",
-      "options": {
-        "a": "wound",
-        "b": "set off",
-        "c": "sharp",
-        "d": "rush"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 40,
-      "question_text": "Choose the correct definition. (orta) Certain to happen.",
-      "options": {
-        "a": "sponsor",
-        "b": "destined",
-        "c": "wound",
-        "d": "face down"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 41,
-      "question_text": "Choose the correct definition. (orta) To become healthy again after an illness or accident.",
-      "options": {
-        "a": "recuperate",
-        "b": "toward",
-        "c": "sank",
-        "d": "battled"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 42,
-      "question_text": "Choose the correct definition. (orta) Tried very hard to deal with a dangerous situation.",
-      "options": {
-        "a": "battled",
-        "b": "toward",
-        "c": "sponsors",
-        "d": "judge"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 43,
-      "question_text": "Choose the correct definition. (orta) In the direction of somebody or something.",
-      "options": {
-        "a": "sponsor",
-        "b": "toward",
-        "c": "brand",
-        "d": "sharp"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 44,
-      "question_text": "Choose the correct definition. (orta) Left on a journey.",
-      "options": {
-        "a": "sank",
-        "b": "set off",
-        "c": "sponsor",
-        "d": "invest"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 45,
-      "question_text": "Choose the correct definition. (orta) Extremely good at something.",
-      "options": {
-        "a": "sharp",
-        "b": "outstanding",
-        "c": "attend",
-        "d": "wound"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 46,
-      "question_text": "Choose the correct definition. (orta) Held something strongly.",
-      "options": {
-        "a": "set off",
-        "b": "sponsors",
-        "c": "gripped",
-        "d": "toward"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 47,
-      "question_text": "Choose the correct definition. (orta) Having a thin edge that can cut things easily.",
-      "options": {
-        "a": "sharp",
-        "b": "wound",
-        "c": "gripped",
-        "d": "rushed"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 48,
-      "question_text": "Choose the correct definition. (orta) Moved in the direction of a place.",
-      "options": {
-        "a": "dress code",
-        "b": "headed for",
-        "c": "gripped",
-        "d": "toward"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 49,
-      "question_text": "Choose the correct definition. (orta) Went under the surface of a soft object.",
-      "options": {
-        "a": "sank",
-        "b": "invest",
-        "c": "destined",
-        "d": "wound"
-      },
-      "correct_answer": "a"
-    }
-  ]
-},
-{
-  "questions": [
-    {
-      "question_number": 50,
-      "question_text": "Choose the correct definition. (orta) The natural force that helps us in dangerous situations.",
-      "options": {
-        "a": "torn",
-        "b": "confidence",
-        "c": "brand",
-        "d": "survival instinct"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 51,
-      "question_text": "Choose the correct definition. (orta) Did something quickly.",
-      "options": {
-        "a": "sank",
-        "b": "sponsors",
-        "c": "rushed",
-        "d": "gripped"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 52,
-      "question_text": "Choose the correct definition. (orta) Businesses that pay sports stars to advertise their services or products.",
-      "options": {
-        "a": "sponsors",
-        "b": "toward",
-        "c": "set off",
-        "d": "wound"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 53,
-      "question_text": "Choose the correct definition. (orta) With the front towards the ground.",
-      "options": {
-        "a": "headed for",
-        "b": "survival instinct",
-        "c": "sharp",
-        "d": "face down"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 54,
-      "question_text": "Complete the sentence.(cetin) Don't play with that knife! It's very _.",
-      "options": {
-        "a": "sharp",
-        "b": "expect",
-        "c": "wound",
-        "d": "gripped"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 55,
-      "question_text": "Complete the sentence.(cetin) The ambulance _ quickly the injured man to hospital.",
-      "options": {
-        "a": "toward",
-        "b": "rushed",
-        "c": "sharp",
-        "d": "set off"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 56,
-      "question_text": "Complete the sentence.(cetin) He's an _ player. I think he's the best in the team.",
-      "options": {
-        "a": "battle",
-        "b": "gripped",
-        "c": "outstanding",
-        "d": "sponsors"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 57,
-      "question_text": "Complete the sentence.(cetin) When the lion ran ___ us we thought he was going to attack. We were really frightened!",
-      "options": {
-        "a": "toward",
-        "b": "wound",
-        "c": "outstanding",
-        "d": "sink"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 58,
-      "question_text": "Complete the sentence.(cetin) When I go to sleep I always lie ___ on my bed.",
-      "options": {
-        "a": "face down",
-        "b": "sponsor",
-        "c": "sank",
-        "d": "gripped"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 59,
-      "question_text": "Complete the sentence.(cetin) She cut herself badly with a knife and the ___ took a long time to heal.",
-      "options": {
-        "a": "wound",
-        "b": "recuperate",
-        "c": "survival instinct",
-        "d": "gripped"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 60,
-      "question_text": "Complete the sentence.(cetin) We left the theatre and slowly___home.",
-      "options": {
-        "a": "sink",
-        "b": "sharp",
-        "c": "headed for",
-        "d": "sponsor"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 61,
-      "question_text": "Complete the sentence.(cetin) It took me a long time to ___ from the illness. I was in bed for six months.",
-      "options": {
-        "a": "recuperate",
-        "b": "battled",
-        "c": "gripped",
-        "d": "sink"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 62,
-      "question_text": "Complete the sentence.(cetin) We ___ from home at 10 a.m. but we didn't arrive until late in the evening.",
-      "options": {
-        "a": "towards",
-        "b": "set off",
-        "c": "rush",
-        "d": "sponsor"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 63,
-      "question_text": "Complete the sentence.(cetin) That dog is really dangerous. It ___ its teeth into my friend's leg.",
-      "options": {
-        "a": "sharp",
-        "b": "gripped",
-        "c": "sank",
-        "d": "wound"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 64,
-      "question_text": "Complete the sentence.(cetin) Our football team has got a new ___. Their name is on the front of our shirts.",
-      "options": {
-        "a": "sponsors",
-        "b": "outstanding",
-        "c": "wound",
-        "d": "torward"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 65,
-      "question_text": "Complete the sentence.(cetin) It was ___ that made me jump out of the way of the car. I didn't think about it!",
-      "options": {
-        "a": "sponsor",
-        "b": "survival instinct",
-        "c": "outstanding",
-        "d": "face down"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 66,
-      "question_text": "Complete the sentence.(cetin) I ___ my bag but the thief was stronger than me and he pulled it from me.",
-      "options": {
-        "a": "gripped",
-        "b": "sharp",
-        "c": "rushed",
-        "d": "set off"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 67,
-      "question_text": "Complete the sentence.(cetin) My grandmother and my mother were doctors, so I was ___ to be one too.",
-      "options": {
-        "a": "survival instinct",
-        "b": "destined",
-        "c": "sponsor",
-        "d": "battle"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 68,
-      "question_text": "Complete the sentence.(cetin) The firemen ___ with the fire for four hours before they controlled it.",
-      "options": {
-        "a": "sharp",
-        "b": "outstanding",
-        "c": "head for",
-        "d": "battled"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 69,
-      "question_text": "Complete the sentence.(cetin) Don't play with that knife! It's very _.",
-      "options": {
-        "a": "sharp",
-        "b": "expect",
-        "c": "wound",
-        "d": "gripped"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 70,
-      "question_text": "Complete the sentence.(cetin) The ambulance _ quickly the injured man to hospital.",
-      "options": {
-        "a": "toward",
-        "b": "rushed",
-        "c": "sharp",
-        "d": "set off"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 71,
-      "question_text": "Complete the sentence.(cetin) He's an _ player. I think he's the best in the team.",
-      "options": {
-        "a": "battle",
-        "b": "gripped",
-        "c": "outstanding",
-        "d": "sponsors"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 72,
-      "question_text": "Complete the sentence.(cetin) When the lion ran ___ us we thought he was going to attack. We were really frightened!",
-      "options": {
-        "a": "toward",
-        "b": "wound",
-        "c": "outstanding",
-        "d": "sink"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 73,
-      "question_text": "Complete the sentence.(cetin) When I go to sleep I always lie ___ on my bed.",
-      "options": {
-        "a": "face down",
-        "b": "sponsor",
-        "c": "sank",
-        "d": "gripped"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 74,
-      "question_text": "Complete the sentence.(cetin) She cut herself badly with a knife and the ___ took a long time to heal.",
-      "options": {
-        "a": "wound",
-        "b": "recuperate",
-        "c": "survival instinct",
-        "d": "gripped"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 75,
-      "question_text": "Complete the sentence.(cetin) We left the theatre and slowly___home.",
-      "options": {
-        "a": "sink",
-        "b": "sharp",
-        "c": "headed for",
-        "d": "sponsor"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 76,
-      "question_text": "Complete the sentence.(cetin) It took me a long time to ___ from the illness. I was in bed for six months.",
-      "options": {
-        "a": "recuperate",
-        "b": "battled",
-        "c": "gripped",
-        "d": "sink"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 77,
-      "question_text": "Complete the sentence.(cetin) We ___ from home at 10 a.m. but we didn't arrive until late in the evening.",
-      "options": {
-        "a": "towards",
-        "b": "set off",
-        "c": "rush",
-        "d": "sponsor"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 78,
-      "question_text": "Complete the sentence.(cetin) That dog is really dangerous. It ___ its teeth into my friend's leg.",
-      "options": {
-        "a": "sharp",
-        "b": "gripped",
-        "c": "sank",
-        "d": "wound"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 79,
-      "question_text": "Complete the sentence.(cetin) Our football team has got a new ___. Their name is on the front of our shirts.",
-      "options": {
-        "a": "sponsors",
-        "b": "outstanding",
-        "c": "wound",
-        "d": "torward"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 80,
-      "question_text": "Complete the sentence.(cetin) It was ___ that made me jump out of the way of the car. I didn't think about it!",
-      "options": {
-        "a": "sponsor",
-        "b": "survival instinct",
-        "c": "outstanding",
-        "d": "face down"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 81,
-      "question_text": "Complete the sentence.(cetin) I ___ my bag but the thief was stronger than me and he pulled it from me.",
-      "options": {
-        "a": "gripped",
-        "b": "sharp",
-        "c": "rushed",
-        "d": "set off"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 82,
-      "question_text": "Complete the sentence.(cetin) My grandmother and my mother were doctors, so I was ___ to be one too.",
-      "options": {
-        "a": "survival instinct",
-        "b": "destined",
-        "c": "sponsor",
-        "d": "battle"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 83,
-      "question_text": "Complete the sentence.(cetin) The firemen ___ with the fire for four hours before they controlled it.",
-      "options": {
-        "a": "sharp",
-        "b": "outstanding",
-        "c": "head for",
-        "d": "battled"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 84,
-      "question_text": "Choose the correct variant: You win a game when you get 21 points.",
-      "options": {
-        "a": "badminton",
-        "b": "football",
-        "c": "tennis",
-        "d": "rugby"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 85,
-      "question_text": "Choose the correct variant: A player can't touch the ball two times in a row.",
-      "options": {
-        "a": "volleyball",
-        "b": "cricket",
-        "c": "rugby",
-        "d": "golf"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 86,
-      "question_text": "Choose the correct variant: 'It was a dead heat. Both runners finished in 10.85 seconds.'",
-      "options": {
-        "a": "tennis",
-        "b": "athletics",
-        "c": "badminton",
-        "d": "rugby"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 87,
-      "question_text": "Choose the correct variant: 'It's the final of the ladies' singles at Wimbledon today.'",
-      "options": {
-        "a": "badminton",
-        "b": "cricket",
-        "c": "football",
-        "d": "tennis"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 88,
-      "question_text": "Choose the correct variant: 'That's his third goal in the World Cup final. It's a hat trick!'",
-      "options": {
-        "a": "football",
-        "b": "rugby",
-        "c": "tennis",
-        "d": "hockey"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 89,
-      "question_text": "Choose the correct variant: 'She's thrown her opponent onto the mat.'",
-      "options": {
-        "a": "tennis",
-        "b": "football",
-        "c": "judo",
-        "d": "cricket"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 90,
-      "question_text": "Choose the correct variant: 'Dribbling is when you run along the court bouncing the ball.'",
-      "options": {
-        "a": "volleyball",
-        "b": "hockey",
-        "c": "basketball",
-        "d": "badminton"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 91,
-      "question_text": "Choose the correct variant: 'The fielder is the person who tries to catch the ball.'",
-      "options": {
-        "a": "cricket",
-        "b": "tennis",
-        "c": "rugby",
-        "d": "badminton"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 92,
-      "question_text": "Choose the correct variant: 'She lifted 128 kilograms to break the world record.'",
-      "options": {
-        "a": "judo",
-        "b": "weightlifting",
-        "c": "football",
-        "d": "hockey"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 93,
-      "question_text": "Choose the correct variant: 'It was very close! The ball stopped 10 centimetres from the hole.'",
-      "options": {
-        "a": "golf",
-        "b": "tennis",
-        "c": "badminton",
-        "d": "basketball"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 94,
-      "question_text": "Choose the correct variant: 'They don't use a ball. They use a puck.'",
-      "options": {
-        "a": "football",
-        "b": "tennis",
-        "c": "ice hockey",
-        "d": "volleyball"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 95,
-      "question_text": "Choose the correct variant: 'He ran 60 metres along the pitch and scored a try.'",
-      "options": {
-        "a": "rugby",
-        "b": "football",
-        "c": "tennis",
-        "d": "badminton"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 96,
-      "question_text": "Choose the correct definition. (orta) Connected with the countryside.",
-      "options": {
-        "a": "dusty",
-        "b": "industrial",
-        "c": "abandoned",
-        "d": "rural"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 97,
-      "question_text": "Choose the correct definition. (orta) People who come to live in a country from another country.",
-      "options": {
-        "a": "inhabitants",
-        "b": "immigrants",
-        "c": "clerks",
-        "d": "treasurers"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 98,
-      "question_text": "Choose the correct definition. (orta) A person who lives in a place.",
-      "options": {
-        "a": "clerk",
-        "b": "inhabitant",
-        "c": "idealist",
-        "d": "migrant"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 99,
-      "question_text": "Choose the correct definition. (orta) Someone who works with documents in an office, bank, etc.",
-      "options": {
-        "a": "clerk",
-        "b": "treasurer",
-        "c": "migrant",
-        "d": "inhabitant"
-      },
-      "correct_answer": "a"
-    }
-  ]
-},
-{
-  "questions": [
-    {
-      "question_number": 100,
-      "question_text": "Choose the correct definition. (orta) Growing or developing successfully.",
-      "options": {
-        "a": "rusty",
-        "b": "abandoned",
-        "c": "industrial",
-        "d": "thriving"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 101,
-      "question_text": "Choose the correct definition. (orta) A floor or level of a building.",
-      "options": {
-        "a": "dusty",
-        "b": "treasurer",
-        "c": "storey",
-        "d": "migrant"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 102,
-      "question_text": "Choose the correct definition. (orta) Something that has been left and not used any more.",
-      "options": {
-        "a": "abandoned",
-        "b": "thriving",
-        "c": "industrial",
-        "d": "dusty"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 103,
-      "question_text": "Choose the correct definition. (orta) Having a lot of machines or factories.",
-      "options": {
-        "a": "industrial",
-        "b": "thriving",
-        "c": "rusting",
-        "d": "abandoned"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 104,
-      "question_text": "Choose the correct definition (orta) Being damaged by a red substance that forms on metal.",
-      "options": {
-        "a": "rusting",
-        "b": "abandoned",
-        "c": "dusty",
-        "d": "thriving"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 105,
-      "question_text": "Choose the correct definition (orta) Tiny pieces of a substance.",
-      "options": {
-        "a": "thriving",
-        "b": "rusting",
-        "c": "dust",
-        "d": "abandoned"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 106,
-      "question_text": "Choose the correct definition (orta) Started building and living in a town.",
-      "options": {
-        "a": "founded",
-        "b": "abandoned",
-        "c": "rusting",
-        "d": "dusty"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 107,
-      "question_text": "Choose the correct definition. (orta) Badly damaged or destroyed.",
-      "options": {
-        "a": "dusty",
-        "b": "thriving",
-        "c": "industrial",
-        "d": "in ruins"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 108,
-      "question_text": "Choose the correct definition. (orta) Someone who is in charge of an organization's money.",
-      "options": {
-        "a": "treasurer",
-        "b": "clerk",
-        "c": "migrant",
-        "d": "inhabitant"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 109,
-      "question_text": "Choose the correct definition. (orta) Old things that do not have much value.",
-      "options": {
-        "a": "junk",
-        "b": "dusty",
-        "c": "abandoned",
-        "d": "rusty"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 110,
-      "question_text": "Choose the correct definition. (orta) Went to another place usually to find a job.",
-      "options": {
-        "a": "founded",
-        "b": "migrated",
-        "c": "abandoned",
-        "d": "thriving"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 111,
-      "question_text": "Complete the sentence.(cetin) The house is ___ as nobody has lived there for years. The rooms are full of old ___ and they are very dirty. In fact, the building is ___ and it's dangerous to go into the house.",
-      "options": {
-        "a": "rusty / documents / thriving",
-        "b": "abandoned / junk / in ruins",
-        "c": "industrial / dust / migrated",
-        "d": "thriving / abandoned / rusty"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 112,
-      "question_text": "Complete the sentence.(cetin) I went to look at a car yesterday. It was really old and ___. It was full of dirt and ___.",
-      "options": {
-        "a": "rusting/ dust",
-        "b": "dust / rusting",
-        "c": "abandoned / industrial",
-        "d": "founded / rusty"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 113,
-      "question_text": "Complete the sentence.(cetin) My parents moved here 20 years ago when the town was ___ and doing well. My dad ___ the family business in 1975 and today we have five factories in three different countries.",
-      "options": {
-        "a": "rusty / industrial",
-        "b": "founded / thriving",
-        "c": "thriving / founded",
-        "d": "rural / migrated"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 114,
-      "question_text": "Complete the sentence.(cetin) When I first came to the town hall I worked as a ___ in the office. Now I've got a more important job, I'm the ___ and I control all the money that the city spends.",
-      "options": {
-        "a": "treasurer / clerk",
-        "b": "migrant / treasurer",
-        "c": "clerk / migrant",
-        "d": "clerk / treasurer"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 115,
-      "question_text": "Complete the sentence.(cetin) A lot of people from the countryside had to ___ to safer places because of the war. Now, they were ___ in a new country.",
-      "options": {
-        "a": "migrate / inhabitants",
-        "b": "abandoned / founded",
-        "c": "dust / rusty",
-        "d": "migrate / immigrants"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 116,
-      "question_text": "Match the word with its definition. ( asan) The members of a family that are born and live around the same time",
-      "options": {
-        "a": "host",
-        "b": "lighthouse",
-        "c": "parade",
-        "d": "generation"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 117,
-      "question_text": "Match the word with its definition. ( asan) The buildings and land that someone owns",
-      "options": {
-        "a": "ship",
-        "b": "structure",
-        "c": "property",
-        "d": "skyline"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 118,
-      "question_text": "Match the word with its definition. ( asan) Continued for a period of time",
-      "options": {
-        "a": "reside",
-        "b": "lasted",
-        "c": "host",
-        "d": "nominate"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 119,
-      "question_text": "Match the word with its definition. ( asan) Sent goods to customers by air, land or sea",
-      "options": {
-        "a": "shipped",
-        "b": "construction",
-        "c": "landmarks",
-        "d": "belong to"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 120,
-      "question_text": "Match the word with its definition. ( asan) A public celebration where lots of people walk though the streets",
-      "options": {
-        "a": "ground",
-        "b": "parade",
-        "c": "generation",
-        "d": "reside"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 121,
-      "question_text": "Match the word with its definition. ( asan) To live in a particular place",
-      "options": {
-        "a": "eat",
-        "b": "meet",
-        "c": "reside",
-        "d": "borrow"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 122,
-      "question_text": "Match the word with its definition. ( asan) Organizes an event and provides the things that you need to do",
-      "options": {
-        "a": "guest",
-        "b": "minaret",
-        "c": "monument",
-        "d": "host"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 123,
-      "question_text": "Match the word with its definition. ( asan) Owned by someone",
-      "options": {
-        "a": "belong to",
-        "b": "ground",
-        "c": "exhibition",
-        "d": "construction"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 124,
-      "question_text": "Match the word with its definition. ( asan) The shapes made by buildings or mountains against the sky",
-      "options": {
-        "a": "audience",
-        "b": "exhibition",
-        "c": "skyline",
-        "d": "host"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 125,
-      "question_text": "Match the word with its definition. ( asan) The process of building something",
-      "options": {
-        "a": "landmarks",
-        "b": "construction",
-        "c": "oilfield",
-        "d": "label"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 126,
-      "question_text": "Match the word with its definition. ( asan) How big or small something is",
-      "options": {
-        "a": "size",
-        "b": "virus",
-        "c": "nightmare",
-        "d": "prediction"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 127,
-      "question_text": "Match the word with its definition. ( asan) To make a copy of something",
-      "options": {
-        "a": "cure",
-        "b": "entire",
-        "c": "reproduce",
-        "d": "future"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 128,
-      "question_text": "Match the word with its definition. ( asan) A bad dream",
-      "options": {
-        "a": "patient",
-        "b": "manufacturer",
-        "c": "nightmare",
-        "d": "disease"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 129,
-      "question_text": "Match the word with its definition. ( asan) To make an illness end",
-      "options": {
-        "a": "submarine",
-        "b": "organ",
-        "c": "cure",
-        "d": "inject"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 130,
-      "question_text": "Match the word with its definition. ( orta ) Puts a drug or medicine into someone's body",
-      "options": {
-        "a": "inject",
-        "b": "prediction",
-        "c": "receipt",
-        "d": "epidemic"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 131,
-      "question_text": "Complete the sentence with the correct word ( orta ) I don't think our city can ... the Olympic games.",
-      "options": {
-        "a": "diagnose",
-        "b": "structure",
-        "c": "belong to",
-        "d": "host"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 132,
-      "question_text": "Complete the sentence with the correct word ( orta ) The president of France ... in the Elysee Palace in Paris and works at the French National Assembly",
-      "options": {
-        "a": "belongs to",
-        "b": "warns",
-        "c": "resides",
-        "d": "dominates"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 133,
-      "question_text": "Complete the sentence with the correct word ( orta ) My grandparents are from another ... and they don't understand computers and the internet",
-      "options": {
-        "a": "guest",
-        "b": "generation",
-        "c": "property",
-        "d": "skyline"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 134,
-      "question_text": "Complete the sentence with the correct word ( asan) The doctor is going to ... me",
-      "options": {
-        "a": "prediction",
-        "b": "inject",
-        "c": "consume",
-        "d": "reproduce"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 135,
-      "question_text": "Complete the sentence with the correct word (çətin) I had this terrible ... last night!",
-      "options": {
-        "a": "entire",
-        "b": "prediction",
-        "c": "nightmare",
-        "d": "shrink"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 136,
-      "question_text": "Complete the sentence with the correct word (çətin) Sailors in a ... live and work in a very small space under the sea for long periods of time.",
-      "options": {
-        "a": "size",
-        "b": "submarine",
-        "c": "invisible",
-        "d": "marble"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 137,
-      "question_text": "Choose the correct form of the tense ( orta ) Pete is happy because he _____ all his exams",
-      "options": {
-        "a": "has passed",
-        "b": "have passed",
-        "c": "has pass",
-        "d": "have pass"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 138,
-      "question_text": "Choose the correct answer ( çətin ) I _____ my homework, so I can't go out",
-      "options": {
-        "a": "has finished",
-        "b": "have finish",
-        "c": "has finish",
-        "d": "haven't finished"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 139,
-      "question_text": "Choose the correct form of Present Perfect ( çətin ) I _____ ( buy) a new phone , but my number _____( change )",
-      "options": {
-        "a": "have bought, hasn't changed",
-        "b": "has bought, has changed",
-        "c": "have bought, has changed",
-        "d": "has bought, have changed"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 140,
-      "question_text": "Choose the correct form of Present Perfect ( çətin ) I _____ yet. I can't really afford it",
-      "options": {
-        "a": "decided",
-        "b": "has decided",
-        "c": "has decide",
-        "d": "haven't decided"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 141,
-      "question_text": "Choose the correct tense form ( orta ) It _____ here since 1998",
-      "options": {
-        "a": "hasn't snowed",
-        "b": "haven't snowed",
-        "c": "have snowed",
-        "d": "has snow"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 142,
-      "question_text": "Choose a sentence in Zero conditional ( çətin )",
-      "options": {
-        "a": "If you press this button, the light will comes on",
-        "b": "If you press this button, the light comes on",
-        "c": "If you will press this button, the light comes on",
-        "d": "If you will press this button, the light will come on"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 143,
-      "question_text": "Choose a sentence in Zero conditional ( çətin )",
-      "options": {
-        "a": "If you heat ice, it melts",
-        "b": "If you will heat ice, it melts",
-        "c": "If you will heat ice, it will melt",
-        "d": "If you heat ice, it will melt"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 144,
-      "question_text": "Choose the correct variant ( çətin ) Work on the building _____ from May 1952 until July 1955 and 16 workers died in accidents during _____",
-      "options": {
-        "a": "host, dominate",
-        "b": "lighthouse, landmarks",
-        "c": "lasted, construction",
-        "d": "shipped, skyline"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 145,
-      "question_text": "Choose the correct variant ( çətin ) Liberty was the tallest _____ in New York at 93 metres and until 1902 the Americans used it as a _____",
-      "options": {
-        "a": "structure, lighthouse",
-        "b": "ship, landmark",
-        "c": "construction, dominate",
-        "d": "host, parade"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 146,
-      "question_text": "Choose the correct variant ( orta ) The castle has _____ the British loyal family.",
-      "options": {
-        "a": "belonged to",
-        "b": "dominated",
-        "c": "lasted",
-        "d": "resided"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 147,
-      "question_text": "Choose the correct variant ( orta ) The queen and her family always _____ at Balmoral when they visit Scotland",
-      "options": {
-        "a": "belong to",
-        "b": "property",
-        "c": "minaret",
-        "d": "reside"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 148,
-      "question_text": "Choose the correct variant ( orta ) The castle _____ have been open to the public for over 35 years",
-      "options": {
-        "a": "grounds",
-        "b": "landlord",
-        "c": "oilfield",
-        "d": "spectator"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 149,
-      "question_text": "Choose the correct variant ( asan ) The _____ left the stadium happy after their team's win",
-      "options": {
-        "a": "diners",
-        "b": "environment",
-        "c": "dome",
-        "d": "spectators"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 150,
-      "question_text": "Choose the correct variant ( asan ) A lot of the _____ at the hotel were going to the wedding",
-      "options": {
-        "a": "column",
-        "b": "minarets",
-        "c": "woodland",
-        "d": "guests"
-      },
-      "correct_answer": "d"
-    }
-  ]
-},
-{
-  "questions": [
-    {
-      "question_number": 151,
-      "question_text": "Choose the correct variant ( asan ) The _____ were disappointed with the musicians' poor performance",
-      "options": {
-        "a": "audience",
-        "b": "earthquake",
-        "c": "generation",
-        "d": "castle"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 152,
-      "question_text": "Choose the correct word ( çətin ) Nanotechnology is the science of building tiny machines so small that they are _____",
-      "options": {
-        "a": "invisible",
-        "b": "marble",
-        "c": "reproduce",
-        "d": "entire"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 153,
-      "question_text": "Choose the correct word ( orta ) An inventor develops an amazing new way to _____",
-      "options": {
-        "a": "virus",
-        "b": "reproduce",
-        "c": "environment",
-        "d": "cure"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 154,
-      "question_text": "Choose the correct word ( orta ) Nanobots might escape into the _____ and damage people, plants and animal",
-      "options": {
-        "a": "organ",
-        "b": "size",
-        "c": "environment",
-        "d": "nightmare"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 155,
-      "question_text": "Choose the correct word ( orta ) The most extreme predictions say that nanobots could destroy the _____ planet in about three hours",
-      "options": {
-        "a": "entire",
-        "b": "visitor",
-        "c": "parade",
-        "d": "skyline"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 156,
-      "question_text": "Choose the correct variant ( çətin ) There was a bad car crash but there was only one _____ . An ambulance took him to hospital",
-      "options": {
-        "a": "skeleton",
-        "b": "inject",
-        "c": "prescribe",
-        "d": "casualty"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 157,
-      "question_text": "Choose the correct variant ( orta ) When they were building the house they found some bones and the _____ of a strange animal",
-      "options": {
-        "a": "skeleton",
-        "b": "epidemic",
-        "c": "minaret",
-        "d": "dome"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 158,
-      "question_text": "Choose the correct variant ( orta ) Can you _____ some tablets for the pain in my back , doctor?",
-      "options": {
-        "a": "nightmare",
-        "b": "prescribe",
-        "c": "medicine",
-        "d": "organ"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 159,
-      "question_text": "Choose the correct variant ( çətin ) There was a flu _____ at the school last month. Half the children were ill and didn't come to school",
-      "options": {
-        "a": "epidemic",
-        "b": "tablets",
-        "c": "outpatient",
-        "d": "prescribe"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 160,
-      "question_text": "Choose the correct variant ( çətin ) He can't run because he's hurt a _____ at the back of his leg. He has to rest for a few weeks",
-      "options": {
-        "a": "size",
-        "b": "organ",
-        "c": "epidemic",
-        "d": "muscle"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 161,
-      "question_text": "Choose the correct variant ( asan ) Don't drink dirty water because you will get an _____ and be very ill",
-      "options": {
-        "a": "infection",
-        "b": "diagnose",
-        "c": "inject",
-        "d": "marble"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 162,
-      "question_text": "Choose the correct variant ( orta ) The doctors don't know what's wrong with him. They can't _____ his illness",
-      "options": {
-        "a": "reproduce",
-        "b": "dominate",
-        "c": "prediction",
-        "d": "diagnose"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 163,
-      "question_text": "Choose the correct word ( asan ) This is my bicycle. It _____ to me",
-      "options": {
-        "a": "dominates",
-        "b": "reproduces",
-        "c": "diagnoses",
-        "d": "belongs to"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 164,
-      "question_text": "Choose the correct word ( asan ) We call a big celebration though streets of a town or city a _____",
-      "options": {
-        "a": "parade",
-        "b": "tower",
-        "c": "palace",
-        "d": "minaret"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 165,
-      "question_text": "Choose the correct word ( asan ) What do we call houses and buildings that someone owns?",
-      "options": {
-        "a": "ground",
-        "b": "skyline",
-        "c": "generation",
-        "d": "property"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 166,
-      "question_text": "Complete the sentence with the correct word. Children should always show _____ to older people and speak politely to them.",
-      "options": {
-        "a": "steep",
-        "b": "soar",
-        "c": "respect",
-        "d": "chase"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 167,
-      "question_text": "Complete the sentence with the correct word. Could you _____ some water into my glass, please?",
-      "options": {
-        "a": "pour",
-        "b": "pours",
-        "c": "respect",
-        "d": "soar"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 168,
-      "question_text": "Complete the sentence with the correct word. Only one goat on our farm has got big _____, and he is not dangerous.",
-      "options": {
-        "a": "tie",
-        "b": "chases",
-        "c": "heads",
-        "d": "horns"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 169,
-      "question_text": "Complete the sentence with the correct word. There isn't a bridge but the river is very narrow. We can _____ from one side to the other.",
-      "options": {
-        "a": "soar",
-        "b": "leap",
-        "c": "sign",
-        "d": "hope"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 170,
-      "question_text": "Complete the sentence with the correct word. These tablets _____ the pain of headaches and soon stop them.",
-      "options": {
-        "a": "chase",
-        "b": "leap",
-        "c": "concussion",
-        "d": "relieve"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 171,
-      "question_text": "Complete the sentence with the correct word. The people don't want a new road and they have organized a _____ against it in the city centre.",
-      "options": {
-        "a": "protest",
-        "b": "herd",
-        "c": "organization",
-        "d": "concussion"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 172,
-      "question_text": "Complete the sentence with the correct word. The _____ came up the beach and hit the coastal resort hard. It smashed into trees and buildings.",
-      "options": {
-        "a": "warning",
-        "b": "tidal wave",
-        "c": "plunge",
-        "d": "smash"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 173,
-      "question_text": "Complete the sentence with the correct word. When the volcano Krakatoa in Indonesia _____ in 1883 it caused terrible damage.",
-      "options": {
-        "a": "flatten",
-        "b": "smashed",
-        "c": "collapsed",
-        "d": "erupted"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 174,
-      "question_text": "Choose the correct variant. A lot of _____ people find it difficult to move around.",
-      "options": {
-        "a": "elderly",
-        "b": "young",
-        "c": "poor",
-        "d": "rich"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 175,
-      "question_text": "Choose the correct variant. Our dog always _____ cats but he never catches them!",
-      "options": {
-        "a": "soars",
-        "b": "relieves",
-        "c": "herds",
-        "d": "chases"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 176,
-      "question_text": "Choose the correct variant. The children _____ wear coats because it's raining.",
-      "options": {
-        "a": "mustn't",
-        "b": "couldn't",
-        "c": "some",
-        "d": "must"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 177,
-      "question_text": "Choose the correct variant. You _____ wear smart clothes for a job interview.",
-      "options": {
-        "a": "much",
-        "b": "couldn't",
-        "c": "some",
-        "d": "must"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 178,
-      "question_text": "Choose the correct variant. They _____ study because they don't have any homework tonight.",
-      "options": {
-        "a": "much",
-        "b": "couldn't",
-        "c": "some",
-        "d": "needn't"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 179,
-      "question_text": "Choose the correct variant. We _____ be early for school tomorrow because we've got an exam.",
-      "options": {
-        "a": "some",
-        "b": "couldn't",
-        "c": "must",
-        "d": "much"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 180,
-      "question_text": "Choose the correct variant. Students _____ smoke in the school building.",
-      "options": {
-        "a": "mustn't",
-        "b": "couldn't",
-        "c": "some",
-        "d": "much"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 181,
-      "question_text": "Choose the correct variant. The museum is free. You _____ bring any money.",
-      "options": {
-        "a": "many",
-        "b": "couldn't",
-        "c": "some",
-        "d": "needn't"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 182,
-      "question_text": "Choose the correct variant. It's Tom's birthday. I _____ buy a gift.",
-      "options": {
-        "a": "much",
-        "b": "couldn't",
-        "c": "some",
-        "d": "must"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 183,
-      "question_text": "Choose the correct variant. They _____ take the bus because they can walk to school in five minutes.",
-      "options": {
-        "a": "needn't",
-        "b": "couldn't",
-        "c": "some",
-        "d": "much"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 184,
-      "question_text": "Choose the correct variant. You _____ use Mike's computer without asking him.",
-      "options": {
-        "a": "some",
-        "b": "couldn't",
-        "c": "mustn't",
-        "d": "much"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 185,
-      "question_text": "Choose the correct variant. If you want to go on the school trip, you _____ tell your teacher before Friday.",
-      "options": {
-        "a": "many",
-        "b": "couldn't",
-        "c": "some",
-        "d": "must"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 186,
-      "question_text": "Choose the correct variant. You _____ wear a seat belt when the plane takes off and lands.",
-      "options": {
-        "a": "must",
-        "b": "couldn't",
-        "c": "some",
-        "d": "much"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 187,
-      "question_text": "Choose the correct variant. We / miss the train / if / you / not hurry up!",
-      "options": {
-        "a": "If you do not hurry up we shall miss the train",
-        "b": "We will be miss train the not hurry up if",
-        "c": "You miss train the we shall hurry not up",
-        "d": "If you miss the train we will not hurry up"
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 188,
-      "question_text": "Choose the correct first conditional. If / I / not feel better / I / go the doctor's tomorrow",
-      "options": {
-        "a": "I not go the doctor's if I feel better",
-        "b": "I go not feel better if I go the doctor's tomorrow",
-        "c": "If I do not feel better I will go the doctor's tomorrow",
-        "d": "If I do not better feel I go the doctor's tomorrow"
-      },
-      "correct_answer": "c"
-    },
-    {
-      "question_number": 189,
-      "question_text": "Choose the correct first conditional. If / you / not stop smoking / you / be ill",
-      "options": {
-        "a": "If you not stop smoking you were ill",
-        "b": "If you not stop smoking you be ill",
-        "c": "If you not stop smoking you was ill",
-        "d": "If you don't stop smoking you will be ill"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 190,
-      "question_text": "Choose the correct first conditional If / you / speak to your teacher / she / give you some good advice",
-      "options": {
-        "a": "If you speaks to your teacher she was give you some good advice",
-        "b": "If you speak to your teacher she were give you some good advice",
-        "c": "If you speak to your teacher she were give you some good advices",
-        "d": "If you speak to your teacher she will give you some good advice"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 191,
-      "question_text": "Choose the correct first conditional.",
-      "options": {
-        "a": "She have an accident if she will not drive more slowly",
-        "b": "She has an accident if she will not drive more slowly",
-        "c": "She is an accident if she will not drive more slowly",
-        "d": "She was an accident if she will not drive more slowly"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 192,
-      "question_text": "Choose the correct first conditional If / you / wait at the bus stop / the bus / come soon",
-      "options": {
-        "a": "If you waited at the bus stop the bus will come",
-        "b": "If you wait at the bus stop the bus shall come soon",
-        "c": "If you waits at the bus stop the bus was come soon",
-        "d": "If you wait at the bus stop the bus will come soon"
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 193,
-      "question_text": "Translate the sentence This dangerous event takes place every year at the end of May.",
-      "options": {
-        "a": "Bu təhlükəli hadisə hər il may ayının sonunda baş verir.",
-        "b": "Bu təhlükəli hadisə iki ildən bir may ayının sonunda baş verir.",
-        "c": "Bu təhlükəli hadisə hər il may ayının əvvəlində baş verir.",
-        "d": "Bu xoş hadisə hər il may ayının sonunda baş verir."
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 194,
-      "question_text": "Translate the sentence The volcano is by the sea, and the water next to the volcano is about six kilometres deep.",
-      "options": {
-        "a": "Vulkan göl kənarındadır və vulkanın yanındakı su təxminən altı kilometr dərinlikdədir.",
-        "b": "Vulkan dəniz kənarındadır və vulkanın yanındakı su təxminən yeddi kilometr dərinlikdədir.",
-        "c": "Vulkan dəniz kənarındadır və vulkanın yanındakı su dərindi.",
-        "d": "Vulkan dəniz kənarındadır və vulkanın yanındakı su təxminən altı kilometr dərinlikdədir."
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 195,
-      "question_text": "Translate the sentence This would create a huge sunami about 100 metres high.",
-      "options": {
-        "a": "Bu, təxminən 100 metr hündürlüyündə nəhəng bir sunami yarada bilər.",
-        "b": "O, təxminən 100 metr hündürlüyündə nəhəng bir sunami yarada bilər.",
-        "c": "Bu, təxminən 100 metr hündürlüyündə balaca bir sunami yarada bilər.",
-        "d": "Bu, təxminən 100 metr hündürlüyündə nəhəng bir neçə sunami yarada bilər."
-      },
-      "correct_answer": "a"
-    },
-    {
-      "question_number": 196,
-      "question_text": "Translate the sentence The wave could travel a kilometre inland and devastate towns and villages.",
-      "options": {
-        "a": "Dalğa iki kilometr daxili ərazini keçərək şəhərləri və kəndləri viran qoya bilər.",
-        "b": "Dalğa bir kilometr daxili ərazini keçərək şəhərləri və kəndləri viran qoya bilər.",
-        "c": "Dalğa bir kilometr daxili ərazini keçərək şəhərləri viran qoya bilər.",
-        "d": "Dalğa bir kilometr daxili ərazini keçərək kəndləri viran qoya bilər."
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 197,
-      "question_text": "Translate the sentence It would flatten everything and kill thousands of people.",
-      "options": {
-        "a": "Hər şeyi dümdüz edər və minlərlə insanı yaşadır.",
-        "b": "Hər nəyi dümdüz etmir və minlərlə insanı öldürərdi.",
-        "c": "Hər şeyi dümdüz edər və yüzlərlə insanı öldürərdi.",
-        "d": "Hər şeyi dümdüz edər və minlərlə insanı öldürərdi."
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 198,
-      "question_text": "Translate the sentence Hər il festival zamanı yol qəzalarında insanlar ölür və ya yaralanır",
-      "options": {
-        "a": "Every years people get killed or injured in road accidents during the festival",
-        "b": "Every year people get killed or injured in road accidents during the festival",
-        "c": "Every month people get killed or injured in road accidents during the festival",
-        "d": "Every months people get killed or injured in road accidents during the festival"
-      },
-      "correct_answer": "b"
-    },
-    {
-      "question_number": 199,
-      "question_text": "Translate the sentence Hadisə son dərəcə təhlükəlidir.",
-      "options": {
-        "a": "The event isn't extremely dangerous.",
-        "b": "The event are extremely dangerous.",
-        "c": "The event aren't extremely dangerous.",
-        "d": "The event is extremely dangerous."
-      },
-      "correct_answer": "d"
-    },
-    {
-      "question_number": 200,
-      "question_text": "Choose the correct variant A large piece of something.",
-      "options": {
-        "a": "crash",
-        "b": "flood",
-        "c": "mass",
-        "d": "collapse"
-      },
-      "correct_answer": "c"
-    }
-]
-}
+const allQuestions = [
+  {
+    "question_number": 1,
+    "question_text": "Choose the correct definition. (orta) Prevents something bad from happening.",
+    "options": {
+      "a": "Judge",
+      "b": "Avoid",
+      "c": "Attend",
+      "d": "Staff"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 2,
+    "question_text": "Choose the correct definition. (orta) Considered to be acceptable and correct.",
+    "options": {
+      "a": "Respectable",
+      "b": "Invest",
+      "c": "Branded",
+      "d": "Casual"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 3,
+    "question_text": "Choose the correct definition. (orta) Clothes that are for informal situations.",
+    "options": {
+      "a": "Formal",
+      "b": "Branded",
+      "c": "Popular",
+      "d": "Casual"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 4,
+    "question_text": "Choose the correct definition. (orta) To go to or be present at an event or activity.",
+    "options": {
+      "a": "Attend",
+      "b": "Brand",
+      "c": "Fashionable",
+      "d": "Expect"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 5,
+    "question_text": "Choose the correct definition. (orta) Something damaged by pulling it apart.",
+    "options": {
+      "a": "Torn",
+      "b": "Branded",
+      "c": "Casual",
+      "d": "Staff"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 6,
+    "question_text": "Choose the correct definition. (orta) To form an opinion about something, using the information you have.",
+    "options": {
+      "a": "Expect",
+      "b": "Casual",
+      "c": "Judge",
+      "d": "Torn"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 7,
+    "question_text": "Choose the correct definition. (orta) Ideas that are sometimes wrong, about what someone or something is like.",
+    "options": {
+      "a": "Stereotypes",
+      "b": "Confidence",
+      "c": "Staff",
+      "d": "Branded"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 8,
+    "question_text": "Choose the correct definition. (orta) Opinions or feelings that you show by your behaviour.",
+    "options": {
+      "a": "Judge",
+      "b": "Staff",
+      "c": "Casual",
+      "d": "Attitudes"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 9,
+    "question_text": "Choose the correct definition. (orta) The name of a product made by a particular company.",
+    "options": {
+      "a": "Branded",
+      "b": "Casual",
+      "c": "Torn",
+      "d": "Popular"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 10,
+    "question_text": "Choose the correct definition. (orta) To use your money in a way that is good for you.",
+    "options": {
+      "a": "Spend",
+      "b": "Invest",
+      "c": "Attend",
+      "d": "Judge"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 11,
+    "question_text": "Choose the correct definition. (orta) Popular at a particular time.",
+    "options": {
+      "a": "Appropriate",
+      "b": "Casual",
+      "c": "Fashionable",
+      "d": "Torn"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 12,
+    "question_text": "Choose the correct definition. (orta) The people who work for a particular company or organization.",
+    "options": {
+      "a": "Staff",
+      "b": "Attitudes",
+      "c": "Stereotypes",
+      "d": "Confidence"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 13,
+    "question_text": "Choose the correct definition. (orta) To think that something will happen.",
+    "options": {
+      "a": "Judge",
+      "b": "Predict",
+      "c": "Attend",
+      "d": "Expect"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 14,
+    "question_text": "Choose the correct definition. (orta) A set of rules about what people should wear.",
+    "options": {
+      "a": "Dress code",
+      "b": "Casual",
+      "c": "Branded",
+      "d": "Appropriate"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 15,
+    "question_text": "Choose the correct definition. (orta) The belief that you can do things well.",
+    "options": {
+      "a": "Staff",
+      "b": "Attitudes",
+      "c": "Confidence",
+      "d": "Popular"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 16,
+    "question_text": "Complete the sentence.(cetin) I like to wear a suit for work. I think it's important to wear something ___ at work. However, at home I usually wear___ clothes like jeans or a tracksuit .",
+    "options": {
+      "a": "respect / casual",
+      "b": "judge / invest",
+      "c": "branded / casual",
+      "d": "casual/respect"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 17,
+    "question_text": "Complete the sentence.(cetin). I try to ___listening to the____ that people have of different countries.",
+    "options": {
+      "a": "staff /attitude",
+      "b": "avoid / stereotypes",
+      "c": "stereotypes / avoid",
+      "d": "attitudes / confidence"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 18,
+    "question_text": "Complete the sentence.(cetin) There are rules about clothes for the people that work in my company. The ___ says all__ must wear suits.",
+    "options": {
+      "a": "staff,dress code",
+      "b": "brand,staff",
+      "c": "dress code,staff",
+      "d": "confidence,torn"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 19,
+    "question_text": "Complete the sentence.(cetin) My boss thinks it's fine if we wear T-shirts and jeans, but they must be clean and they can't be ___ or have holes in them! He says that if someone is dirty and untidy, it shows a bad _ to their work.",
+    "options": {
+      "a": "casual / staff",
+      "b": "branded / confidence",
+      "c": "torn / attitude",
+      "d": "popular / brand"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 20,
+    "question_text": "Complete the sentence.(cetin) When he ___ the interview, he came to the office in very nice clothes. We thought he was perfect for the company and we __ him to be a good worker. However, he was terrible! I'm not going to __ people by their appearances any more!",
+    "options": {
+      "a": "judged / attend / torn",
+      "b": "invest / torn / casual",
+      "c": "attended / expect / judge",
+      "d": "attend / judge / brand"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 21,
+    "question_text": "Complete the sentence.(cetin) People today want to be ___and dress in the most popular clothes. They are also happy to pay for expensive clothes just because they have the name of a famous ___ on them!",
+    "options": {
+      "a": "fashionable/ branded",
+      "b": "casual / staff",
+      "c": "popular / brand",
+      "d": "appropriate / attitudes"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 22,
+    "question_text": "Complete the sentence.(cetin) I read in a magazine that good clothes can give you ___ and make you feel you can do things well. So I'm going to ___ some money in a few new suits and buy some expensive shoes, too!",
+    "options": {
+      "a": "torn / attend",
+      "b": "confidence / invest",
+      "c": "casual / judge",
+      "d": "attitudes / spend"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 23,
+    "question_text": "Choose the correct variant The students are___jeans and T-shirts.",
+    "options": {
+      "a": "wearing",
+      "b": "casual",
+      "c": "branded",
+      "d": "torn"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 24,
+    "question_text": "Choose the correct variant My dad usually __ in dark colours.",
+    "options": {
+      "a": "goes",
+      "b": "plays",
+      "c": "studies",
+      "d": "dresses"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 25,
+    "question_text": "Choose the correct variant What were they___?",
+    "options": {
+      "a": "dress",
+      "b": "wearing",
+      "c": "dresses",
+      "d": "dressed"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 26,
+    "question_text": "Choose the correct variant İt's an informal celebration. You don't have to ___ up.",
+    "options": {
+      "a": "dress",
+      "b": "wears",
+      "c": "wear",
+      "d": "wearing"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 27,
+    "question_text": "Choose the correct variant My sister needs an hour to ___ in the morning.",
+    "options": {
+      "a": "put on",
+      "b": "dressing",
+      "c": "dressed",
+      "d": "wear"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 28,
+    "question_text": "Choose the correct variant She ___ a beautiful white dress at her wedding last Saturday.",
+    "options": {
+      "a": "wear",
+      "b": "dress",
+      "c": "wore",
+      "d": "clothes"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 29,
+    "question_text": "Choose the correct variant I love helping my sister to ___ her baby.",
+    "options": {
+      "a": "dress",
+      "b": "get",
+      "c": "look",
+      "d": "wear"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 30,
+    "question_text": "Choose the correct variant Don't ___ those football boots in the house!",
+    "options": {
+      "a": "plays",
+      "b": "dresses",
+      "c": "judges",
+      "d": "wear"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 31,
+    "question_text": "Complete the sentence.(cetin) It was very hot so I ___ my coat off.",
+    "options": {
+      "a": "took",
+      "b": "wear",
+      "c": "put",
+      "d": "get"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 32,
+    "question_text": "Complete the sentence.(cetin) Can you see the girl ___ the red dress? That's my sister.",
+    "options": {
+      "a": "on",
+      "b": "in",
+      "c": "with",
+      "d": "at"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 33,
+    "question_text": "Complete the sentence.(cetin) Jack! Put your socks ___ before your shoes!",
+    "options": {
+      "a": "up",
+      "b": "off",
+      "c": "on",
+      "d": "in"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 34,
+    "question_text": "Complete the sentence.(cetin) Do your coat____. It's raining!",
+    "options": {
+      "a": "take",
+      "b": "wear",
+      "c": "up",
+      "d": "put on"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 35,
+    "question_text": "Complete the sentence.(cetin) I don't think you look good ___ that suit.",
+    "options": {
+      "a": "on",
+      "b": "at",
+      "c": "in",
+      "d": "with"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 36,
+    "question_text": "Complete the sentence.(cetin) Pull ___your sleeves before you wash your hands!",
+    "options": {
+      "a": "off",
+      "b": "down",
+      "c": "up",
+      "d": "on"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 37,
+    "question_text": "Complete the sentence.(cetin) Yes, I like this dress. Can I try it ___ please?",
+    "options": {
+      "a": "in",
+      "b": "with",
+      "c": "off",
+      "d": "on"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 38,
+    "question_text": "Complete the sentence.(cetin) Boys! Take ____your football boots before you come in the house!",
+    "options": {
+      "a": "on",
+      "b": "in",
+      "c": "up",
+      "d": "off"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 39,
+    "question_text": "Choose the correct definition. (orta) An injury to a part of the body.",
+    "options": {
+      "a": "wound",
+      "b": "set off",
+      "c": "sharp",
+      "d": "rush"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 40,
+    "question_text": "Choose the correct definition. (orta) Certain to happen.",
+    "options": {
+      "a": "sponsor",
+      "b": "destined",
+      "c": "wound",
+      "d": "face down"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 41,
+    "question_text": "Choose the correct definition. (orta) To become healthy again after an illness or accident.",
+    "options": {
+      "a": "recuperate",
+      "b": "toward",
+      "c": "sank",
+      "d": "battled"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 42,
+    "question_text": "Choose the correct definition. (orta) Tried very hard to deal with a dangerous situation.",
+    "options": {
+      "a": "battled",
+      "b": "toward",
+      "c": "sponsors",
+      "d": "judge"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 43,
+    "question_text": "Choose the correct definition. (orta) In the direction of somebody or something.",
+    "options": {
+      "a": "sponsor",
+      "b": "toward",
+      "c": "brand",
+      "d": "sharp"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 44,
+    "question_text": "Choose the correct definition. (orta) Left on a journey.",
+    "options": {
+      "a": "sank",
+      "b": "set off",
+      "c": "sponsor",
+      "d": "invest"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 45,
+    "question_text": "Choose the correct definition. (orta) Extremely good at something.",
+    "options": {
+      "a": "sharp",
+      "b": "outstanding",
+      "c": "attend",
+      "d": "wound"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 46,
+    "question_text": "Choose the correct definition. (orta) Held something strongly.",
+    "options": {
+      "a": "set off",
+      "b": "sponsors",
+      "c": "gripped",
+      "d": "toward"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 47,
+    "question_text": "Choose the correct definition. (orta) Having a thin edge that can cut things easily.",
+    "options": {
+      "a": "sharp",
+      "b": "wound",
+      "c": "gripped",
+      "d": "rushed"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 48,
+    "question_text": "Choose the correct definition. (orta) Moved in the direction of a place.",
+    "options": {
+      "a": "dress code",
+      "b": "headed for",
+      "c": "gripped",
+      "d": "toward"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 49,
+    "question_text": "Choose the correct definition. (orta) Went under the surface of a soft object.",
+    "options": {
+      "a": "sank",
+      "b": "invest",
+      "c": "destined",
+      "d": "wound"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 50,
+    "question_text": "Choose the correct definition. (orta) The natural force that helps us in dangerous situations.",
+    "options": {
+      "a": "torn",
+      "b": "confidence",
+      "c": "brand",
+      "d": "survival instinct"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 51,
+    "question_text": "Choose the correct definition. (orta) Did something quickly.",
+    "options": {
+      "a": "sank",
+      "b": "sponsors",
+      "c": "rushed",
+      "d": "gripped"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 52,
+    "question_text": "Choose the correct definition. (orta) Businesses that pay sports stars to advertise their services or products.",
+    "options": {
+      "a": "sponsors",
+      "b": "toward",
+      "c": "set off",
+      "d": "wound"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 53,
+    "question_text": "Choose the correct definition. (orta) With the front towards the ground.",
+    "options": {
+      "a": "headed for",
+      "b": "survival instinct",
+      "c": "sharp",
+      "d": "face down"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 54,
+    "question_text": "Complete the sentence.(cetin) Don't play with that knife! It's very _.",
+    "options": {
+      "a": "sharp",
+      "b": "expect",
+      "c": "wound",
+      "d": "gripped"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 55,
+    "question_text": "Complete the sentence.(cetin) The ambulance _ quickly the injured man to hospital.",
+    "options": {
+      "a": "toward",
+      "b": "rushed",
+      "c": "sharp",
+      "d": "set off"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 56,
+    "question_text": "Complete the sentence.(cetin) He's an _ player. I think he's the best in the team.",
+    "options": {
+      "a": "battle",
+      "b": "gripped",
+      "c": "outstanding",
+      "d": "sponsors"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 57,
+    "question_text": "Complete the sentence.(cetin) When the lion ran ___ us we thought he was going to attack. We were really frightened!",
+    "options": {
+      "a": "toward",
+      "b": "wound",
+      "c": "outstanding",
+      "d": "sink"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 58,
+    "question_text": "Complete the sentence.(cetin) When I go to sleep I always lie ___ on my bed.",
+    "options": {
+      "a": "face down",
+      "b": "sponsor",
+      "c": "sank",
+      "d": "gripped"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 59,
+    "question_text": "Complete the sentence.(cetin) She cut herself badly with a knife and the ___ took a long time to heal.",
+    "options": {
+      "a": "wound",
+      "b": "recuperate",
+      "c": "survival instinct",
+      "d": "gripped"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 60,
+    "question_text": "Complete the sentence.(cetin) We left the theatre and slowly___home.",
+    "options": {
+      "a": "sink",
+      "b": "sharp",
+      "c": "headed for",
+      "d": "sponsor"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 61,
+    "question_text": "Complete the sentence.(cetin) It took me a long time to ___ from the illness. I was in bed for six months.",
+    "options": {
+      "a": "recuperate",
+      "b": "battled",
+      "c": "gripped",
+      "d": "sink"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 62,
+    "question_text": "Complete the sentence.(cetin) We ___ from home at 10 a.m. but we didn't arrive until late in the evening.",
+    "options": {
+      "a": "towards",
+      "b": "set off",
+      "c": "rush",
+      "d": "sponsor"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 63,
+    "question_text": "Complete the sentence.(cetin) That dog is really dangerous. It ___ its teeth into my friend's leg.",
+    "options": {
+      "a": "sharp",
+      "b": "gripped",
+      "c": "sank",
+      "d": "wound"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 64,
+    "question_text": "Complete the sentence.(cetin) Our football team has got a new ___. Their name is on the front of our shirts.",
+    "options": {
+      "a": "sponsors",
+      "b": "outstanding",
+      "c": "wound",
+      "d": "torward"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 65,
+    "question_text": "Complete the sentence.(cetin) It was ___ that made me jump out of the way of the car. I didn't think about it!",
+    "options": {
+      "a": "sponsor",
+      "b": "survival instinct",
+      "c": "outstanding",
+      "d": "face down"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 66,
+    "question_text": "Complete the sentence.(cetin) I ____my bag but the thief was stronger than me and he pulled it from me.",
+    "options": {
+      "a": "gripped",
+      "b": "sharp",
+      "c": "rushed",
+      "d": "set off"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 67,
+    "question_text": "Complete the sentence.(cetin) My grandmother and my mother were doctors, so I was ___ to be one too.",
+    "options": {
+      "a": "survival instinct",
+      "b": "destined",
+      "c": "sponsor",
+      "d": "battle"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 68,
+    "question_text": "Complete the sentence.(cetin) The firemen ___ with the fire for four hours before they controlled it.",
+    "options": {
+      "a": "sharp",
+      "b": "outstanding",
+      "c": "head for",
+      "d": "battled"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 69,
+    "question_text": "Complete the sentence.(cetin) Don't play with that knife! It's very _.",
+    "options": {
+      "a": "sharp",
+      "b": "expect",
+      "c": "wound",
+      "d": "gripped"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 70,
+    "question_text": "Complete the sentence.(cetin) The ambulance _ quickly the injured man to hospital.",
+    "options": {
+      "a": "toward",
+      "b": "rushed",
+      "c": "sharp",
+      "d": "set off"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 71,
+    "question_text": "Complete the sentence.(cetin) He's an _ player. I think he's the best in the team.",
+    "options": {
+      "a": "battle",
+      "b": "gripped",
+      "c": "outstanding",
+      "d": "sponsors"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 72,
+    "question_text": "Complete the sentence.(cetin) When the lion ran ___ us we thought he was going to attack. We were really frightened!",
+    "options": {
+      "a": "toward",
+      "b": "wound",
+      "c": "outstanding",
+      "d": "sink"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 73,
+    "question_text": "Complete the sentence.(cetin) When I go to sleep I always lie ___ on my bed.",
+    "options": {
+      "a": "face down",
+      "b": "sponsor",
+      "c": "sank",
+      "d": "gripped"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 74,
+    "question_text": "Complete the sentence.(cetin) She cut herself badly with a knife and the ___ took a long time to heal.",
+    "options": {
+      "a": "wound",
+      "b": "recuperate",
+      "c": "survival instinct",
+      "d": "gripped"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 75,
+    "question_text": "Complete the sentence.(cetin) We left the theatre and slowly___home.",
+    "options": {
+      "a": "sink",
+      "b": "sharp",
+      "c": "headed for",
+      "d": "sponsor"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 76,
+    "question_text": "Complete the sentence.(cetin) It took me a long time to ___ from the illness. I was in bed for six months.",
+    "options": {
+      "a": "recuperate",
+      "b": "battled",
+      "c": "gripped",
+      "d": "sink"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 77,
+    "question_text": "Complete the sentence.(cetin) We ___ from home at 10 a.m. but we didn't arrive until late in the evening.",
+    "options": {
+      "a": "towards",
+      "b": "set off",
+      "c": "rush",
+      "d": "sponsor"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 78,
+    "question_text": "Complete the sentence.(cetin) That dog is really dangerous. It ___ its teeth into my friend's leg.",
+    "options": {
+      "a": "sharp",
+      "b": "gripped",
+      "c": "sank",
+      "d": "wound"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 79,
+    "question_text": "Complete the sentence.(cetin) Our football team has got a new ___. Their name is on the front of our shirts.",
+    "options": {
+      "a": "sponsors",
+      "b": "outstanding",
+      "c": "wound",
+      "d": "torward"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 80,
+    "question_text": "Complete the sentence.(cetin) It was ___ that made me jump out of the way of the car. I didn't think about it!",
+    "options": {
+      "a": "sponsor",
+      "b": "survival instinct",
+      "c": "outstanding",
+      "d": "face down"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 81,
+    "question_text": "Complete the sentence.(cetin) I ____my bag but the thief was stronger than me and he pulled it from me.",
+    "options": {
+      "a": "gripped",
+      "b": "sharp",
+      "c": "rushed",
+      "d": "set off"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 82,
+    "question_text": "Complete the sentence.(cetin) My grandmother and my mother were doctors, so I was ___ to be one too.",
+    "options": {
+      "a": "survival instinct",
+      "b": "destined",
+      "c": "sponsor",
+      "d": "battle"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 83,
+    "question_text": "Complete the sentence.(cetin) The firemen ___ with the fire for four hours before they controlled it.",
+    "options": {
+      "a": "sharp",
+      "b": "outstanding",
+      "c": "head for",
+      "d": "battled"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 84,
+    "question_text": "Choose the correct variant You win a game when you get 21 points.",
+    "options": {
+      "a": "badminton",
+      "b": "football",
+      "c": "tennis",
+      "d": "rugby"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 85,
+    "question_text": "Choose the correct variant A player can't touch the ball two times in a row.'",
+    "options": {
+      "a": "volleyball",
+      "b": "cricket",
+      "c": "rugby",
+      "d": "golf"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 86,
+    "question_text": "Choose the correct variant 'It was a dead heat. Both runners finished in 10.85 seconds.'",
+    "options": {
+      "a": "tennis",
+      "b": "athletics",
+      "c": "badminton",
+      "d": "rugby"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 87,
+    "question_text": "Choose the correct variant 'It's the final of the ladies' singles at Wimbledon today.'",
+    "options": {
+      "a": "badminton",
+      "b": "cricket",
+      "c": "football",
+      "d": "tennis"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 88,
+    "question_text": "Choose the correct variant 'That's his third goal in the World Cup final. It's a hat trick!'",
+    "options": {
+      "a": "football",
+      "b": "rugby",
+      "c": "tennis",
+      "d": "hockey"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 89,
+    "question_text": "Choose the correct variant 'She's thrown her opponent onto the mat.'",
+    "options": {
+      "a": "tennis",
+      "b": "football",
+      "c": "judo",
+      "d": "cricket"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 90,
+    "question_text": "Choose the correct variant 'Dribbling is when you run along the court bouncing the ball.'",
+    "options": {
+      "a": "volleyball",
+      "b": "hockey",
+      "c": "basketball",
+      "d": "badminton"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 91,
+    "question_text": "Choose the correct variant 'The fielder is the person who tries to catch the ball.'",
+    "options": {
+      "a": "cricket",
+      "b": "tennis",
+      "c": "rugby",
+      "d": "badminton"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 92,
+    "question_text": "Choose the correct variant 'She lifted 128 kilograms to break the world record.'",
+    "options": {
+      "a": "judo",
+      "b": "weightlifting",
+      "c": "football",
+      "d": "hockey"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 93,
+    "question_text": "Choose the correct variant 'It was very close! The ball stopped 10 centimetres from the hole.'",
+    "options": {
+      "a": "golf",
+      "b": "tennis",
+      "c": "badminton",
+      "d": "basketball"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 94,
+    "question_text": "Choose the correct variant 'They don't use a ball. They use a puck.'",
+    "options": {
+      "a": "football",
+      "b": "tennis",
+      "c": "ice hockey",
+      "d": "volleyball"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 95,
+    "question_text": "Choose the correct variant 'He ran 60 metres along the pitch and scored a try.'",
+    "options": {
+      "a": "rugby",
+      "b": "football",
+      "c": "tennis",
+      "d": "badminton"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 96,
+    "question_text": "Choose the correct definition. (orta) Connected with the countryside.",
+    "options": {
+      "a": "dusty",
+      "b": "industrial",
+      "c": "abandoned",
+      "d": "rural"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 97,
+    "question_text": "Choose the correct definition. (orta) People who come to live in a country from another country.",
+    "options": {
+      "a": "inhabitants",
+      "b": "immigrants",
+      "c": "clerks",
+      "d": "treasurers"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 98,
+    "question_text": "Choose the correct definition. (orta) A person who lives in a place.",
+    "options": {
+      "a": "clerk",
+      "b": "inhabitant",
+      "c": "idealist",
+      "d": "migrant"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 99,
+    "question_text": "Choose the correct definition. (orta) Someone who works with documents in an office, bank, etc.",
+    "options": {
+      "a": "clerk",
+      "b": "treasurer",
+      "c": "migrant",
+      "d": "inhabitant"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 100,
+    "question_text": "Choose the correct definition. (orta) Growing or developing successfully.",
+    "options": {
+      "a": "rusty",
+      "b": "abandoned",
+      "c": "industrial",
+      "d": "thriving"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 101,
+    "question_text": "Choose the correct definition. (orta) A floor or level of a building.",
+    "options": {
+      "a": "dusty",
+      "b": "treasurer",
+      "c": "storey",
+      "d": "migrant"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 102,
+    "question_text": "Choose the correct definition. (orta) Something that has been left and not used any more.",
+    "options": {
+      "a": "abandoned",
+      "b": "thriving",
+      "c": "industrial",
+      "d": "dusty"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 103,
+    "question_text": "Choose the correct definition. (orta) Having a lot of machines or factories.",
+    "options": {
+      "a": "industrial",
+      "b": "thriving",
+      "c": "rusting",
+      "d": "abandoned"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 104,
+    "question_text": "Choose the correct definition (orta) Being damaged by a red substance that forms on metal.",
+    "options": {
+      "a": "rusting",
+      "b": "abandoned",
+      "c": "dusty",
+      "d": "thriving"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 105,
+    "question_text": "Choose the correct definition (orta) Tiny pieces of a substance.",
+    "options": {
+      "a": "thriving",
+      "b": "rusting",
+      "c": "dust",
+      "d": "abandoned"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 106,
+    "question_text": "Choose the correct definition (orta). Started building and living in a town.",
+    "options": {
+      "a": "founded",
+      "b": "abandoned",
+      "c": "rusting",
+      "d": "dusty"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 107,
+    "question_text": "Choose the correct definition. (orta) Badly damaged or destroyed.",
+    "options": {
+      "a": "dusty",
+      "b": "thriving",
+      "c": "industrial",
+      "d": "in ruins"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 108,
+    "question_text": "Choose the correct definition. (orta) Someone who is in charge of an organization's money.",
+    "options": {
+      "a": "treasurer",
+      "b": "clerk",
+      "c": "migrant",
+      "d": "inhabitant"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 109,
+    "question_text": "Choose the correct definition. (orta) Old things that do not have much value.",
+    "options": {
+      "a": "junk",
+      "b": "dusty",
+      "c": "abandoned",
+      "d": "rusty"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 110,
+    "question_text": "Choose the correct definition. (orta) .Went to another place usually to find a job.",
+    "options": {
+      "a": "founded",
+      "b": "migrated",
+      "c": "abandoned",
+      "d": "thriving"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 111,
+    "question_text": "Complete the sentence.(cetin) The house is ___ as nobody has lived there for years. The rooms are full of old ___ and they are very dirty. In fact, the building is ___ and it's dangerous to go into the house.",
+    "options": {
+      "a": "rusty / documents / thriving",
+      "b": "abandoned / junk / in ruins",
+      "c": "industrial / dust / migrated",
+      "d": "thriving / abandoned / rusty"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 112,
+    "question_text": "Complete the sentence.(cetin) I went to look at a car yesterday. It was really old and__. It was full of dirt and ___.",
+    "options": {
+      "a": "rusting/ dust",
+      "b": "dust / rusting",
+      "c": "abandoned / industrial",
+      "d": "founded / rusty"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 113,
+    "question_text": "Complete the sentence.(cetin) My parents moved here 20 years ago when the town was ___and doing well. My dad ___ the family business in 1975 and today we have five factories in three different countries.",
+    "options": {
+      "a": "rusty / industrial",
+      "b": "founded /thriving",
+      "c": "thriving / founded",
+      "d": "rural / migrated"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 114,
+    "question_text": "Complete the sentence.(cetin) When I first came to the town hall I worked as a ____in the office. Now I've got a more important job, I'm the _ and I control all the money that the city spends.",
+    "options": {
+      "a": "treasurer / clerk",
+      "b": "migrant / treasurer",
+      "c": "clerk / migrant",
+      "d": "clerk / treasurer"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 115,
+    "question_text": "Complete the sentence.(cetin) A lot of people from the countryside had to ___to safer places because of the war. Now, they were ___ in a new country.",
+    "options": {
+      "a": "migrate / inhabitants",
+      "b": "abandoned / founded",
+      "c": "dust / rusty",
+      "d": "migrate /immigrants"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 116,
+    "question_text": "Match the word with its definition. ( asan) The members of a family that are born and live around the same time",
+    "options": {
+      "a": "host",
+      "b": "lighthouse",
+      "c": "Parade",
+      "d": "generation"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 117,
+    "question_text": "Match the word with its definition. ( asan) The buildings and land that someone owns",
+    "options": {
+      "a": "ship",
+      "b": "structure",
+      "c": "property",
+      "d": "skyline"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 118,
+    "question_text": "Match the word with its definition. ( asan) Continued for a period of time",
+    "options": {
+      "a": "reside",
+      "b": "lasted",
+      "c": "host",
+      "d": "nominate"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 119,
+    "question_text": "Match the word with its definition. ( asan) Sent goods to customers by air, land or sea",
+    "options": {
+      "a": "shipped",
+      "b": "construction",
+      "c": "landmarks",
+      "d": "belong to"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 120,
+    "question_text": "Match the word with its definition. ( asan) A public celebration where lots of people walk though the streets",
+    "options": {
+      "a": "ground",
+      "b": "parade",
+      "c": "generation",
+      "d": "reside"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 121,
+    "question_text": "Match the word with its definition. ( asan) To live in a particular place",
+    "options": {
+      "a": "eat",
+      "b": "meet",
+      "c": "reside",
+      "d": "borrow"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 122,
+    "question_text": "Match the word with its definition. ( asan) Organizes an event and provides the things that you need to do",
+    "options": {
+      "a": "guest",
+      "b": "minaret",
+      "c": "monument",
+      "d": "host"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 123,
+    "question_text": "Match the word with its definition. ( asan) Owned by someone",
+    "options": {
+      "a": "belong to",
+      "b": "Ground",
+      "c": "Exhibition",
+      "d": "construction"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 124,
+    "question_text": "Match the word with its definition. ( asan) The shapes made by buildings or mountains against the sky",
+    "options": {
+      "a": "audience",
+      "b": "exhibition",
+      "c": "skyline",
+      "d": "host"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 125,
+    "question_text": "Match the word with its definition. ( asan) The process of building something",
+    "options": {
+      "a": "landmarks",
+      "b": "construction",
+      "c": "oilfield",
+      "d": "label"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 126,
+    "question_text": "Match the word with its definition. ( asan) How big or small something is",
+    "options": {
+      "a": "size",
+      "b": "virus",
+      "c": "nightmare",
+      "d": "prediction"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 127,
+    "question_text": "Match the word with its definition. ( asan) To make a copy of something",
+    "options": {
+      "a": "cure",
+      "b": "entire",
+      "c": "reproduce",
+      "d": "future"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 128,
+    "question_text": "Match the word with its definition. ( asan) A bad dream",
+    "options": {
+      "a": "patient",
+      "b": "manufacturer",
+      "c": "nightmare",
+      "d": "disease"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 129,
+    "question_text": "Match the word with its definition. ( asan) To make an illness end",
+    "options": {
+      "a": "submarine",
+      "b": "organ",
+      "c": "cure",
+      "d": "inject"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 130,
+    "question_text": "Match the word with its definition. ( orta ) Puts a drug or medicine into someone's body",
+    "options": {
+      "a": "inject",
+      "b": "prediction",
+      "c": "receipt",
+      "d": "epidemic"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 131,
+    "question_text": "Complete the sentence with the correct word ( orta ) I don't think our city can ... the Olyimpic games.",
+    "options": {
+      "a": "diagnose",
+      "b": "structure",
+      "c": "belong to",
+      "d": "host"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 132,
+    "question_text": "Complete the sentence with the correct word ( orta ) The president of France ... in the Elysee Palace in Paris and works at the French National Assembly",
+    "options": {
+      "a": "belongs to",
+      "b": "warns",
+      "c": "resides",
+      "d": "dominates"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 133,
+    "question_text": "Complete the sentence with the correct word ( orta ) My grandparents are from another ... and they don't understand computers and the internet",
+    "options": {
+      "a": "guest",
+      "b": "generation",
+      "c": "property",
+      "d": "skline"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 134,
+    "question_text": "Complete the sentence with the correct word ( asan) The doctor is going to ... me",
+    "options": {
+      "a": "prediction",
+      "b": "inject",
+      "c": "consume",
+      "d": "reproduce"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 135,
+    "question_text": "Complete the sentence with the correct word (çətin) I had this terrible ... last night!",
+    "options": {
+      "a": "Entire",
+      "b": "prediction",
+      "c": "Nightmare",
+      "d": " shrink"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 136,
+    "question_text": "Complete the sentence with the correct word (çətin) Sailors in a ... live and work in a very small space under the sea for long periods of time.",
+    "options": {
+      "a": "size",
+      "b": "submarine",
+      "c": " invisible",
+      "d": " marble"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 137,
+    "question_text": "Choose the correct form of the tense ( orta ) Pete is happy because he ____ all his exams",
+    "options": {
+      "a": "Has passed",
+      "b": "Have passed",
+      "c": "Has pass",
+      "d": "Have pass"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 138,
+    "question_text": "Choose the correct answer ( çətin ) I ____ my homework, so I can't go out",
+    "options": {
+      "a": "Has finished",
+      "b": "Have finish",
+      "c": "Has finish",
+      "d": "Haven't finished"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 139,
+    "question_text": "Choose the correct form of Present Perfect ( çətin ) I ____ ( buy) a new phone , but my number ____( change )",
+    "options": {
+      "a": "Have bought, hasn't changed",
+      "b": "Has bought, has changed",
+      "c": "Have bought, has changed",
+      "d": "Has bought, have changed"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 140,
+    "question_text": "Choose the correct form of Present Perfect ( çətin ) I ____ yet. I can't really afford it",
+    "options": {
+      "a": "Decided",
+      "b": "Has decided",
+      "c": "Has decide",
+      "d": "Haven't decided"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 141,
+    "question_text": "Choose the correct tense form ( orta ) It ______ here since 1998",
+    "options": {
+      "a": "Hasn't snowed",
+      "b": "Haven't snowed",
+      "c": "Have snowed",
+      "d": "Has snow"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 142,
+    "question_text": "Choose a sentence in Zero conditional ( çətin )",
+    "options": {
+      "a": "If you press this button, the light will comes on",
+      "b": "If you press this button, the light comes on",
+      "c": "If you will press this button, the light comes on",
+      "d": "If you will press this button, the light will come on"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 143,
+    "question_text": "Choose a sentence in Zero conditional ( çətin )",
+    "options": {
+      "a": "If you heat ice, it melts",
+      "b": "If you will heat ice, it melts",
+      "c": "If you will heat ice, it will melt",
+      "d": "If you heat ice, it will melt"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 144,
+    "question_text": "Choose the correct variant ( çətin ) Work on the building _____ from May 1952 until July 1955 and 16 workers died in accidents during _____",
+    "options": {
+      "a": "Host, dominate",
+      "b": "Lighthouse, landmarks",
+      "c": "Lasted, construction",
+      "d": "Shipped, skyline"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 145,
+    "question_text": "Choose the correct variant ( çətin ) Liberty was the tallest _____ in New York at 93 metres and until 1902 the Americans used it as a _____",
+    "options": {
+      "a": "Structure, lighthouse",
+      "b": "Ship, landmark",
+      "c": "Construction, dominate",
+      "d": "Host, parade"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 146,
+    "question_text": "Choose the correct variant ( orta ) The castle has ____ the British loyal family.",
+    "options": {
+      "a": "Belonged to",
+      "b": "Dominated",
+      "c": "Lasted",
+      "d": "Resided"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 147,
+    "question_text": "Choose the correct variant ( orta ) The queen and her family always _____ at Balmoral when they visit Scotland",
+    "options": {
+      "a": "Belong to",
+      "b": "Property",
+      "c": "Minaret",
+      "d": "Reside"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 148,
+    "question_text": "Choose the correct variant ( orta ) The castle _____ have been open to the public for over 35 years",
+    "options": {
+      "a": "Grounds",
+      "b": "Landlord",
+      "c": "Oilfield",
+      "d": "Spectator"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 149,
+    "question_text": "Choose the correct variant ( asan ) The _____ left the stadium happy after their team's win",
+    "options": {
+      "a": "Diners",
+      "b": "Environment",
+      "c": "Dome",
+      "d": "Spectators"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 150,
+    "question_text": "Choose the correct variant ( asan ) A lot of the _____ at the hotel were going to the wedding",
+    "options": {
+      "a": "Column",
+      "b": "Minarets",
+      "c": "Woodland",
+      "d": "Guests"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 151,
+    "question_text": "Choose the correct variant ( asan ) The ______ were disappointed with the musicians' poor performance",
+    "options": {
+      "a": "Audience",
+      "b": "Earthquake",
+      "c": "Generation",
+      "d": "Castle"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 152,
+    "question_text": "Choose the correct word ( çətin ) Nanotechnology is the science of building tiny machines so small that they are _____",
+    "options": {
+      "a": "İnvisible",
+      "b": "Marble",
+      "c": "Reproduce",
+      "d": "Entire"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 153,
+    "question_text": "Choose the correct word ( orta ) An inventor develops an amazing new way to _____",
+    "options": {
+      "a": "Virus",
+      "b": "Reproduce",
+      "c": "Environment",
+      "d": "Cure"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 154,
+    "question_text": "Choose the correct word ( orta ) Nanobots might escape into the _____ and damage people, plants and animal",
+    "options": {
+      "a": "Organ",
+      "b": "Size",
+      "c": "Environment",
+      "d": "Nightmare"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 155,
+    "question_text": "Choose the correct word ( orta ) The most extreme predictions say that nanobots could destroy the ___ planet in about three hours",
+    "options": {
+      "a": "Entire",
+      "b": "Visitor",
+      "c": "Parade",
+      "d": "Skyline"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 156,
+    "question_text": "Choose the correct variant ( çətin ) There was a bad car crash but there was only one ___ . An ambulance took him to hospital",
+    "options": {
+      "a": "Skeleton",
+      "b": "Inject",
+      "c": "Prescribe",
+      "d": "Casualty"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 157,
+    "question_text": "Choose the correct variant ( orta ) When they were building the house they found some bones and the ___ of a strange animal",
+    "options": {
+      "a": "Skeleton",
+      "b": "Epidemic",
+      "c": "Minaret",
+      "d": "Dome"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 158,
+    "question_text": "Choose the correct variant ( orta ) Can you ___ some tablets for the pain in my back , doctor?",
+    "options": {
+      "a": "Nightmare",
+      "b": "Prescribe",
+      "c": " Medicine",
+      "d": "Organ"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 159,
+    "question_text": "Choose the correct variant ( çətin ) There was a flu ___ at the school last month. Half the children were ill and didn't come to school",
+    "options": {
+      "a": "Epidemic",
+      "b": "Tablets",
+      "c": "Outpatient",
+      "d": "Prescribe"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 160,
+    "question_text": "Choose the correct variant ( çətin ) He can't run because he's hurt a ____ at the back of his leg. He has to rest for a few weeks",
+    "options": {
+      "a": "Size",
+      "b": "Organ",
+      "c": "Epidemic",
+      "d": "Muscle"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 161,
+    "question_text": "Choose the correct variant ( asan ) Don't drink dirty water because you will get an ____ and be very ill",
+    "options": {
+      "a": "Infection",
+      "b": "Diagnose",
+      "c": "Inject",
+      "d": "Marble"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 162,
+    "question_text": "Choose the correct variant ( orta ) The doctors don't know what's wrong with him. They can't ___ his illness",
+    "options": {
+      "a": "Reproduce",
+      "b": "Dominate",
+      "c": "Prediction",
+      "d": "Diagnose"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 163,
+    "question_text": "Choose the correct word ( asan ) This is my bicycle. It _____ to me",
+    "options": {
+      "a": "Dominates",
+      "b": "Reproduces",
+      "c": "Diagnoses",
+      "d": "Belongs to"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 164,
+    "question_text": "Choose the correct word ( asan ) We call a big celebration though streets of a town or city a___",
+    "options": {
+      "a": "Parade",
+      "b": "Tower",
+      "c": "Palace",
+      "d": "Minaret"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 165,
+    "question_text": "Choose the correct word ( asan ) What do we call houses and buildings that someone owns?",
+    "options": {
+      "a": "Ground",
+      "b": "Skyline",
+      "c": "Generation",
+      "d": "Property"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 166,
+    "question_text": "Complete the sentence with the correct word. Children should always show.....to older people and speak politely to them.",
+    "options": {
+      "a": " steep",
+      "b": "soar",
+      "c": " respect",
+      "d": "chase"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 167,
+    "question_text": "Complete the sentence with the correct word. Could you....some water into my glass,please?",
+    "options": {
+      "a": "pour",
+      "b": "pours",
+      "c": "respect",
+      "d": "soar"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 168,
+    "question_text": "Complete the sentence with the correct word. Only one goat on our farm has got big.....,and he is not dangerous.",
+    "options": {
+      "a": " tie",
+      "b": "chases",
+      "c": " heads",
+      "d": " horns"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 169,
+    "question_text": "Complete the sentence with the correct word. There isn't a bridge but the river is very narrow.We can.....from one side to the other.",
+    "options": {
+      "a": " soar",
+      "b": " leap",
+      "c": "sign",
+      "d": "hope"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 170,
+    "question_text": "Complete the sentence with the correct word. These tablets....the pain of headaches and soon stop them.",
+    "options": {
+      "a": " chase",
+      "b": "leap",
+      "c": "concussion",
+      "d": " relieve"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 171,
+    "question_text": "Complete the sentence with the correct word. The people don't want a new road and they have organized a..... against it in the city centre.",
+    "options": {
+      "a": "protest",
+      "b": "herd",
+      "c": "organization",
+      "d": "concussion"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 172,
+    "question_text": "Complete the sentence with the correct word. The....came up the beach and hit the coastal resort hard.It smashed into trees and buildings.",
+    "options": {
+      "a": " warning",
+      "b": " tidal wave",
+      "c": "plunge",
+      "d": "smash"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 173,
+    "question_text": "Complete the sentence with the correct word. When the volcano Krakatoa in Indonesia.....in 1883 it caused terrible damage.",
+    "options": {
+      "a": " flatten",
+      "b": "smashed",
+      "c": "collapsed",
+      "d": " erupted"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 174,
+    "question_text": "Choose the correct variant . A lot of ....people find it difficult to move around .",
+    "options": {
+      "a": "Elderly",
+      "b": "Young",
+      "c": "Poor",
+      "d": "Rich"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 175,
+    "question_text": "Choose the correct variant . Our dog always .... cats but he never catches them !",
+    "options": {
+      "a": "Soars",
+      "b": "Releives",
+      "c": "Herds",
+      "d": "Chases"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 176,
+    "question_text": "Choose the correct variant The children_____ wear coats because it's raining.",
+    "options": {
+      "a": " mustn't",
+      "b": "couldn't",
+      "c": " some",
+      "d": " must"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 177,
+    "question_text": "Choose the correct variant You __ wear smart clothes for a job interview.",
+    "options": {
+      "a": " much",
+      "b": "couldn't",
+      "c": " some",
+      "d": " must"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 178,
+    "question_text": "Choose the correct variant They __ study because they don't have any homework tonight.",
+    "options": {
+      "a": " much",
+      "b": "couldn't",
+      "c": " some",
+      "d": " needn't"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 179,
+    "question_text": "Choose the correct variant. We _____be early for school tomorrow because we've got an exam.",
+    "options": {
+      "a": " some",
+      "b": "couldn't",
+      "c": " must",
+      "d": "much"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 180,
+    "question_text": "Choose the correct variant Students __smoke in the school building.",
+    "options": {
+      "a": " mustn't",
+      "b": "couldn't",
+      "c": " some",
+      "d": "much"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 181,
+    "question_text": "Choose the correct variant The museum is free. You_____ bring any money.",
+    "options": {
+      "a": " many",
+      "b": "couldn't",
+      "c": " some",
+      "d": " needn't"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 182,
+    "question_text": "Choose the correct variant It's Tom's birthday. I __buy a gift.",
+    "options": {
+      "a": " much",
+      "b": "couldn't",
+      "c": " some",
+      "d": " must"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 183,
+    "question_text": "Choose the correct variant They__take the bus because they can walk to school in five minutes.",
+    "options": {
+      "a": " needn't",
+      "b": "couldn't",
+      "c": " some",
+      "d": "much"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 184,
+    "question_text": "Choose the correct variant You__use Mike's computer without asking him.",
+    "options": {
+      "a": " some",
+      "b": "couldn't",
+      "c": " mustn't",
+      "d": "much"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 185,
+    "question_text": "Choose the correct variant İf you want to go on the school trip, you__ tell your teacher before Friday.",
+    "options": {
+      "a": " many",
+      "b": "couldn't",
+      "c": " some",
+      "d": " must"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 186,
+    "question_text": "Choose the correct variant You __wear a seat belt when the plane takes off and lands.",
+    "options": {
+      "a": " must",
+      "b": "couldn't",
+      "c": " some",
+      "d": "much"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 187,
+    "question_text": "Choose the correct variant. We / miss the train / if / you / not hurry up!",
+    "options": {
+      "a": "İf you do not hurry up we shall miss the train",
+      "b": "We will be miss train the not hurry up if",
+      "c": "You miss train the we shall hurry not up",
+      "d": "İf you miss the train we will not hurry up"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 188,
+    "question_text": "Choose the correct first conditional. If/I/not feel better / I / go the doctor's tomorrow",
+    "options": {
+      "a": " I not go the doctor's if I feel better",
+      "b": "I go not feel better if Igo the doctor's tomorrow",
+      "c": " İf I do not feel better I will go the doctor's tomorrow",
+      "d": "İf I do not better feel I go the doctor's tomorrow"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 189,
+    "question_text": "Choose the correct first conditional. If/ you / not stop smoking / you / be ill",
+    "options": {
+      "a": " İf you not stop smoking you were ill",
+      "b": "İf you not stop smoking you be ill",
+      "c": " İf you not stop smoking you was ill",
+      "d": " İf you don't stop smoking you will be ill"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 190,
+    "question_text": "Choose the correct first conditional If/you/speak to your teacher / she / give you some good advice",
+    "options": {
+      "a": " İf you speaks to your teacher she was give you some good advice",
+      "b": " İf you speak to your teacher she were give you some good advice",
+      "c": " İf you speak to your teacher she were give you some good advices",
+      "d": " İf you speak to your teacher she will give you some good advice"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 191,
+    "question_text": "Choose the correct first conditional.",
+    "options": {
+      "a": " She have an accident if she will not drive more slowly",
+      "b": " She has an accident if she will not drive more slowly",
+      "c": " She is an accident if she will not drive more slowly",
+      "d": " She was an accident if she will not drive more slowly"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 192,
+    "question_text": "Choose the correct first conditional If/you/wait at the bus stop / the bus / come soon",
+    "options": {
+      "a": " İf you waited at the bus stop the bus will come",
+      "b": " İf you wait at the bus stop the bus shall come soon",
+      "c": "İf you waits at the bus stop the bus was come soon",
+      "d": " İf you wait at the bus stop the bus will come soon"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 193,
+    "question_text": "Translate the sentence This dangerous event takes place every year at the end of May.",
+    "options": {
+      "a": "Bu təhlükəli hadisə hər il may ayının sonunda baş verir.",
+      "b": "Bu təhlükəli hadisə iki ildən bir may ayının sonunda baş verir.",
+      "c": "Bu təhlükəli hadisə hər il may ayının əvvəlində baş verir.",
+      "d": "Bu xoş hadisə hər il may ayının sonunda baş verir."
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 194,
+    "question_text": "Translate the sentence The volcano is by the sea, and the water next to the volcano is about six kilometres deep.",
+    "options": {
+      "a": "Vulkan göl kənarındadır və vulkanın yanındakı su təxminən altı kilometr dərinlikdədir.",
+      "b": "Vulkan dəniz kənarındadır və vulkanın yanındakı su təxminən yeddi kilometr dərinlikdədir.",
+      "c": "Vulkan dəniz kənarındadır və vulkanın yanındakı su dərindi.",
+      "d": "Vulkan dəniz kənarındadır və vulkanın yanındakı su təxminən altı kilometr dərinlikdədir."
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 195,
+    "question_text": "Translate the sentence This would create a huge sunami about 100 metres high.",
+    "options": {
+      "a": "Bu, təxminən 100 metr hündürlüyündə nəhəng bir sunami yarada bilər.",
+      "b": "O, təxminən 100 metr hündürlüyündə nəhəng bir sunami yarada bilər.",
+      "c": "Bu, təxminən 100 metr hündürlüyündə balaca bir sunami yarada bilər.",
+      "d": "Bu, təxminən 100 metr hündürlüyündə nəhəng bir neçə sunami yarada bilər."
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 196,
+    "question_text": "Translate the sentence The wave could travel a kilometre inland and devastate towns and villages.",
+    "options": {
+      "a": "Dalğa iki kilometr daxili ərazini keçərək şəhərləri və kəndləri viran qoya bilər.",
+      "b": "Dalğa bir kilometr daxili ərazini keçərək şəhərləri və kəndləri viran qoya bilər.",
+      "c": "Dalğa bir kilometr daxili ərazini keçərək şəhərləri viran qoya bilər.",
+      "d": "Dalğa bir kilometr daxili ərazini keçərək kəndləri viran qoya bilər."
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 197,
+    "question_text": "Translate the sentence It would flatten everything and kill thousands of people.",
+    "options": {
+      "a": "Hər şeyi dümdüz edər və minlərlə insanı yaşadır.",
+      "b": "Hər nəyi dümdüz etmir və minlərlə insanı öldürərdi.",
+      "c": "Hər şeyi dümdüz edər və yüzlərlə insanı öldürərdi.",
+      "d": "Hər şeyi dümdüz edər və minlərlə insanı öldürərdi."
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 198,
+    "question_text": "Translate the sentence Hər il festival zamanı yol qəzalarında insanlar ölür və ya yaralanır",
+    "options": {
+      "a": "Every years people get killed or injured in road accidents during the festival",
+      "b": "Every year people get killed or injured in road accidents during the festival",
+      "c": "Every month people get killed or injured in road accidents during the festival",
+      "d": "Every months people get killed or injured in road accidents during the festival"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 199,
+    "question_text": "Translate the sentence Hadisə son dərəcə təhlükəlidir.",
+    "options": {
+      "a": "The event isn't extremely dangerous.",
+      "b": " The event are extremely dangerous.",
+      "c": " The event aren't extremely dangerous.",
+      "d": " The event is extremely dangerous."
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 200,
+    "question_text": "Choose the correct variant A large piece of something.",
+    "options": {
+      "a": " Crash",
+      "b": " Flood",
+      "c": "Mass",
+      "d": " collapse"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 201,
+    "question_text": "Choose the correct variant On safari we saw a _of elephants drinking water at a lake.",
+    "options": {
+      "a": "leap",
+      "b": "chase",
+      "c": "herd",
+      "d": "horn"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 202,
+    "question_text": "Choose the correct variant. I have turned off the tap but water continues to _from it.Can you repair it?",
+    "options": {
+      "a": "water",
+      "b": "dribble",
+      "c": "drip",
+      "d": "spill"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 203,
+    "question_text": "Choose the correct variant. We need water to_the dry fields so we can grow food.",
+    "options": {
+      "a": "drip",
+      "b": "irrigate",
+      "c": "water",
+      "d": "dribble"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 204,
+    "question_text": "Choose the correct definition. (orta) To move people from a place because it isn't safe.",
+    "options": {
+      "a": "rescue",
+      "b": "evacuate",
+      "c": "shake",
+      "d": "rebuild"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 205,
+    "question_text": "Choose the correct definition. (orta) To make something flat.",
+    "options": {
+      "a": "destroy",
+      "b": "flatten",
+      "c": "rebuild",
+      "d": "explode"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 206,
+    "question_text": "Choose the correct definition. (orta) Explodes and throws out fire and rocks.",
+    "options": {
+      "a": "flood",
+      "b": "earthquake",
+      "c": "erupt",
+      "d": "drought"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 207,
+    "question_text": "Choose the correct definition. (orta) To destroy or damage something badly.",
+    "options": {
+      "a": "devastate",
+      "b": "shake",
+      "c": "save",
+      "d": "melt"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 208,
+    "question_text": "Choose the correct definition. (orta) To cause something that has a very dangerous effect.",
+    "options": {
+      "a": "warn",
+      "b": "trigger",
+      "c": "rebuild",
+      "d": "survive"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 209,
+    "question_text": "Choose the correct definition. (orta) A large piece of something.",
+    "options": {
+      "a": "mass",
+      "b": "wave",
+      "c": "slope",
+      "d": "fire"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 210,
+    "question_text": "Choose the correct definition. (orta) To hit something with a lot of force.",
+    "options": {
+      "a": "collapse",
+      "b": "crash",
+      "c": "survive",
+      "d": "shake"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 211,
+    "question_text": "Choose the correct definition. (orta) When rocks suddenly fall down the side of a mountain.",
+    "options": {
+      "a": "earthquake",
+      "b": "volcano",
+      "c": "landslide",
+      "d": "flood"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 212,
+    "question_text": "Choose the correct definition. (orta) To cover and fill a place with water.",
+    "options": {
+      "a": "destroy",
+      "b": "melt",
+      "c": "flood",
+      "d": "burn"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 213,
+    "question_text": "Choose the correct definition. (orta) A disaster that causes a lot of damage and suffering.",
+    "options": {
+      "a": "catastrophe",
+      "b": "storm",
+      "c": "avalanche",
+      "d": "drought"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 214,
+    "question_text": "Choose the correct definition. (orta) Fell quickly from a high place.",
+    "options": {
+      "a": "rose",
+      "b": "plunged",
+      "c": "collapsed",
+      "d": "triggered"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 215,
+    "question_text": "Choose the correct definition. (orta) Something telling people about possible danger.",
+    "options": {
+      "a": "warning",
+      "b": "damage",
+      "c": "storm",
+      "d": "destruction"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 216,
+    "question_text": "Choose the correct definition. (orta) To suddenly fall down.",
+    "options": {
+      "a": "collapse",
+      "b": "melt",
+      "c": "strike",
+      "d": "shake"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 217,
+    "question_text": "Choose the correct definition. (orta) A very large moving part of sea water that destroys the coast.",
+    "options": {
+      "a": "volcano",
+      "b": "earthquake",
+      "c": "tsunami",
+      "d": "landslide"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 218,
+    "question_text": "Choose the correct definition. (orta) A situation when there is a lot of confusion and damage.",
+    "options": {
+      "a": "disaster",
+      "b": "ruin",
+      "c": "chaos",
+      "d": "block"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 219,
+    "question_text": "Complete the sentence.(cetin) The __ came up the beach and hit the coastal resort, destroying everything and flooding the town.",
+    "options": {
+      "a": "earthquake",
+      "b": "tornado",
+      "c": "tidal wave",
+      "d": "volcano"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 220,
+    "question_text": "Complete the sentence.(cetin) The town hall sent a __ to local people about possible forest fires.",
+    "options": {
+      "a": "strike",
+      "b": "warning",
+      "c": "rescue",
+      "d": "explosion"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 221,
+    "question_text": "Complete the sentence.(cetin) They decided to __ everybody that lived near the forest and move them to a safer place.",
+    "options": {
+      "a": "destroy",
+      "b": "evacuate",
+      "c": "rebuild",
+      "d": "block"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 222,
+    "question_text": "Complete the sentence.(cetin) When the volcano Krakatoa __ in Indonesia, it caused terrible damage and five tsunamis.",
+    "options": {
+      "a": "warned",
+      "b": "melted",
+      "c": "shook",
+      "d": "erupted"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 223,
+    "question_text": "Complete the sentence.(cetin) A big rock fell down the hill and hit a car. It was a __.",
+    "options": {
+      "a": "flood",
+      "b": "landslide",
+      "c": "storm",
+      "d": "drought"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 224,
+    "question_text": "Choose the correct variant A delayed punishment a person will only receive if they do something bad or illegal again during a certain period of time.",
+    "options": {
+      "a": "warning",
+      "b": "suspended sentence",
+      "c": "fine",
+      "d": "trial"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 225,
+    "question_text": "Choose the correct variant Money someone receives for helping to find someone or something.",
+    "options": {
+      "a": "clue",
+      "b": "evidence",
+      "c": "reward",
+      "d": "fee"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 226,
+    "question_text": "Choose the correct variant Suddenly stopped working.",
+    "options": {
+      "a": "crashed",
+      "b": "looked after",
+      "c": "gave up",
+      "d": "set off"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 227,
+    "question_text": "Choose the correct variant A situation when something stops moving or happening.",
+    "options": {
+      "a": "breakdown",
+      "b": "blackout",
+      "c": "halt",
+      "d": "confusion"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 228,
+    "question_text": "Choose the correct variant An examination in court to decide if somebody is guilty of a crime.",
+    "options": {
+      "a": "trial",
+      "b": "sentence",
+      "c": "arrest",
+      "d": "case"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 229,
+    "question_text": "Choose the correct variant Took someone to a police station.",
+    "options": {
+      "a": "brought up",
+      "b": "took over",
+      "c": "took down",
+      "d": "arrested"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 230,
+    "question_text": "Choose the correct variant A situation when everything is disorganized and confused.",
+    "options": {
+      "a": "chaos",
+      "b": "evidence",
+      "c": "clue",
+      "d": "reward"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 231,
+    "question_text": "Choose the correct variant Very important.",
+    "options": {
+      "a": "serious",
+      "b": "major",
+      "c": "critical",
+      "d": "vital"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 232,
+    "question_text": "Choose the correct variant Secret information that you give to someone.",
+    "options": {
+      "a": "clue",
+      "b": "tip-off",
+      "c": "case",
+      "d": "warning"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 233,
+    "question_text": "Choose the correct variant A process to find out who or what caused something.",
+    "options": {
+      "a": "discovery",
+      "b": "investigation",
+      "c": "arrest",
+      "d": "judgment"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 234,
+    "question_text": "Choose the correct variant Found something or someone you were looking for.",
+    "options": {
+      "a": "traced",
+      "b": "gave up",
+      "c": "broke into",
+      "d": "took off"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 235,
+    "question_text": "Choose the correct variant Pieces of information that help someone in an investigation.",
+    "options": {
+      "a": "rewards",
+      "b": "clues",
+      "c": "trials",
+      "d": "warnings"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 236,
+    "question_text": "Choose the correct variant Accused someone of doing something bad or illegal.",
+    "options": {
+      "a": "blamed",
+      "b": "charged",
+      "c": "fined",
+      "d": "warned"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 237,
+    "question_text": "Choose the correct variant Being responsible for doing something bad or illegal.",
+    "options": {
+      "a": "guilty",
+      "b": "arrested",
+      "c": "involved",
+      "d": "punished"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 238,
+    "question_text": "Choose the correct variant Let something spread in a particular place.",
+    "options": {
+      "a": "release",
+      "b": "leak",
+      "c": "allow",
+      "d": "prevent"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 239,
+    "question_text": "Complete the sentence.(cetin) The electricity went off and all the machines came to a __ and stopped working in the factory.",
+    "options": {
+      "a": "clue",
+      "b": "half",
+      "c": "reward",
+      "d": "leak"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 240,
+    "question_text": "Complete the sentence.(cetin) In the office there was a lot of confusion --- all the computers __ and the factory was in complete chaos.",
+    "options": {
+      "a": "turned away",
+      "b": "switched off",
+      "c": "gave up",
+      "d": "crashed"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 241,
+    "question_text": "Complete the sentence.(cetin) There will be an __ from the gallery.",
+    "options": {
+      "a": "reward",
+      "b": "clue",
+      "c": "warning",
+      "d": "investigation"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 242,
+    "question_text": "Complete the sentence.(cetin) We have received a __ using the information to help the police find the painting.",
+    "options": {
+      "a": "tip-off",
+      "b": "trial",
+      "c": "leak",
+      "d": "sentence"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 243,
+    "question_text": "Complete the sentence.(cetin) The gallery is also offering a __ of £50,000 to anybody who can give more information.",
+    "options": {
+      "a": "punishment",
+      "b": "trial",
+      "c": "reward",
+      "d": "fine"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 244,
+    "question_text": "Complete the sentence.(cetin) The police __ the young man that took my car to a house in Birmingham.",
+    "options": {
+      "a": "followed",
+      "b": "traced",
+      "c": "warned",
+      "d": "blamed"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 245,
+    "question_text": "Complete the sentence.(cetin) They found him in bed. They __ him and took him to the police station.",
+    "options": {
+      "a": "charged",
+      "b": "rescued",
+      "c": "arrested",
+      "d": "attacked"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 246,
+    "question_text": "Complete the sentence.(cetin) After asking him some questions, they __ my car.",
+    "options": {
+      "a": "hid",
+      "b": "lost",
+      "c": "sold",
+      "d": "charged"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 247,
+    "question_text": "Complete the sentence.(cetin) At the __, he admitted he was guilty of taking the car.",
+    "options": {
+      "a": "trial",
+      "b": "clue",
+      "c": "chaos",
+      "d": "warning"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 248,
+    "question_text": "Complete the sentence.(cetin) He got a __ because he was 17.",
+    "options": {
+      "a": "reward",
+      "b": "suspended sentence",
+      "c": "clue",
+      "d": "fine"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 249,
+    "question_text": "Complete the sentence.(cetin) In the film a scientist __ a dangerous virus that will destroy the planet.",
+    "options": {
+      "a": "released",
+      "b": "guilty",
+      "c": "caught",
+      "d": "leaked"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 250,
+    "question_text": "Complete the sentence.(cetin) They only have 10 hours to use this __information to save the planet!",
+    "options": {
+      "a": "trial",
+      "b": "investigation",
+      "c": "discovery",
+      "d": "vital"
+    },
+    "correct_answer": "d"
+  }
 ];
        // ====== ƏSAS DƏYİŞİKLİK ======
 // Bütün sualları bir massivdə birləşdir
-const combinedQuestions = allQuestions.flatMap(category => category.questions);
-
+//const combinedQuestions = allQuestions.flatMap(category => category.questions);
 // Oyun dəyişənləri
 let currentQuestionIndex = 0;
 let userAnswers = [];
 let quizStarted = false;
 let userName = '';
+let startQuestionNumber = 1; // Yeni dəyişən: başlama sual nömrəsi
 let timerInterval;
 const totalTime = 40;
 let timeLeft = totalTime;
@@ -3306,31 +3858,185 @@ window.onload = function() {
         userGreeting.innerHTML = `<strong>${userName}</strong> olaraq giriş etdiniz!`;
     }
     
+    // Başlama sual nömrəsi inputunu yarat
+    createStartQuestionInput();
+    
     // Particles yarat
     createParticles();
     
     // Progress circles yarat
     createProgressCircles();
+    
+    // Event listener-ları əlavə et
+    setupEventListeners();
 };
+
+// ====== BAŞLAMA SUAL NÖMRƏSİ INPUTU ======
+function createStartQuestionInput() {
+    const startBtn = document.getElementById('start-btn');
+    const startBtnContainer = startBtn.parentElement;
+    
+    // Input container yarat
+    const inputContainer = document.createElement('div');
+    inputContainer.className = 'start-question-input';
+    inputContainer.style.cssText = `
+        margin: 15px 0;
+        text-align: center;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        border: 1px solid rgba(67, 97, 238, 0.3);
+    `;
+    
+    // Label yarat
+    const label = document.createElement('label');
+    label.textContent = 'Başlama sual nömrəsi: ';
+    label.style.cssText = `
+        color: var(--text-white);
+        font-size: 0.9rem;
+        margin-right: 10px;
+        display: inline-block;
+    `;
+    
+    // Input yarat
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.id = 'start-question-input';
+    input.min = 1;
+    input.max = allQuestions.length;
+    input.value = 1;
+    input.style.cssText = `
+        width: 80px;
+        padding: 8px 12px;
+        border: 2px solid var(--primary-blue);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.95);
+        color: var(--primary-blue);
+        font-weight: bold;
+        text-align: center;
+        font-size: 1rem;
+        margin: 0 5px;
+    `;
+    
+    // Info mesajı
+    const infoText = document.createElement('div');
+    infoText.textContent = `(1 - ${allQuestions.length} arası)`;
+    infoText.style.cssText = `
+        color: var(--accent-pink);
+        font-size: 0.8rem;
+        margin-top: 8px;
+        opacity: 0.8;
+    `;
+    
+    inputContainer.appendChild(label);
+    inputContainer.appendChild(input);
+    inputContainer.appendChild(infoText);
+    
+    // Start button-dan əvvəl əlavə et
+    startBtnContainer.insertBefore(inputContainer, startBtn);
+    
+    // Input event listener
+    input.addEventListener('change', function() {
+        let value = parseInt(this.value);
+        
+        if (isNaN(value) || value < 1) {
+            value = 1;
+            this.value = 1;
+        } else if (value > allQuestions.length) {
+            value = allQuestions.length;
+            this.value = allQuestions.length;
+        }
+        
+        startQuestionNumber = value;
+        console.log('Start question set to:', value);
+    });
+    
+    input.addEventListener('input', function() {
+        let value = parseInt(this.value);
+        if (isNaN(value)) {
+            this.value = 1;
+        }
+    });
+}
+
+function setupEventListeners() {
+    // Start button
+    document.getElementById('start-btn').addEventListener('click', () => {
+        console.log('Start button clicked!');
+        
+        // Başlama sual nömrəsini götür
+        const input = document.getElementById('start-question-input');
+        let questionNum = parseInt(input.value);
+        
+        // Validasiya
+        if (isNaN(questionNum) || questionNum < 1) questionNum = 1;
+        if (questionNum > allQuestions.length) questionNum = allQuestions.length;
+        
+        // Sualın index-ni tap
+        const questionIndex = findQuestionIndexByNumber(questionNum);
+        console.log('Looking for question number:', questionNum, 'Found index:', questionIndex);
+        
+        if (questionIndex !== -1) {
+            currentQuestionIndex = questionIndex;
+            startQuestionNumber = questionNum;
+            console.log('Starting from question index:', currentQuestionIndex, 'Number:', startQuestionNumber);
+        } else {
+            currentQuestionIndex = 0;
+            startQuestionNumber = 1;
+            console.log('Question not found, starting from beginning');
+        }
+        
+        startContainer.style.display = 'none';
+        quizHeader.style.display = 'flex';
+        quizContainer.style.display = 'block';
+        document.getElementById('username-display').textContent = userName;
+        loadQuestion(currentQuestionIndex);
+    });
+
+    // Next button
+    document.getElementById('next-btn').addEventListener('click', nextQuestion);
+    
+    // Timer toggle button
+    document.getElementById('timer-toggle-btn').addEventListener('click', toggleTimer);
+    
+    // Restart button
+    document.getElementById('restart-btn').addEventListener('click', restartQuiz);
+}
+
+// ====== SUAL NÖMRƏSİNƏ GÖRƏ INDEX TAPMAQ ======
+function findQuestionIndexByNumber(questionNumber) {
+    console.log('Searching for question number:', questionNumber);
+    console.log('Total questions:', allQuestions.length);
+    
+    for (let i = 0; i < allQuestions.length; i++) {
+        if (allQuestions[i].question_number === questionNumber) {
+            console.log('Found at index:', i);
+            return i;
+        }
+    }
+    console.log('Question not found');
+    return -1; // Tapılmadı
+}
 
 // ====== PARTİCLE SİSTEMİ ======
 function createParticles() {
     const particlesContainer = document.getElementById('particles');
-    for (let i = 0; i < 50; i++) {
+    particlesContainer.innerHTML = '';
+    for (let i = 0; i < 30; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         particle.style.left = `${Math.random() * 100}%`;
-        particle.style.animationDelay = `${Math.random() * 20}s`;
-        particle.style.animationDuration = `${15 + Math.random() * 10}s`;
-        particle.style.opacity = Math.random() * 0.5 + 0.3;
-        particle.style.width = particle.style.height = `${Math.random() * 6 + 2}px`;
+        particle.style.animationDelay = `${Math.random() * 15}s`;
+        particle.style.animationDuration = `${10 + Math.random() * 10}s`;
+        particle.style.opacity = Math.random() * 0.3 + 0.2;
+        particle.style.width = particle.style.height = `${Math.random() * 4 + 2}px`;
         particlesContainer.appendChild(particle);
     }
 }
 
 // ====== PROGRESS CIRCLES ======
 function createProgressCircles() {
-    const totalQuestions = combinedQuestions.length; // Dəyişiklik burada
+    const totalQuestions = allQuestions.length;
     progressCircles.innerHTML = '';
     for (let i = 0; i < totalQuestions; i++) {
         const circle = document.createElement('div');
@@ -3382,8 +4088,7 @@ function startTimer() {
             timerBarElement.style.width = `${(timeLeft / totalTime) * 100}%`;
 
             if (timeLeft <= 0) {
-                const correctAnswer = combinedQuestions[currentQuestionIndex].correct_answer; // Dəyişiklik
-                handleAnswer(null, correctAnswer, null);
+                handleAnswer(null, allQuestions[currentQuestionIndex].correct_answer, null);
             }
         }
     }, 1000);
@@ -3408,19 +4113,31 @@ function toggleTimer() {
 
 // ====== QUIZ FUNCTIONS ======
 function loadQuestion(questionIndex) {
+    console.log('Loading question index:', questionIndex);
+    
     clearTimeout(autoNextTimeout);
     autoNextMessage.style.display = 'none';
     
-    if (questionIndex >= combinedQuestions.length) {
+    if (questionIndex >= allQuestions.length) {
         showResult();
         return;
     }
 
-    const currentQuestion = combinedQuestions[questionIndex];
+    const currentQuestion = allQuestions[questionIndex];
+    console.log('Current question:', currentQuestion);
     
+    if (!currentQuestion) {
+        console.error('Question not found at index:', questionIndex);
+        showResult();
+        return;
+    }
+    
+    // Sual nömrəsinin real dəyərini göstər
     questionElement.innerHTML = `<span style="color: var(--accent-pink);">${currentQuestion.question_number}.</span> ${currentQuestion.question_text}`;
-    progressElement.textContent = `Sual ${questionIndex + 1} / ${combinedQuestions.length}`;
-    questionCounterElement.textContent = `${questionIndex + 1} / ${combinedQuestions.length}`;
+    
+    // Progress-də cari və ümumi sual sayını göstər
+    progressElement.textContent = `Sual ${currentQuestion.question_number} / ${allQuestions.length}`;
+    questionCounterElement.textContent = `${questionIndex + 1} / ${allQuestions.length}`;
 
     optionsContainer.innerHTML = '';
     nextBtn.style.display = 'none';
@@ -3454,7 +4171,7 @@ function handleAnswer(selectedAnswer, correctAnswer, selectedButton) {
     let isCorrect = selectedAnswer === correctAnswer;
 
     userAnswers.push({
-        question: combinedQuestions[currentQuestionIndex].question_number, // Dəyişiklik
+        question: allQuestions[currentQuestionIndex].question_number,
         correct: isCorrect,
         userAnswer: selectedAnswer
     });
@@ -3484,7 +4201,7 @@ function handleAnswer(selectedAnswer, correctAnswer, selectedButton) {
 
 function nextQuestion() {
     currentQuestionIndex++;
-    if (currentQuestionIndex < combinedQuestions.length) {
+    if (currentQuestionIndex < allQuestions.length) {
         loadQuestion(currentQuestionIndex);
     } else {
         showResult();
@@ -3499,8 +4216,12 @@ function showResult() {
     resultContainer.style.display = 'block';
 
     const correctCount = userAnswers.filter(a => a.correct).length;
-    const totalQuestions = combinedQuestions.length; // Dəyişiklik
+    const totalQuestions = allQuestions.length;
     const percentage = ((correctCount / totalQuestions) * 100).toFixed(1);
+    
+    // Başlama sual nömrəsi ilə bağlı info
+    const startInfo = startQuestionNumber > 1 ? 
+        ` (${startQuestionNumber}-ci sualdan başladı)` : '';
     
     // Skor
     document.getElementById('score').innerHTML = `
@@ -3508,7 +4229,7 @@ function showResult() {
             ${userName}
         </div>
         <div style="font-size: 1.3rem; color: var(--accent-pink); margin-bottom: 15px;">
-            ${totalQuestions} sualdan ${correctCount} düzgün
+            ${totalQuestions} sualdan ${correctCount} düzgün${startInfo}
         </div>
         <div style="font-size: 3rem; color: var(--primary-blue); font-weight: 800;">
             ${percentage}%
@@ -3528,6 +4249,10 @@ function showResult() {
         <div style="margin-bottom: 15px;">
             <i class="fas fa-percentage" style="color: var(--primary-blue); margin-right: 10px;"></i>
             <strong>Uğur faizi:</strong> ${percentage}%
+        </div>
+        <div style="margin-bottom: 15px;">
+            <i class="fas fa-play-circle" style="color: var(--secondary-blue); margin-right: 10px;"></i>
+            <strong>Başlama nömrəsi:</strong> ${startQuestionNumber}
         </div>
     `;
     
@@ -3551,11 +4276,29 @@ function showResult() {
 }
 
 function restartQuiz() {
-    currentQuestionIndex = 0;
+    // Başlama input-unun dəyərini saxla
+    const input = document.getElementById('start-question-input');
+    let questionNum = parseInt(input.value);
+    
+    // Validasiya
+    if (isNaN(questionNum) || questionNum < 1) questionNum = 1;
+    if (questionNum > allQuestions.length) questionNum = allQuestions.length;
+    
+    // Yeni başlama index-i tap
+    const questionIndex = findQuestionIndexByNumber(questionNum);
+    
+    if (questionIndex !== -1) {
+        currentQuestionIndex = questionIndex;
+        startQuestionNumber = questionNum;
+    } else {
+        currentQuestionIndex = 0;
+        startQuestionNumber = 1;
+    }
+    
     userAnswers = [];
     
     startContainer.style.display = 'none';
-    quizHeader.style.display = 'grid';
+    quizHeader.style.display = 'flex';
     quizContainer.style.display = 'block';
     resultContainer.style.display = 'none';
     
@@ -3563,19 +4306,6 @@ function restartQuiz() {
     loadQuestion(currentQuestionIndex);
     createProgressCircles();
 }
-
-// ====== EVENT LISTENERS ======
-document.getElementById('start-btn').addEventListener('click', () => {
-    startContainer.style.display = 'none';
-    quizHeader.style.display = 'grid';
-    quizContainer.style.display = 'block';
-    document.getElementById('username-display').textContent = userName;
-    loadQuestion(currentQuestionIndex);
-});
-
-document.getElementById('next-btn').addEventListener('click', nextQuestion);
-document.getElementById('timer-toggle-btn').addEventListener('click', toggleTimer);
-document.getElementById('restart-btn').addEventListener('click', restartQuiz);
 
 // ====== KEYBOARD CONTROLS ======
 document.addEventListener('keydown', (e) => {
@@ -3587,7 +4317,7 @@ document.addEventListener('keydown', (e) => {
         const buttons = document.querySelectorAll('.option-btn');
         if (buttons[index] && !buttons[index].disabled) {
             const answer = buttons[index].dataset.answer;
-            const correctAnswer = combinedQuestions[currentQuestionIndex].correct_answer; // Dəyişiklik
+            const correctAnswer = allQuestions[currentQuestionIndex].correct_answer;
             buttons[index].click();
         }
     }
