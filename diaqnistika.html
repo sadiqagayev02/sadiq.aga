@@ -927,6 +927,25 @@
             align-items: center !important;
             justify-content: center !important;
         }
+
+        /* Başlama sual inputu üçün CSS */
+.start-question-input input:focus {
+    outline: none;
+    border-color: var(--accent-pink);
+    box-shadow: 0 0 10px rgba(255, 0, 100, 0.3);
+}
+
+.start-question-input input::-webkit-inner-spin-button,
+.start-question-input input::-webkit-outer-spin-button {
+    opacity: 1;
+    height: 30px;
+}
+
+/* Progress circles üçün düzəliş */
+.progress-circle.active {
+    border: 2px solid var(--accent-pink);
+    box-shadow: 0 0 10px var(--accent-pink);
+}
     </style>
 </head>
 <body>
@@ -1036,2372 +1055,2481 @@
 <script>
   
 const allQuestions = [
-    {
-        "question_number": 1,
-        "question_text": "\"Avtomobil\" sözünün yunan və latın dillərindən tərcümədə mənası nədir?",
-        "options": {
-            "a": "Mühərrikli araba",
-            "b": "Hərəkətli Araba",
-            "c": "Nəqliyyat vasitəsi",
-            "d": "Özü hərəkət edən"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 2,
-        "question_text": "Avtomobil neçə hissədən ibarətdir?",
-        "options": {
-            "a": "2 hissədən",
-            "b": "4 hissədən",
-            "c": "6 hissədən",
-            "d": "3 hissədən"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 3,
-        "question_text": "Avtomobilin hissələri, hansı cavabda düzgün verilib?",
-        "options": {
-            "a": "Mühərrik, kuza, şassi",
-            "b": "Çərçivə ,körpü , təkər",
-            "c": "Kuza və çərçivə",
-            "d": "Transmissiya və idarə sistemi"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 4,
-        "question_text": "Mühərrik nədir? Hansı cavab doğrudur?",
-        "options": {
-            "a": "Transmisiyanın bir qurğusudur",
-            "b": "Çox mürəkkəb mexanizmdir",
-            "c": "Mexaniki enerji mənbəyidir",
-            "d": "Avtomobilin arxa körpüsüdür"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 5,
-        "question_text": "Avtomobilin \"kuzası\" nə üçündür?",
-        "options": {
-            "a": "Avtomobilə yüksək sürət verilməsi üçün",
-            "b": "Sərnişin və baqajların daşınması üçün",
-            "c": "Avtomobilin xarici görünüşünü dəyişmək üçün",
-            "d": "Tormozlanmanı yaxşılaşdırmaq üçün"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 6,
-        "question_text": "\"Şassi\" nədir?",
-        "options": {
-            "a": "Hərəkət hissəsinin,transmisiyanın və idarə mexanizmlərinin birgə işidir",
-            "b": "Transmisyanın qurğularının bir növüdür",
-            "c": "İdarəetmə mexanizmlərinin və hərəkət hissəsinin toplusudur",
-            "d": "Bir neçə qurğu və mexanizmlər toplusudur"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 7,
-        "question_text": "Avtomobilin transsmissiya vasitələri dedikdə nə nəzərdə tutulur?",
-        "options": {
-            "a": "Avtomobilin hərəkət hissəsidir",
-            "b": "Avtomobilin tormoz sistemidir",
-            "c": "Avtomobili idarəetmə sistemidir",
-            "d": "Avtomobilin güc ötürücü aqreqatıdır"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 8,
-        "question_text": "Avtomobillər təyinatına görə hansı növlərə bölünür?",
-        "options": {
-            "a": "Sərnişin və yük avtomobillərinə",
-            "b": "Yalnız, yük, qoşqulara və yarımqoşqulara",
-            "c": "Sərnişin, yük, xüsusiləşdirilmiş və ixtisaslaşdırılmış",
-            "d": "Yalnız qoşqu və yarımqoşqulara"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 9,
-        "question_text": "Avtomobilin texniki xarakteristikası nəyə deyilir?",
-        "options": {
-            "a": "Avtomobilin konstruksiya xüsusiyyətlərinə",
-            "b": "Əsas texniki parametrlərinin siyhısına",
-            "c": "Avtomobilin yükgötürmə qabiliyyətinə",
-            "d": "Avtomobilin keçicilik qabiliyyətinə"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 10,
-        "question_text": "Avtomobillərdə əsasən enerji mənbəyi kimi hansı mühərriklərdən istifadə olunur?",
-        "options": {
-            "a": "Odun sobalarından",
-            "b": "Elektrotransformatorlardan",
-            "c": "Buxar mühərriklərindən",
-            "d": "Daxili yanma mühərriklərindən"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 11,
-        "question_text": "İstfadə etdikləri yanacağın növünə görə mühərriklər necə təsnif olunur.",
-        "options": {
-            "a": "Yalnız qazla işləyən mühərriklər",
-            "b": "Yalniz benzinlə işləyən mühərriklər",
-            "c": "Benzin, dizel, qaz və elektrik mühərrikləri",
-            "d": "Yalnız elektriklə işləyən mühərriklər"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 12,
-        "question_text": "Porşenli benzin mühərriklərinin sistemlərinə, hansı sistem aid deyil?",
-        "options": {
-            "a": "Qida sistemi",
-            "b": "İdarəetmə sistemi",
-            "c": "Soyutma sitemi",
-            "d": "Yağlama sistemi"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 13,
-        "question_text": "Avtomobil mühərrikləri neçə mexanizmdən ibarətdir?",
-        "options": {
-            "a": "8 mexanizm",
-            "b": "2 mexanizm",
-            "c": "5 mexanizm",
-            "d": "3 mexanizm"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 14,
-        "question_text": "Mühərrikin mexanizmləri hansı cavabda doğru verilib.",
-        "options": {
-            "a": "İdarəetmə mexanizmi",
-            "b": "Yalnız çarxqolu -- sürgüqolu mexanizmi",
-            "c": "Yalnız qazpaylama mexanizmi",
-            "d": "Çarxqolu -- sürgüqolu və qazpaylama mexanizmi"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 15,
-        "question_text": "Avtomobil mühərriklərinin sistemləri hansı cavabda doğru göstərilib?",
-        "options": {
-            "a": "Soyutma, yağlama, qidalanma, xaric etmə və alışdırma",
-            "b": "Yalnız qidalanma və soyutma sisteləri",
-            "c": "Yalnız qida və alışdırma sistemləri",
-            "d": "Yalnız soyutma yağlama sistemləri"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 16,
-        "question_text": "Mühərrikin porşeninin neçə ölü nöqtəsi var?",
-        "options": {
-            "a": "2",
-            "b": "4",
-            "c": "3",
-            "d": "6"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 17,
-        "question_text": "Ölü nöqtələr arasındakı məsafə necə adlanır?",
-        "options": {
-            "a": "Silindrin diametri",
-            "b": "Porşen yolu",
-            "c": "Yanma kameras",
-            "d": "Dirsəkli val"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 18,
-        "question_text": "Yanma kamerasının həcmi hansı cavabda düzgün verilib?",
-        "options": {
-            "a": "Porşen A.Ö.N-də olanda ondan yuxarıda qalan həcm",
-            "b": "Y.Ö.N.-də olan porşendən aşağıda qalan həcm",
-            "c": "Y.Ö.N. və A.Ö.N. arasında qalan həcm",
-            "d": "Y.Ö.N.-də olan porşendən yuxarıda qalan həcm"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 19,
-        "question_text": "Silindrin işçi həcmi dedikdə nə başa düşülür?",
-        "options": {
-            "a": "Y.Ö.N. və A.Ö.N. arasında qalan həcm",
-            "b": "Porşenin Y.Ö.N dən yuxarıda qalan həcm",
-            "c": "Silindrin yanma kamerasının həcmi",
-            "d": "Porşenin A.Ö.N dən yuxarıda qalan həcm"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 20,
-        "question_text": "Silindrin tam həcmi nəyə deyilir?",
-        "options": {
-            "a": "Y.Ö.N. də olan porşendən yuxarıda qalan məsafəyə",
-            "b": "A.Ö.N. ilə Y.Ö.N arasında olan həcmə",
-            "c": "Silindrin yanma kamerasının həcmi ilə işçi həcminin cəminə",
-            "d": "Silindrə daxil olan yanacağın həcmi"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 21,
-        "question_text": "Mühərrikin işçi tsikli nəyə deyilir?",
-        "options": {
-            "a": "Silindrin işçi həcminə",
-            "b": "Silindrdə təkrarlanan taktların cəminə",
-            "c": "Porşenlərin mexaniki hərəkətinə",
-            "d": "Dirsəkli valın fırlanma hərəkətinə"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 22,
-        "question_text": "Dördtaktlı işçi tsikl, porşenin neçə gedişində baş verir.",
-        "options": {
-            "a": "2",
-            "b": "3",
-            "c": "4",
-            "d": "8"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 23,
-        "question_text": "Takt nəyə deyilir?",
-        "options": {
-            "a": "Porşenin dibinin diametrinə",
-            "b": "Porşenin mexaniki hərəkətinə",
-            "c": "Porşenin üzüklərinin sayına",
-            "d": "Porşenin bir gedişində baş verən işçi prosesə"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 24,
-        "question_text": "İşci tşikl hansı taktlardan ibarətdir?",
-        "options": {
-            "a": "Yalnız sıxma ve xaricetme",
-            "b": "Yalnız daxilolma və sıxma",
-            "c": "Daxilolma(sorma),sıxma,işçi gediş(yanma genişlənmə),xaricetmə",
-            "d": "Xaricetme, işci gediş və sıxma"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 25,
-        "question_text": "Carxqolu-sürgüqolu mexanizminin vezifəsi nedir?",
-        "options": {
-            "a": "Porşeni silindirin icerisinde hereket etdirmekdir",
-            "b": "Porşenin mexaniki hereketini(irəli geri), dirsekli valın fırlanma hereketine çevirməkdir",
-            "c": "Dirsekli valın dövürler sayını teyin etmekdir",
-            "d": "Porşenlə dirsəkli valı əlaqələndirməkdir"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 26,
-        "question_text": "Aytomobilin \"Baza məsafəsi\" nədir?",
-        "options": {
-            "a": "Avtomobilin qabaq və arxa təkərlərinin mərkəzi arasındakı məsafə",
-            "b": "Avtomobilin maksimal hündürlüyü",
-            "c": "Avtomobilin maksimal eni",
-            "d": "Avtomobilin maksimal uzunluğu"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 27,
-        "question_text": "Avtomobilin \"koleyası\" nədir?",
-        "options": {
-            "a": "Avtomobilin qabarit ölçüləri",
-            "b": "Avtomobilin maksimal hündürlüyü",
-            "c": "Avtomobilin maksimal eni",
-            "d": "Qabaq və arxa təkərlərin mərkəzi oxları arasındakı məsafə"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 28,
-        "question_text": "4 taktlı mühərrikin dirsəkli valı 1 tsikl ərzində hansı bucaq altında dönür?",
-        "options": {
-            "a": "360",
-            "b": "90",
-            "c": "180",
-            "d": "270"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 29,
-        "question_text": "4 taklı mühərrikin dirsəkli valı 1 takt ərzində hansı bucaq qədər dönür?",
-        "options": {
-            "a": "90",
-            "b": "180",
-            "c": "270",
-            "d": "360"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 30,
-        "question_text": "Hansı taktda silindirdə seyrəklik yaranır?",
-        "options": {
-            "a": "Xariçetmə taktında",
-            "b": "Sıxma taktında",
-            "c": "Genişlənmə taktında",
-            "d": "Sorma taktında"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 31,
-        "question_text": "Çarxqolu-sürgüqolu mexanizminin hansı detalı hərəkətsiz detallara aiddir?",
-        "options": {
-            "a": "Silindrlər bloku",
-            "b": "Porşen",
-            "c": "Nazimcarx",
-            "d": "Sürgüqolu"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 32,
-        "question_text": "Nazimçarxın əsas vəzifəsi nədir?",
-        "options": {
-            "a": "Avtomobilin hərəkəti zamanı transmisiyanın titrəyişlərinin azaldılması",
-            "b": "Qazpaylama valının səlis fırlanmasını təmin etmək,klapan mexanizmilərinin işinin optimallaşdırılması",
-            "c": "Mühərrikin işi zamanı dirsəkli valın titrəyişlərinin azaldılması",
-            "d": "Dirsəkli valın səlis fırlanması,porşenlerin ölü nöqtələrdən çıxarılması,işə salınmanın asanlaşdırılması"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 33,
-        "question_text": "Porşenin üzərinə neçə növ üzüklər asılır?",
-        "options": {
-            "a": "2 növ",
-            "b": "3 növ",
-            "c": "4 növ",
-            "d": "6 növ"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 34,
-        "question_text": "Porşenin üzərinə hansı növ üzüklər asılır.",
-        "options": {
-            "a": "Yalnız yağ sıyırıcı üzüklər",
-            "b": "Yağ sıyırıcı və kompressiya üzükləri",
-            "c": "Yalnız kompressiya üzüklər",
-            "d": "Porşenin üzərinə heç bir üzük asılmır"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 35,
-        "question_text": "Porşenin kompressiya üzüklərinin əsas vəzifəsi nədir?",
-        "options": {
-            "a": "Mühərrikin karterində, yağ axmalarının qarşısını almaq",
-            "b": "Silindrin divarlarından axan yağları silmək",
-            "c": "Silindrdə yaranan qazlrın karterə keçməsinin qarşısını almaq",
-            "d": "Karterdəki yağın silindrə keçməsinin qrşısını almaq"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 36,
-        "question_text": "Qazpaylama mexanizminin vəzifəsi nədir?",
-        "options": {
-            "a": "Mühərrikin səssiz və səlis işləməsini təmin etmək",
-            "b": "Yalnız giriş klapanlarının işini təmin etməkdir",
-            "c": "Yalnız çıxış klapanlarının işini təmin etməkdir",
-            "d": "Silindrdə giriş və çıxış klapanlarının işini təmin etmək"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 37,
-        "question_text": "Qazpaylama mexanizminə hansı detallar aiddir.",
-        "options": {
-            "a": "Paylama valı, linglər, çiyinlər, yaylar, klapanlar",
-            "b": "Yalnız daxilolma və xaricetmə klapanları",
-            "c": "Yalnız paylayıcı val və linglər",
-            "d": "Yalnız daxilolma klapanları"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 38,
-        "question_text": "Klapanlarda istilik ara boşluğu nə üçündür?",
-        "options": {
-            "a": "Çiyin və linglərin yeyilməsinin qarşısını almaq üçün",
-            "b": "Yumrucuqların sürətlə yeyilməsinin qarşısını almaq üçün",
-            "c": "Xaric olan qazların toksikiliyini azaltmaq üçün",
-            "d": "Klapanların kip bağlanmasını təmin etmək üçün"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 39,
-        "question_text": "Göstərilən funksiyalardan hansı yağlama sisteminə aid deyil.",
-        "options": {
-            "a": "Sürtünən səthlərin yeyilmə intesivliyini azaltmaq",
-            "b": "Sürtünmə qüvvəsini və itkiləri azaltmaq",
-            "c": "Mühərrikin optimal temperatur rejimini təmin etmək",
-            "d": "Sürtünən səthlərdən yeyilmə məhsullarını kənarlaşdırmaq"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 40,
-        "question_text": "Karter altlığı nədir?",
-        "options": {
-            "a": "Yağın süzülüb saxlanması üçün rezervuardır",
-            "b": "Soyducu mayenin saxlanması üçün rezervuardır",
-            "c": "Dirsəkli valın yağlanma kanallarıdır",
-            "d": "Soyutma sisteminin boru və şlanqlarıdır"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 41,
-        "question_text": "Yağ nasosu nə üçündür?",
-        "options": {
-            "a": "Yağlama klapanlarıdır",
-            "b": "Yağı təzyiq altında yalnız çarxqolu-sürgüqoluna vurmaq",
-            "c": "Yağı təzyiq altında yalnız qazpaylama mexanizminə vurmaq",
-            "d": "Yağı təzyiq altında hərəkətli detallara vurmaq"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 42,
-        "question_text": "Yağ süzgənci nə üçündür?",
-        "options": {
-            "a": "Yağın özüllüyünü və şəffaflığını artırmaq",
-            "b": "Yağı yeyimə məhsullarından və mexaniki qarışıqlardan təmizləmək",
-            "c": "Yağın markalanmasını təyin etmək",
-            "d": "Yağın keyfiyyət göstəricisini təyin etmək"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 43,
-        "question_text": "Soyutma sisteminin vəzifəsi nədir?",
-        "options": {
-            "a": "Mühərrikin tez qızmasını təmin etmək və optimal istilik rejimini saxlamay",
-            "b": "Mühərrikin yüksək hədlərə qədər soyudulmasını təmin etmək",
-            "c": "Mühərrikin yuksək hədlərə qədər qızdırılmasını təmin etmək",
-            "d": "Soyuducu mayenin markasını təyin etmək"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 44,
-        "question_text": "Soyutma köynəkləri harada yerləşir?",
-        "options": {
-            "a": "Yalnız blok başlığında",
-            "b": "Yalnız silindirlər blokunda",
-            "c": "Silindirlər blokunda və blok başlığında",
-            "d": "Mühərrikin karterində"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 45,
-        "question_text": "Su nasosu (pompa) nə üçündür?",
-        "options": {
-            "a": "Soyuducu mayenin markasını təyin etmək",
-            "b": "Mühərrikdəki mayenin soyudulmasını təmin etmək",
-            "c": "Soyuducu mayenin su köynəklərində dövrüyəsini təmin etmək",
-            "d": "Yaranan maye artığını aradan qaldırmaq"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 46,
-        "question_text": "Radiator nə üçündür?",
-        "options": {
-            "a": "Mühərrikin tez qızmasını təmin etmək",
-            "b": "Ondan keçən mayenin istiliyini ətraf mühütə vermək",
-            "c": "Maye artıqlığını aradan qaldırmaq",
-            "d": "Mayenin su köynəklərində dövranını yaxşılaşdırmaq"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 47,
-        "question_text": "Müasir minik avtomobillərinin mühərriklərində işçi mayenin optimal temperaturu nə qədər olmalıdır?",
-        "options": {
-            "a": "85-95",
-            "b": "95-110",
-            "c": "110-120",
-            "d": "50-60"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 48,
-        "question_text": "Soyutma sistemində adi (cod) sudan istifadə olunarsa nə baş verər?",
-        "options": {
-            "a": "Mühərrik qızar",
-            "b": "Korroziyalar",
-            "c": "Köynəklərdə ərp yaranar",
-            "d": "F.İ.Ə. artar"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 49,
-        "question_text": "Tormoz xəbərdarlıq fənərinin funksiyası nədir?",
-        "options": {
-            "a": "Dönmə istiqamətini göstərmək",
-            "b": "Tormozlama zamanı arxadakı sürücüyə xəbər vermək",
-            "c": "Mühərrik temperaturunu göstərmək",
-            "d": "Arxa duman fanarını aktivləşdirmək"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 50,
-        "question_text": "Nəzarət-ölçü cihazlarının əsas təyinatı nədir?",
-        "options": {
-            "a": "Avtomobilin xarici görünüşünə nəzarət etmək",
-            "b": "Avtomobil və mühərrik sistemlərinin işinə nəzarət etmək",
-            "c": "Yanacaq sərfiyyatını artırmaq",
-            "d": "Təkərlərin təzyiqini avtomatik tənzimləmək"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 51,
-        "question_text": "Karbürator nə üçündür?",
-        "options": {
-            "a": "Yalnız yanacağı silindirə vermək üçün",
-            "b": "Yanıçı qarışığı hazırlayıb silindirə vermək üçün",
-            "c": "Yalnız hava axınını silindirə ötürmək üçün",
-            "d": "Hava filtirini dayanaqlı saxlamaq üçün"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 52,
-        "question_text": "Yanacaq nasosu nə üçündür?",
-        "options": {
-            "a": "Yanacağın soyudulması üçün",
-            "b": "Yanacağın qida sistemində dövrüyyəsini təmin etmək üçün",
-            "c": "Yanacağın cəndən karbüratora məcburi verilməsi üçün",
-            "d": "Yanacağın qızdırılması üçün"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 53,
-        "question_text": "Benzin nasosunda diafraqma aşağı hərəkət etdikdə nə baş verir?",
-        "options": {
-            "a": "Daxilolma klapanı açılır, vurma klapanı bağlanır",
-            "b": "Hər iki klapan açılır",
-            "c": "Daxilolma klapanı bağlanır, vurma açılır",
-            "d": "Hər iki klapan bağlanır"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 54,
-        "question_text": "Nəzarət-ölçü cihazları neçə qrupa bölünür?",
-        "options": {
-            "a": "2",
-            "b": "3",
-            "c": "4",
-            "d": "5"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 55,
-        "question_text": "Benzin mühərrikində \"forsunka\" nə üçündür?",
-        "options": {
-            "a": "Yanaçağın şırnaqla axıdılması üçün",
-            "b": "Yanaçağın təzyiqlə sistemdə püskürməsi üçün",
-            "c": "Yanaçağı çəndən sorub silindirə vurmaq üçün",
-            "d": "Silindirdə yanıcı qarışığı qızdırmaq üçün"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 56,
-        "question_text": "Akkumulyator batareyaları hansı enerjini elektrik enerjisinə çevirir?",
-        "options": {
-            "a": "İstilik enerjisini",
-            "b": "Kimyəvi enerjini",
-            "c": "Mexaniki enerjini",
-            "d": "Optik enerjini"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 57,
-        "question_text": "Plunjer çütlükləri harada yerləşir?",
-        "options": {
-            "a": "Silindirin içərisində",
-            "b": "Aşağı təzyiqli yanaçaq nasosunda",
-            "c": "Yüksək təzyiqli yanaçaq nasosunda",
-            "d": "Qida sisteminin tərkibində"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 58,
-        "question_text": "Avtomobildə mayeləşmiş qaz kimi hansı qazdan istifadə olunur?",
-        "options": {
-            "a": "Asetilen",
-            "b": "Metan",
-            "c": "Hidrogen",
-            "d": "Propan-butan"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 59,
-        "question_text": "Sıxılmış qaz kimi hansı qazlardan istifadə olunur?",
-        "options": {
-            "a": "Propan-butan",
-            "b": "Metan",
-            "c": "Hidrogen",
-            "d": "Oksigen"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 60,
-        "question_text": "Mayeləşmiş qaz, balonlarda hansı təzyiq altında saxlanılır?",
-        "options": {
-            "a": "1.6 ... 2 Mpa",
-            "b": "1,0 Mpa",
-            "c": "2,0 ... 5,0 Mpa",
-            "d": "5 ... 10 Mpa"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 61,
-        "question_text": "Mühərrikin xaric etmə sisteminin vəzifəsi hansı cavabda düzgün verilmişdir.",
-        "options": {
-            "a": "Yanacağın və hava buxarlarının bir-biri ilə yaxşı qarışdırılması",
-            "b": "Yanıcı qarışığın silindrə axil olmasının təmin edilməsi",
-            "c": "İşlənmiş qazların silindrdən çıxarılması və səs küyün azaldılması",
-            "d": "Karter qazlarının mühərrikin daxilindən kənarıaşdırılması"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 62,
-        "question_text": "Səsboğucunun avtomobildə funksiyası, hansı cavabda düzgün verilmişdir.",
-        "options": {
-            "a": "Avtomobildə yaranan titrəyişləri söndürür",
-            "b": "Qaz axınının yaratdığı səsin səviyyəsini artırır",
-            "c": "Yanma zamanı yaranan qazları silindrdən çıxarır",
-            "d": "Qaz axınının yaratdığı səsin səviyyəsini azaldır"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 63,
-        "question_text": "Generator avtomobildə hansı enerjini elektrik enerjisinə çevirir?",
-        "options": {
-            "a": "İstilik enerjisini",
-            "b": "Kimyəvi enerjini",
-            "c": "Mexaniki enerjini",
-            "d": "Hidravlik enerjini"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 64,
-        "question_text": "Reaktiv səsboğucu səsboğucunun işi hansı prinsipə əsaslanır?",
-        "options": {
-            "a": "Səs dalğalarının qarşılıqlı bir-birini məhv etmə prinsipinə",
-            "b": "Səs enerjisinin səsuducunun köməyilə istiliyə çevrilməsi prinsipinə",
-            "c": "Çıxış qazlarının oksidləşməsi prinsipinə",
-            "d": "Çıxış qazlarının soyudulması prinsipinə"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 65,
-        "question_text": "Daxiliyanma mühərriklərində turboüfürmənin məqsədi nədir?",
-        "options": {
-            "a": "Yanmış qazların silindrdən xaric olunması",
-            "b": "Sorma klapanlarında təyziqin aşağı salınması",
-            "c": "Sorma klapablarında təyziqin artırılması",
-            "d": "Atmosferə atılan qazların sürətini artırmaq"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 66,
-        "question_text": "Transmisiyanın təyinatı hansı cavabda doğrudur.",
-        "options": {
-            "a": "Avtomobilin istiqamətini dəyişməkdir",
-            "b": "Avtomobilin sürətləməsini qismən təmin etməkdir",
-            "c": "Avtomobilin yerlə ilişməsini yaxşılaşdırmaqdır",
-            "d": "Burucu momenti aparan təkərlərə ötürməkdir"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 67,
-        "question_text": "Transmisiyanı təşkil edən qurğu və mexanizmlər, hansı cavabda doğrudur.",
-        "options": {
-            "a": "Mühərrik,ötürmələr qutusu, kardan ötürməsi,diferensial və yarımoxlar",
-            "b": "İlişmə muftası, ötürmələr qutusu,kardan,baş ötürmə,diferensial və yarımoxlar",
-            "c": "Mühərrik, kuzov və şassi",
-            "d": "Çərçivə, asqılar,körpülər,təkərlər və şinlər"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 68,
-        "question_text": "Bu aqreqatlardan hansı transmissiya vasitələrinə aid deyil?",
-        "options": {
-            "a": "Asqılar",
-            "b": "Ötürmələr qutusu",
-            "c": "Kardan ötürməsi",
-            "d": "Yarımoxlar"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 69,
-        "question_text": "Hansı qurğu transmisiyanı qısa müddətdə mühərrikdən ayıra bilir?",
-        "options": {
-            "a": "Baş ötürmə",
-            "b": "Ötürmələr qutusu",
-            "c": "İlişmə muftası",
-            "d": "Diferensial"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 70,
-        "question_text": "Burucu momenti qiymət və istiqamətcə dəyişə bilən hansı qurğudur?",
-        "options": {
-            "a": "Diferensial",
-            "b": "İlişmə muftası",
-            "c": "Kardan ötürməsi",
-            "d": "Ötürmələr qutusu"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 71,
-        "question_text": "Transmisiyanın hansı qurğusu avtomobilin yerindən səlis tərpənməsini təmin edir.",
-        "options": {
-            "a": "İlşmə muftası",
-            "b": "Təkərlər və şinlər",
-            "c": "Avtomobilin çərçivəsi",
-            "d": "Mühərrik"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 72,
-        "question_text": "Sadalanan hansı funksiyanı transmisiya yerinə yetirmir?",
-        "options": {
-            "a": "Təkərlərə ötürülən burucu momentin qiymətini dəyişir",
-            "b": "Avtomobilin nahamar yolda hərəkətini təmin etmir",
-            "c": "Ötürülən burucu momentin istiqamətini dəyişir",
-            "d": "Mühərriki trasnsmisiyadan qısa müddətli ayırır"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 73,
-        "question_text": "Avtomobildə elektrik cərəyanı mənbəyi kimi hansı qurğulardan istifadə olunur?",
-        "options": {
-            "a": "Yalnız akkumulyator batareyaları.",
-            "b": "Yalnız dəyişən cərəyan transformatorları.",
-            "c": "Dəyişən cərəyan generatorları və akkumulyator batareyaları.",
-            "d": "Statik çeviricilər"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 74,
-        "question_text": "Ötümələr qutusunun vəzifəsi nədən ibarətdir?",
-        "options": {
-            "a": "Geriyə hərəkəti təmin etmək",
-            "b": "Avtomobilin hərəkət sürətini dəyişmək",
-            "c": "Mühərriki transmisiyadan ayırmaq",
-            "d": "Burucu momenti qiymət və istiqamətcə dəyişmək"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 75,
-        "question_text": "Ötürmələrin səlis dəyişməsini təmin edən hansı mexanizmdir?",
-        "options": {
-            "a": "Sinxronlaşdırıcı",
-            "b": "Hərəkətli dişli çarx",
-            "c": "Birləşdirici mufta",
-            "d": "Birləşən vallar"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 76,
-        "question_text": "Ötürmələr qutusunun aparan valını hərəkətə gətirən detal hansıdır?",
-        "options": {
-            "a": "Baş ötürmə",
-            "b": "İlişmə muftasının aparılan diski",
-            "c": "İlişmə muftasının ayırıcı çəngəli",
-            "d": "Valın yastığı"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 77,
-        "question_text": "Kardan ötürməsini hərəkətə gətirən nədir?",
-        "options": {
-            "a": "Baş ötürmə",
-            "b": "Ötürmələr qutusunun aparan valı",
-            "c": "Ötürmələr qutusunun aparılan valı",
-            "d": "Ötürmələr qutusunun aralıq valı"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 78,
-        "question_text": "Ötürmələr qutusunun idarə mexanizminin vəzifəsi nədir?",
-        "options": {
-            "a": "Pillələrin dəyişdirilməsi",
-            "b": "Dişli çarxları hərəkətə gətirmək",
-            "c": "Valların birləşdirilməsi",
-            "d": "Arxaya hərəkəti təmin etməkdir"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 79,
-        "question_text": "Mexaniki ötürmələr qutusunun pilləri dəyişmə mexanizmində, fiksatorun işi nədir? Hansı cavab doğrudur.",
-        "options": {
-            "a": "Pillələrin səssiz dəyişməsini təmin etmək",
-            "b": "Ötürmə ədədinin qiymətini sabit saxlamaq",
-            "c": "Arxa pillənin qoşulmasını asanlaşdırmaq",
-            "d": "Pillələrin öz-özünə qoşulmalarının qarşısını almaq"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 80,
-        "question_text": "Ötürmələr qutusunda sinxrolaşdırıcının vəzifəsi, hansı cavabda düzgün verilmişdir",
-        "options": {
-            "a": "Pillələrin oz-ozünə qoşulmalarının qarşısını alır",
-            "b": "Pillələrin səssiz və zərbələrsiz dəyişdirilməsini təmin edir",
-            "c": "Ötürmə ədədinin qiymətini sabit saxlayır",
-            "d": "Iki pillənin birdən qoşulmasını təmin edir"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 81,
-        "question_text": "İnjektorlu mühərriklərdə yanacaq nasosu hansı tipdir?",
-        "options": {
-            "a": "Diafrağmalı-mexaniki.",
-            "b": "Elektromexaniki.",
-            "c": "Yüksək təzyiqli pilyonjerli-mexaniki.",
-            "d": "Mexaniki."
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 82,
-        "question_text": "Avtomobildə elektrik cərəyanının əsas təyinatı nədir?",
-        "options": {
-            "a": "Yalnız mühərrikin soyudulmasını təmin etmək.",
-            "b": "Yanacaq qarışığının alışdırılması və müxtəlif elektrik sistemlərinin işləməsini təmin etmək.",
-            "c": "Yanacağın təzyiq altında nasosla ötürülməsi.",
-            "d": "Mühərrik yağının özlülüyünü artırmaq"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 83,
-        "question_text": "Avtomobildə elektrik cərəyanı mənbəyi kimi hansı qurğulardan istifadə olunur?",
-        "options": {
-            "a": "Yalnız akkumulyator batareyaları.",
-            "b": "Yalnız dəyişən cərəyan transformatorları.",
-            "c": "Dəyişən cərəyan generatorları və akkumulyator batareyaları.",
-            "d": "Statik çeviricilər"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 84,
-        "question_text": "Donma temperaturu nəyi göstərir?",
-        "options": {
-            "a": "Yağın qoxusunu.",
-            "b": "Yağın rəngini.",
-            "c": "Yağın axıcılığının dayandığı ən soyuq temperatur həddini.",
-            "d": "Yağın özlülüyünü."
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 85,
-        "question_text": "Yanacaq nasosunun əsas funksiyası hansıdır?",
-        "options": {
-            "a": "Yanacaq çəndən karbüratora və ya mühərrikə təzyiq altında vurmaq.",
-            "b": "Yanacağı soyutmaq.",
-            "c": "Yanacaq filtrini təmizləmə.",
-            "d": "Mühərrikin sürətini artırmaq"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 86,
-        "question_text": "Karbüratorlu mühərriklərdə hansı növ yanacaq nasosu istifadə olunur?",
-        "options": {
-            "a": "Elektromexaniki.",
-            "b": "Diafrağmalı-mexaniki.",
-            "c": "Yüksək təzyiqli pilyonjerli-mexaniki.",
-            "d": "Hidravlik"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 87,
-        "question_text": "Kardan ötürməsinin vəzifəsi hansı cavabda düzgün verilib.",
-        "options": {
-            "a": "Aparan təkərlərin qeyri -- bərabər sürətlə fırlanmasını təmin etmək",
-            "b": "Burucu momentin hərəkət istiqamətini dəyişərək ötürmək",
-            "c": "Aparan təkərin müqvimət quvvəsinin dəyişməsinə uyğun burucu momenti dəyişmək",
-            "d": "Ötürmələr qutusundan aldığı burucu momenti baş ötürücü və differensiala ötürmək"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 88,
-        "question_text": "Konstruksiyasına gorə, hansı kardan ötürmələri mövcuddur?",
-        "options": {
-            "a": "Yalnız örtülü kardan ötürmələri",
-            "b": "Örtülü və açıq kardan ötürmələri",
-            "c": "Yalnız açıq kardan ötürmələri",
-            "d": "Bərabər bucaq sürətli kardan ötürmsi"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 89,
-        "question_text": "Örtülü kardan ötürməsi nədir?",
-        "options": {
-            "a": "Qısa borulu kardan ötürməsi",
-            "b": "Borunun içərisində yerləşməyən",
-            "c": "Borunun içərisində yerləşən",
-            "d": "Körpünün gövdəsində yerləşən"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 90,
-        "question_text": "Açıq kardan ötürməsi nədir?",
-        "options": {
-            "a": "Borunun içərisində yerləşməyən",
-            "b": "Borunun içərisində yerləşən",
-            "c": "Uzun borulu kardan ötürməsi",
-            "d": "Körpünün gövdəsində yerləşən kardan ötürməsi"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 91,
-        "question_text": "Kardan valının uzunluğunun dəyişməsini tənzimləmək üçün hansı birləşmədən istifadə olunur.",
-        "options": {
-            "a": "Zəncir ötürməsindən",
-            "b": "Rezin araqatından",
-            "c": "Yaylı şaybadan",
-            "d": "Şlisli birləşmədən"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 92,
-        "question_text": "Arxa aparan təkərli avtomobildə,kardan ötürməsi burucu momenti haradan haraya ötürür.",
-        "options": {
-            "a": "Baş ötürmədən diferensiala",
-            "b": "Ötürmələr qutusundan baş ötürməyə",
-            "c": "Diferensialdan ötürmələr qutusuna",
-            "d": "Ötürmələr qutusundan paylayıcı qutuya"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 93,
-        "question_text": "Baş ötürmənin vəzifəsi hansı cavabda düzgündür.",
-        "options": {
-            "a": "Yarımoxların fırlanma sürətini azaltmaq",
-            "b": "Kardan ötürməsini əvəz etmək",
-            "c": "Aparan təkərlərə ötürülən burucu momenti artırmaq",
-            "d": "Diferensial mexanizmini firlatmaq"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 94,
-        "question_text": "Dişli çarx cütlərinin tipinə görə baş ötürmənin növləri hansı cavabda düzgündür?",
-        "options": {
-            "a": "Sonsuz vint; konik; hipoid; silindrik",
-            "b": "Yalnız hipoid və silindrik",
-            "c": "Yalnız silindrik və konik",
-            "d": "Yalnız sonsuz vint"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 95,
-        "question_text": "Diferensialın vəzifəsi, hansı cavabda düzgün verilib.",
-        "options": {
-            "a": "Ötürmələr qutusu ilə aparan körpü arasında əlaqə yaratmaq",
-            "b": "Burucu momenti yalnız körpülər arasında paylamaq",
-            "c": "Burucu momenti yalnız aparan təkərlər arasında paylamq",
-            "d": "Burucu momenti aparan təkərlər vəya körpülər arasında paylamaq"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 96,
-        "question_text": "Soyutma sistemi mühərrik başlığında hansı optimal temperaturu təmin edir?",
-        "options": {
-            "a": "40--50°C",
-            "b": "60--70°C",
-            "c": "80--95°C",
-            "d": "100--120^0^C"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 97,
-        "question_text": "Yağın sabitliyi nə deməkdir?",
-        "options": {
-            "a": "Yağın rəngini dəyişmək qabiliyyəti.",
-            "b": "Yağın öz keyfiyyətlərini qoruyub saxlaması xüsusiyyəti.",
-            "c": "Yağın donma temperaturu.",
-            "d": "Yağın özlülüyünün artması."
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 98,
-        "question_text": "Benzinli dörd taktlı mühərriklərdə qida sisteminin əsas vəzifəsi nədir?",
-        "options": {
-            "a": "Mühərriki soyutmaq",
-            "b": "Yanacaq-hava qarışığını hazırlamaq və silindrə vermək",
-            "c": "Yağ təzyiqini artırmaq",
-            "d": "Elektrik enerjisi istehsal etmək"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 99,
-        "question_text": "Çarxqolu-sürgüqolu mexanizminin əsas funksiyası nədir?",
-        "options": {
-            "a": "Mühərriki soyutmaq",
-            "b": "Yanacaq-hava qarışığını hazırlamaq",
-            "c": "Porşenin düzxətli hərəkətini fırlanma hərəkətinə çevirmək",
-            "d": "Yanacaq təzyiqini artırmaq"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 100,
-        "question_text": "Paylayıcı qutunun təyinatı hansı cavabda düzgün göstərilib?",
-        "options": {
-            "a": "Burucu momentin sürət və istiqamətini artırmaq",
-            "b": "Burucu momenti aparan körpülər arasında paylamaq",
-            "c": "Yarımoxların müəyyən bucaq altıda fırlanmasını təmin etmək",
-            "d": "Transmisiyanı uzumüddətli mühərrikdən ayırmaq"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 101,
-        "question_text": "Yanacağı yandırma üsuluna görə daxili yanma mühərrikləri neçə yerə bölünür?",
-        "options": {
-            "a": "İki yerə",
-            "b": "Üçyerə",
-            "c": "Dörd yerə",
-            "d": "Beş yerə"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 102,
-        "question_text": "Məcburi alışdırma hansı vasitə ilə həyata keçirilir?",
-        "options": {
-            "a": "İstilik mübadiləsi ilə",
-            "b": "Elektrik qığılcımı vasitəsilə",
-            "c": "Qazların təzyiqi ilə",
-            "d": "Mexaniki enerji ilə"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 103,
-        "question_text": "Dizel mühərriki hansı yanacaqla işləyir?",
-        "options": {
-            "a": "Elektriklə",
-            "b": "Benzin yanacağı",
-            "c": "Qaz yanacağı",
-            "d": "Dizel yanacağı"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 104,
-        "question_text": "Avtomobildə yerləşməsinə görə körpülər hansı cavabda düzgün verilib?",
-        "options": {
-            "a": "Yalnız qabaq körpülər",
-            "b": "Qabaq, arxa və aralıq",
-            "c": "Yalnız arxa körpülər",
-            "d": "Uzununa körpülər"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 105,
-        "question_text": "Vakuum gücləndiricisi avtomobilin hansı göstəricisini yaxşılaşdırır?",
-        "options": {
-            "a": "Yanacaq sərfiyyatını",
-            "b": "İşıqlandırma sistemini",
-            "c": "Tormozlama effektivliyini",
-            "d": "Sükan idarəsini"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 106,
-        "question_text": "Rezinləşdirilmiş dayaqlı metal elementlər hansı avtomobillərdə istifadə olunur?",
-        "options": {
-            "a": "Velosipetlərdə",
-            "b": "Minik avtomobillərində",
-            "c": "Yük avtomobillərində",
-            "d": "Skuterlərdə"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 107,
-        "question_text": "Sükan idarəsi nədir?",
-        "options": {
-            "a": "Avtomobilin sükan çarxıdır",
-            "b": "Avtomobilin sükan mexanizmidir",
-            "c": "Avtomobilin sükan intiqallarıdır",
-            "d": "Təkərin dönməsini təmin edən qurluşların məcmusu"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 108,
-        "question_text": "Sükan idarəsinin düzgün elementlərini göstərin.",
-        "options": {
-            "a": "Sükan mexanizmi və sükan intiqalı",
-            "b": "Sükan valı,sükan çarxı,sükan mexanizmi, sükan intiqalı",
-            "c": "Sükan trapesiyası",
-            "d": "Sükan valı, sükan çarxı"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 109,
-        "question_text": "Tormoz idarəsi nədir?",
-        "options": {
-            "a": "Tormoz sistemlərinin cəmidir",
-            "b": "İsçi tormoz sistemidir",
-            "c": "Köməkçi tormoz sistemidir",
-            "d": "Dayanacaq tormoz sistemidir"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 110,
-        "question_text": "İşçi tormoz sistemi nə üçündür?",
-        "options": {
-            "a": "Avtomobilin duracaq tormoz sistemidir",
-            "b": "Avtomobillərin sürətini artırmaq",
-            "c": "Avtomobilləri sürətini azaltmaq və dayandırmaq",
-            "d": "Avtomobilin köməkçi tormoz sistemidir"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 111,
-        "question_text": "Ehtiyat tormoz sistemi nə üçündür?",
-        "options": {
-            "a": "Avtomobilin sürətinin qarşısını almaq",
-            "b": "Sürəti azaltmaq",
-            "c": "Avtomobilə kifayət qədər sürət vermək",
-            "d": "İşçi tormoz sıradan çıxdıqda avtomobili dayandırmaq"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 112,
-        "question_text": "Duracaq tormoz sistemi nə ücündür?",
-        "options": {
-            "a": "Avtomobilin sürətini azaltmaq",
-            "b": "Duracaqda avtomobili uzuzn müddətli saxlamaq",
-            "c": "Daimi enişlərdə avtomobili tormozlamaq",
-            "d": "İşci tormoz sistemidir"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 113,
-        "question_text": "Köməkçi tormoz sistemi nə üçündür?",
-        "options": {
-            "a": "Daimi enişlərdə avtomobilin sürətini məhdudlaşdırmaq",
-            "b": "Qoşqu və yarımqoşqu tormoz sistemidir",
-            "c": "Dayanacaq-duracaq tormoz sistemidir",
-            "d": "Ehtiyat tormoz sistemidir"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 114,
-        "question_text": "Detal nədir?",
-        "options": {
-            "a": "Avtomobilin bir hissədir",
-            "b": "Qaynaq olunmuş metallardır",
-            "c": "Bircinsli materialdan hazırlanan məhsul",
-            "d": "Sadə bir fiqurdur"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 115,
-        "question_text": "Qovşaq nəyə deyilir? Düzgün cavabı tapın",
-        "options": {
-            "a": "Avtomobilin idarə etmə sitemlərindən biridir",
-            "b": "Avtomobilin dirsəkli valıdır",
-            "c": "Avtomobilin intiqal sistemidir",
-            "d": "Yiv,pərçim, qaynaq və digər birləşmə ilə birləşdirilən detal yığımıdır"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 116,
-        "question_text": "Mexnizm nəyə deyilir? Düzgün cavabı seçin.",
-        "options": {
-            "a": "Öz aralarında hərəkətli birləşən detal və qovşaq yığımıdır",
-            "b": "Avtomobilin sadə bir detalıdır",
-            "c": "Transmisiyanın qurğularından biridir",
-            "d": "Avtomobilin xaricetmə sistemidir"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 117,
-        "question_text": "Sistem nəyə deyilir? Düzgün cavabı tapın.",
-        "options": {
-            "a": "Mexanizmləri hərəkətə gətirən intiqal sistemidir",
-            "b": "Bir funksiyanı yerinə yetirən ayrı-ayrı hissələrin birgə işidir",
-            "c": "Avtomobili idarə edən bir mexanizmdir",
-            "d": "Avtomobilin hərəkət hissəsidir"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 118,
-        "question_text": "Hərəkət hissəsi nə üçündür?",
-        "options": {
-            "a": "Avtomobilə lazimi hərəkət sürəti vermək üçündür",
-            "b": "Avtomobili hərəkətə gətirmək üçün bir vasitədir",
-            "c": "Mexnizm,aqreqat,qovşaq,sistem və digər hissələrin bərkidilməsi",
-            "d": "Tormozlamanın keyfiyyətini artırmaq üçündür"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 119,
-        "question_text": "Avtomobilin asqı sistemləri nə üçündür? Düzgün cavabı tapın.",
-        "options": {
-            "a": "Uzun müddətli enişlərdə avtomobilin hərəkətini təmin etmək üçün",
-            "b": "Avtomobilin yerlə ilişməsini təmin etmək və sürət vermək üçün",
-            "c": "Avtomobili atmosfer təzyiqlərindən qoruyaraq lazımi məkana çatdırmaq üçün",
-            "d": "Təkərləri aparan sistemlə elasiki birləşdirmək və hərəkətin səlisliyini bərpa etmək üçündür"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 120,
-        "question_text": "Təyinatına görə avtomobillər hansı növlərə bölünür.",
-        "options": {
-            "a": "Sərinşin, yük, xüsusi təyinatlı,xüsusiləşdirilmiş",
-            "b": "Yalnız xüsusi təyinatlı və yük avtomobillərinə",
-            "c": "Yalnız sərnişin avtobuslarına",
-            "d": "Yalnız mnik və xüsusiləşdirilmiş avtomobillərə"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 121,
-        "question_text": "Porşenin mühərrikdə vəzifəsi nədən ibarətdir?",
-        "options": {
-            "a": "Dirsəkli valı dayanıqlı şəkildə saxlamaqdan",
-            "b": "Istilik enerjisini mexaniki enerjiyə çevirməkdən",
-            "c": "Üzükləri saxlamaqdan",
-            "d": "Yağ dövriyyəsini bərpa etdirməkdən"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 122,
-        "question_text": "Avtomobilin təkər bazası nəyə deyilir? Düzgün cavabı tapın.",
-        "options": {
-            "a": "Təkərlərin ümumilikdə diametrlərinə",
-            "b": "Avtomobilin yerə qədər olan ən aşağı nöqtəsinə",
-            "c": "Avtomobilin qabarit ölçülərinə",
-            "d": "Qabaq və arxa təkərlərin mərkəzləri arasındakı məsafəyə"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 123,
-        "question_text": "Bir cərgəli mühərrikdə silindrlər neçə müstəvidə yrləşdirilir?",
-        "options": {
-            "a": "Dörd müstəvidə",
-            "b": "Iki müstəvidə",
-            "c": "Bir müstəvidə",
-            "d": "Beş müstəvidə"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 124,
-        "question_text": "V -- şəkilli mühərriklərdə silindrlər neçə müstəvidə yerləşdirilir?",
-        "options": {
-            "a": "Dörd müstəvidə",
-            "b": "Üç müstəvidə",
-            "c": "Beş müstəvidə",
-            "d": "İki müstəvidə"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 125,
-        "question_text": "Neçə cür yağlama sistemini tanıyırsınız? Düzgün cavabı tapın.",
-        "options": {
-            "a": "2 cür",
-            "b": "4 cür",
-            "c": "6 cür",
-            "d": "1 cür"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 126,
-        "question_text": "Yağ süzgəclərinin tipləri hansı cavabda düzgün verilmişdir.",
-        "options": {
-            "a": "Yalnız sökülən",
-            "b": "Sökülən və sökülməyən",
-            "c": "Yalnız sökülməyən",
-            "d": "Kombinəedilmiş"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 127,
-        "question_text": "Porşenin bir gedişi zamanı dirsəkli valın neçə dövrü baş verir?",
-        "options": {
-            "a": "1/4 dövr",
-            "b": "1/2 dövr",
-            "c": "1 dövr",
-            "d": "2 dövr"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 128,
-        "question_text": "Soyutma sistemi mühərrikdə hansı temperaturu təmin edir?",
-        "options": {
-            "a": "40--60°C",
-            "b": "60--70°C",
-            "c": "80--95°C",
-            "d": "100--120°C"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 129,
-        "question_text": "Daxili yanma mühərriklərinin hansı sistemləri mövcuddur?",
-        "options": {
-            "a": "İşıqlandırma və əyləc sistemləri",
-            "b": "Soyutma, yağlama, qidalandırma, alışdırma və işə salma sistemləri",
-            "c": "Təkər və asqı sistemləri",
-            "d": "Elektrik ötürücü sistemləri"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 130,
-        "question_text": "Sürgü qolunun vəzifəsi nədən ibarətdir? Doğru cavabı tapın.",
-        "options": {
-            "a": "Porşeni qazpaylama valı ilə birləşdirmək",
-            "b": "Porşeni dirsəkli valla birləşdirmək",
-            "c": "Silindrdə porşenin kipliyini yaratmaq",
-            "d": "Poşenin yaxşı yağlanmasını təşkil etmək"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 131,
-        "question_text": "Daxili yanma mühərriklərində çarxqolu-sürgüqolu mexanizminin əsas vəzifəsi nədir?",
-        "options": {
-            "a": "Yanacağın buxarlanmasını təmin etmək",
-            "b": "Yanacaq qarışığını sıxmaq və mexaniki enerjiyə çevirmək",
-            "c": "Mühərriki soyutmaq",
-            "d": "Elektrik enerjisi hasil etmək"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 132,
-        "question_text": "Porşenin yuxarı ölü nöqtə ilə aşağı ölü nöqtə arasında qət etdiyi məsafə necə adlanır?",
-        "options": {
-            "a": "Porşenin diametri",
-            "b": "Porşenin hündürlüyü",
-            "c": "Porşenin gedişi (yolu)",
-            "d": "Porşenin sıxılması"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 133,
-        "question_text": "\"Daxilolma\" və \"Xaricetmə\" klapanı bir -- birindən nə ilə fərqlənir?",
-        "options": {
-            "a": "Nimçələrini diametri ilə",
-            "b": "Buraxma qabiliyyəti ilə",
-            "c": "Sıxılma kipliyi ilə",
-            "d": "Qazpaylama valının uzunluğu ilə"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 134,
-        "question_text": "Karter altlığının funksiyası hansı cavabda düzgün göstərilib.",
-        "options": {
-            "a": "Avtomobilin yanacaq çənidir",
-            "b": "Yağın saxlanması üçün bir rezervuardır",
-            "c": "Kuzanın alt hissəsidir",
-            "d": "Antifrizin saxlanmsı üçün bir rezervuardır"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 135,
-        "question_text": "Soyuducu maye olan \"Tosol -- 40\" da 40 rəqəmi nəyə işarədir?",
-        "options": {
-            "a": "Mayenin - 40 dərəcədə maye hala keçməsinə",
-            "b": "Mayenin 40 dərəcədə buxarlanmasına",
-            "c": "Mayenin temperaturu ilə əlaqəsi yoxdu",
-            "d": "Mayenin -- 40 dərəcədə donmasına"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 136,
-        "question_text": "Rezin qol, borular və şlanqlar nə üçündür?",
-        "options": {
-            "a": "Mühərrikin silindrlərini soyutmaq üçün",
-            "b": "Yalnız su köynaklərini soyutmaq üçün",
-            "c": "Su köynəklərini,soyutma sistemi ilə əlaqələndirmək üçün",
-            "d": "Yalnız radiatorun çənlərini birləşdirmək"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 137,
-        "question_text": "Elektrik benzin nasosu hansı mühərriklərdə istifadə edilir?",
-        "options": {
-            "a": "Yanacaq püskürməli mühərriklərdə",
-            "b": "Yalnız Karbüratorlu mühərriklərdə",
-            "c": "Elektrik mühərriklərində",
-            "d": "Avtomobilin elektrik sistemlərində"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 138,
-        "question_text": "Hava filtrinin əsas vəzifəsi nədir?",
-        "options": {
-            "a": "Yanmış qazları təmizləmək",
-            "b": "Silindrlərə daxil olan havanı təmizləmək",
-            "c": "Yanacağı təmizləmək",
-            "d": "Katalizator rolu oynayır"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 139,
-        "question_text": "Yanacaq süzgəcləri nə üçündür?",
-        "options": {
-            "a": "Tormoz mayelərini təmizləmək üçün",
-            "b": "Yagları təmizləmək üçün",
-            "c": "Soyuducu mayeləri təmizləmək üçün",
-            "d": "Yanacağı təmizləmək üçün"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 140,
-        "question_text": "YTYN -- da plunjer cütlüklərinin rolu nədən ibarətdir?",
-        "options": {
-            "a": "Yanacağı çəndən sovurmaqdan",
-            "b": "Yanacağı aşağı təzyiqlə forsunkaya verməkdən",
-            "c": "Yanacağı yüksək təzyiqlə forsukaya verməkdən",
-            "d": "Artıq yanacağı çənə qaytarmaqdan"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 141,
-        "question_text": "YTYN -- də plunjer cütlüyiü əsasən hansı detallardan ibarətdir?",
-        "options": {
-            "a": "Porşen (plunjer) və silindrdən (oymaq)",
-            "b": "Qaz paylama valından",
-            "c": "Döndərici tamasadan",
-            "d": "Yumrucuqlardan"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 142,
-        "question_text": "Turboüfürmə nədir?",
-        "options": {
-            "a": "Dizel mühərrikidir",
-            "b": "Mərkəzdənqaçma kompressorudur",
-            "c": "Hava filtiridir",
-            "d": "Yağ nasosudur"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 143,
-        "question_text": "Dirsəkli val 180° dönərkən hansı hadisə baş verir?",
-        "options": {
-            "a": "Porşen dayanır",
-            "b": "Porşen gedişini tamamlayır",
-            "c": "Porşen sıxılma mərhələsinə keçir",
-            "d": "Porşen klapanları açır"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 144,
-        "question_text": "Porşenin mexaniki hərəkəti, dirsəkli valın hansı hərəkətinə çevrilir.",
-        "options": {
-            "a": "Fırlanma hərəkətinə",
-            "b": "Yellənmə hərəkətinə",
-            "c": "Mexaniki hərəkətinə",
-            "d": "Ox boyu hərəkətinə"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 145,
-        "question_text": "AÖN - ə nəyə deyilir? Doğru cavabı tapın.",
-        "options": {
-            "a": "Porşenin dirsəkli valdan ən çox uzaqlaşdığı vəziyyətə",
-            "b": "Porşenin neytral vəziyyətinə",
-            "c": "Porşenin dirsəkli vala ən çox yaxınlaşdığı vəziyyətə",
-            "d": "Porşenin silindrdə qət etdiyi məsafəyə"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 146,
-        "question_text": "YÖN - ə nəyə deyilir? Doğru cavabı tapın.",
-        "options": {
-            "a": "Porşenin dirsəkli vala ən çox yaxınlaşdığı vəziyyətinə",
-            "b": "Porşenin dirsəkli valdan ən çox uzaqlaşdığı vəziyyətinə",
-            "c": "Porşenin silindrdə qət etdiyi məsafəyə",
-            "d": "Porşenin neytral vəziyyətinə"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 147,
-        "question_text": "Porşenin hər bir gedişi zamanı dirsəkli val neçə dərəcə dönür?",
-        "options": {
-            "a": "90°",
-            "b": "120°",
-            "c": "180°",
-            "d": "360°"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 148,
-        "question_text": "Porşenin gedişi hansı nöqtələr arasında baş verir?",
-        "options": {
-            "a": "Aşağı ölü nöqtə ilə orta nöqtə arasında",
-            "b": "Yuxarı ölü nöqtə ilə aşağı ölü nöqtə arasında",
-            "c": "Yuxarı ölü nöqtə ilə yan nöqtə arasında",
-            "d": "Dirsəkli valın başlanğıc nöqtəsi ilə son nöqtəsi arasında"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 149,
-        "question_text": "Asqı nə üçündür? Doğru cavabı tapın.",
-        "options": {
-            "a": "Təkərlər arasında əlaqədir",
-            "b": "Kuzanı təkərlərlə sərt əlaqələndirmək üçün",
-            "c": "Körpülər arasında əlaqədir",
-            "d": "Kuzanı, təkərlərlə elastiki əlaqələndirmək üçün"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 150,
-        "question_text": "Avtomobilin asqısı, hansı quruluşlardan təşkil olunur?",
-        "options": {
-            "a": "Yalnız istiqamələndirici quruluşlardan",
-            "b": "Elastik, istiqamətləndirici və söndütücü quruluşlardan",
-            "c": "Yalnız söndürücü quruluşlardan",
-            "d": "Yalnız elastiki quruluşlardan"
-        },
-        "correct_answer": "b"
-    },
-    
-    {
-        "question_number": 151,
-        "question_text": "İşçi sikl nədir?",
-        "options": {
-            "a": "Mühərrikin yanacaq doldurma prosesidir.",
-            "b": "Mühərrikin silindrində baş verən işçi proseslərinin cəmidir.",
-            "c": "Mühərrikin əyləc prosesidir.",
-            "d": "Mühərrikin təmir prosesidir."
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 152,
-        "question_text": "Dördtaktlı mühərriklərdə işçi sikl necə təşkil olunur?",
-        "options": {
-            "a": "Porşenin iki gedişi ilə.",
-            "b": "Porşenin üç gedişi ilə.",
-            "c": "Porşenin dörd gedişi ilə.",
-            "d": "Porşenin beş gedişi ilə."
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 153,
-        "question_text": "Dördtaktlı mühərriklərdə işçi sikl hansı taktlardan ibarətdir?",
-        "options": {
-            "a": "Daxilolma, sıxma, işçi gediş, xaricetmə.",
-            "b": "Daxilolma, çıxarma, yanma, sıxma.",
-            "c": "Yanma, sıxma, qarışdırma, xaricetmə.",
-            "d": "Yanma, sıxma, əyləc, xaricetmə."
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 154,
-        "question_text": "İki taktlı mühərriklərdə işçi sikl neçə gedişdə baş verir?",
-        "options": {
-            "a": "Üç gedişdə.",
-            "b": "Dörd gedişdə.",
-            "c": "İki gedişdə.",
-            "d": "Beş gedişdə."
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 155,
-        "question_text": "Mühərriklər hansı əsas xüsusiyyətə görə iki növə bölünür?",
-        "options": {
-            "a": "Mühərrikin çəkisinə görə.",
-            "b": "Yanacaq növünə görə.",
-            "c": "İşçi sikli təşkil edən taktların sayına görə.",
-            "d": "Silindrin diametrinə görə."
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 156,
-        "question_text": "Dördtaktlı mühərriklərdə hansı takt yanıcı qarışığın silindrə daxil olması ilə bağlıdır?",
-        "options": {
-            "a": "Sıxma.",
-            "b": "Daxilolma(sorma)",
-            "c": "İşçi gediş(yanma)",
-            "d": "Xaricetmə."
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 157,
-        "question_text": "V-şəkilli mühərrikdə silindrlər necə yerləşdirilir?",
-        "options": {
-            "a": "Bir müstəvidə düz xətt boyunca",
-            "b": "İki müstəvidə \"V\" hərfi formasında",
-            "c": "Bir-birinin əksinə üfüqi düzülmüş şəkildə",
-            "d": "Dairəvi formada"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 158,
-        "question_text": "Oppozit mühərrikdə silindrlərin yerləşmə bucağı neçə dərəcədir?",
-        "options": {
-            "a": "180°",
-            "b": "120°",
-            "c": "150°",
-            "d": "90°"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 159,
-        "question_text": "Oppozit mühərriklərin əsas üstünlüyü nədir?",
-        "options": {
-            "a": "Daha az yanacaq sərfiyyatı",
-            "b": "Daha yüngül olur",
-            "c": "Mühərrikin hündürlüyünü azaldır",
-            "d": "Daha az güc istehsal edir"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 160,
-        "question_text": "Silindrlər bloku hansı materiallardan hazırlanır?",
-        "options": {
-            "a": "Dəmir və rezin",
-            "b": "Çuqun və ya alüminium",
-            "c": "Polad və plastik",
-            "d": "Karbon və titan"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 161,
-        "question_text": "Alüminium silindrlər blokunun çuqun blokla müqayisədə əsas üstünlüyü nədir?",
-        "options": {
-            "a": "Daha ucuz başa gəlir",
-            "b": "Daha yüngüldür",
-            "c": "Daha dözümlüdür",
-            "d": "Daha çox yağ saxlayır"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 162,
-        "question_text": "Qazpaylama mexanizminin əsas funksiyası nədir?",
-        "options": {
-            "a": "Silindrlərə hava və ya yanacaq-hava qarışığını buraxmaq və işlənmiş qazları xaric etmək",
-            "b": "Mühərriki yağlamaq",
-            "c": "Yanacaq sərfiyyatını azaltmaq",
-            "d": "Mühərrikin temperaturunu tənzimləmək"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 163,
-        "question_text": "Xaricetmə klapanının temperaturu maksimum neçə dərəcəyə çata bilər?",
-        "options": {
-            "a": "500°C",
-            "b": "600°C",
-            "c": "700°C",
-            "d": "800°C"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 164,
-        "question_text": "Daxilolma klapanının ölçüsü niyə xaricetmə klapanından böyük olur?",
-        "options": {
-            "a": "Mühərrikin daha səssiz işləməsi üçün",
-            "b": "Daha çox hava və ya yanacaq-hava qarışığının daxil olmasını təmin etmək üçün",
-            "c": "Yağlama sisteminin işini yaxşılaşdırmaq üçün",
-            "d": "Yanacaq sərfiyyatını azaltmaq üçün"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 165,
-        "question_text": "Aşağıdakı hansı qazpaylama mexanizminin intiqal növü səssiz işləyir?",
-        "options": {
-            "a": "Dişli çarxlı",
-            "b": "Zəncirli",
-            "c": "Dişli qayışlı",
-            "d": "Kəmərli"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 166,
-        "question_text": "Klapanların bağlanmasını təmin edən əsas mexanizm hansıdır?",
-        "options": {
-            "a": "Yaylar və konik kəmərcik",
-            "b": "Karbürator",
-            "c": "Porşen",
-            "d": "Generator"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 167,
-        "question_text": "Xaricetmə klapanının daha yaxşı soyumasını təmin edən maddə hansıdır?",
-        "options": {
-            "a": "Natrium",
-            "b": "Karbon",
-            "c": "Alüminium",
-            "d": "Hidrogen"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 168,
-        "question_text": "Soyutma sisteminin əsas vəzifəsi nədir?",
-        "options": {
-            "a": "Mühərrikin gücünü artırmaq",
-            "b": "Mühərrikin optimal temperaturunu qorumaq",
-            "c": "Mühərrikin yanacaq sərfini azaltmaq",
-            "d": "Mühərrikin yağlanmasını yaxşılaşdırmaq"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 169,
-        "question_text": "Əgər mühərrik çox qızarsa, hansı problemlər yarana bilər?",
-        "options": {
-            "a": "Yağın yanması və detalların pərçimlənməsi",
-            "b": "Yanacağın tam yanmaması",
-            "c": "Mühərrikin sönməsi",
-            "d": "Avtomobilin sürətinin azalması"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 170,
-        "question_text": "Termostatın əsas funksiyası nədir?",
-        "options": {
-            "a": "Mühərrikin temperaturunu daim aşağı saxlamaq",
-            "b": "Soyuducu mayenin dövranını tənzimləmək",
-            "c": "Antifriz miqdarını artırmaq",
-            "d": "Ventilyatorun sürətini tənzimləmək"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 171,
-        "question_text": "Radiator hansı materiallardan hazırlanır?",
-        "options": {
-            "a": "Plastik və polad",
-            "b": "Mis və latun",
-            "c": "Taxta və dəmir",
-            "d": "Şüşə və alüminium"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 172,
-        "question_text": "Antifrizin əsas tərkib hissəsi nədir?",
-        "options": {
-            "a": "Benzin və su",
-            "b": "Dizel və spirt",
-            "c": "Etilenqlikol və su",
-            "d": "Yağ və spirt"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 173,
-        "question_text": "Mühərrikin soyutma sisteminə hansı element daxil deyil?",
-        "options": {
-            "a": "Radiator",
-            "b": "Termostat",
-            "c": "Karbürator",
-            "d": "Su nasosu"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 174,
-        "question_text": "Ventilyatorun əsas funksiyası nədir?",
-        "options": {
-            "a": "Mühərrikin gücünü artırmaq",
-            "b": "Yağın dövranını təmin etmək",
-            "c": "Radiatora hava axınını artırmaq",
-            "d": "Yanacaq sərfini azaltmaq"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 175,
-        "question_text": "Yağlama sisteminin əsas vəzifəsi nədir?",
-        "options": {
-            "a": "Mühərrikin soyudulmasını təmin etmək",
-            "b": "Mühərrikin sürtünən səthlərinə yağ vermək",
-            "c": "Mühərrikin gücünü artırmaq",
-            "d": "Yanacağın sərfini azaltmaq"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 176,
-        "question_text": "Yağlama sisteminin hansı elementi yağı təmizləyir?",
-        "options": {
-            "a": "Yağ süzgəci",
-            "b": "Yağ nasosu",
-            "c": "Reduksiya klapanı",
-            "d": "Yağ radiatoru"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 177,
-        "question_text": "Karbüratorlu mühərrikin qida sisteminə hansı funksiyalar daxildir?",
-        "options": {
-            "a": "Yağın dəyişdirilməsi",
-            "b": "Yanacaq buxarları və havadan ibarət olan yanıcı qarışığın hazırlanması və silindrlərə verilməsi",
-            "c": "Avtomobilin təkərlərini fırlatması",
-            "d": "Mühərrikin elektrik sistemini tənzimləməsi"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 178,
-        "question_text": "Yanacaq hansı element vasitəsilə süzülərək təmizlənir?",
-        "options": {
-            "a": "Hava filtri",
-            "b": "Yanacaq çəni",
-            "c": "Karbürator",
-            "d": "Yanacaq süzgəci"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 179,
-        "question_text": "Karbüratora hava haradan daxil olur?",
-        "options": {
-            "a": "Yanacaq çənindən",
-            "b": "Yanacaq süzgəcindən",
-            "c": "Hava filtrindən",
-            "d": "Mühərrik blokundan"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 180,
-        "question_text": "İşlənmiş qazlar mühərrikdən necə uzaqlaşdırılır?",
-        "options": {
-            "a": "Soyutma sistemi ilə",
-            "b": "Xaricetmə sistemi ilə",
-            "c": "Elektrik dövrəsi ilə",
-            "d": "Karbürator vasitəsilə"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 181,
-        "question_text": "Dizel mühərriklərinin qida sisteminin əsas xüsusiyyəti nədir?",
-        "options": {
-            "a": "Yanıcı qarışığın əvvəlcədən hazırlanması",
-            "b": "Yanıcı qarışığın mühərrik daxilində hazırlanması və özüalışma ilə işləməsi",
-            "c": "Benzinlə işləməsi",
-            "d": "Yalnız əl ilə işə salınması"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 182,
-        "question_text": "Dizel mühərriklərinin əsas üstünlüyü hansıdır?",
-        "options": {
-            "a": "Yanacaq sərfinin az olması",
-            "b": "Daha çox səs-küy yaratması",
-            "c": "İstehsalının ucuz olması",
-            "d": "İşlənmiş qazların daha təmiz olması"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 183,
-        "question_text": "Dizel mühərriklərinin əsas çatışmazlıqlarından biri hansıdır?",
-        "options": {
-            "a": "Yanacaq sərfinin yüksək olması",
-            "b": "İşəsalma keyfiyyətinin aşağı olması və səs-küyün çox olması",
-            "c": "Yanacağın baha olması",
-            "d": "Mühərrikin tez qızması"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 184,
-        "question_text": "Dizel mühərriklərində elektrik közərmə şamları nə üçün istifadə olunur?",
-        "options": {
-            "a": "Yanacağın sıxılmasını təmin etmək üçün",
-            "b": "Yanacaq sərfini artırmaq üçün",
-            "c": "İşəsalma prosesini asanlaşdırmaq üçün",
-            "d": "Mühərrikin soyudulmasını təmin etmək üçün"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 185,
-        "question_text": "Elektrik enerji mənbəyi kimi hansı qurğulardan istifadə olunur?",
-        "options": {
-            "a": "Yalnız akkumulyator batareyaları",
-            "b": "Yalnız generatorlar",
-            "c": "Akkumulyator batareyaları və generatorlar",
-            "d": "Yalnız kondensatorlar"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 186,
-        "question_text": "Generator hansı enerjini elektrik enerjisinə çevirir?",
-        "options": {
-            "a": "Kimyəvi",
-            "b": "İşıq",
-            "c": "İstilik",
-            "d": "Mexaniki"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 187,
-        "question_text": "Alışdırma zamanı yanacaq qarışığı necə alışır?",
-        "options": {
-            "a": "Akkumulyatorun birbaşa enerjisi ilə",
-            "b": "Şam elektrodları arasında yaranan qığılcımla",
-            "c": "Generatorun verdiyi enerji ilə",
-            "d": "Mühərrikin istisi ilə"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 188,
-        "question_text": "Dirsəkli val hansı materiallardan hazırlanır?",
-        "options": {
-            "a": "Yüksək möhkəmlikli qrafitli çuqun və ya polad",
-            "b": "Plastik və mis",
-            "c": "Yüngül lehimli alüminium",
-            "d": "Mərmər və çuqun"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 189,
-        "question_text": "Sürgüqolunun yuxarı başlığına hansı detal yerləşdirilir?",
-        "options": {
-            "a": "Dirsəkli val",
-            "b": "Porşen barmağı",
-            "c": "Yağ nasosu",
-            "d": "Flans"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 190,
-        "question_text": "Kiçik mühərriklərdə sürgüqolu hansı materialdan hazırlanır?",
-        "options": {
-            "a": "Polad",
-            "b": "Çuqun",
-            "c": "Alüminium ərintisi",
-            "d": "Misin ərintisi"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 191,
-        "question_text": "Dirsəkli valın əsas funksiyası nədir?",
-        "options": {
-            "a": "Transmissiyanı idarə etmək",
-            "b": "Sürgüqolundan aldığı qüvvəni burucu momentə çevirmək",
-            "c": "Silindrlərin yağlanmasını təmin etmək",
-            "d": "Porşenin hərəkətini tənzimləmək"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 192,
-        "question_text": "Hərəkət və sürət yaratmaq üçün detal və düyünlərdən ibarət qurğu necə adlanır?",
-        "options": {
-            "a": "Sistem",
-            "b": "Aqreqat",
-            "c": "Mexanizm",
-            "d": "Düyün"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 193,
-        "question_text": "Bir neçə mexanizmin birləşməsi nə adlanır?",
-        "options": {
-            "a": "Aqreqat",
-            "b": "Düyün",
-            "c": "Detal",
-            "d": "Sistem"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 194,
-        "question_text": "Yüngül minik avtomobilləri neçə əsas hissəyə bölünür?",
-        "options": {
-            "a": "2 hissəyə",
-            "b": "3 hissəyə",
-            "c": "4 hissəyə",
-            "d": "5 hissəyə"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 195,
-        "question_text": "Yüngül minik avtomobillərinin əsas hissələri hansılardır?",
-        "options": {
-            "a": "Kuzov, mühərrik, şassi",
-            "b": "Dəmir, təkər, sükan",
-            "c": "Oturacaq, kapot, təkər",
-            "d": "Mühərrik, benzin çəni, sükan"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 196,
-        "question_text": "Mühərrik hansı enerjini mexaniki işə çevirir?",
-        "options": {
-            "a": "Kimyəvi enerjini",
-            "b": "İşıq enerjisini",
-            "c": "İstilik enerjisini",
-            "d": "Elektrik enerjisini"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 197,
-        "question_text": "Avtomobillərdə əsasən hansı növ mühərriklərdən istifadə olunur?",
-        "options": {
-            "a": "Xarici yanma mühərriklərindən",
-            "b": "Porşenli istilik mühərriklərindən",
-            "c": "Elektrik mühərriklərindən",
-            "d": "Turbin mühərriklərindən"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 198,
-        "question_text": "Daxili yanma mühərriklərində yanma prosesi harada baş verir?",
-        "options": {
-            "a": "Mühərrikin xaricində",
-            "b": "Yanacaq çənində",
-            "c": "Silindrin daxilində",
-            "d": "Mühərrikin soyutma sistemində"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 199,
-        "question_text": "Porşenli istilik mühərrikləri başqa necə adlanır?",
-        "options": {
-            "a": "Xarici yanma mühərrikləri",
-            "b": "Daxili yanma mühərrikləri",
-            "c": "Elektrik mühərrikləri",
-            "d": "Dizel nasosları"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 200,
-        "question_text": "Daxili yanma mühərrikləri hansı mexanizmlərdən ibarətdir?",
-        "options": {
-            "a": "Çarxqolu-sürgüqolu və qazpaylama mexanizmlərindən",
-            "b": "Təkər və sükan mexanizmlərindən",
-            "c": "Səsboğucu və yanacaq çənindən",
-            "d": "Karbürator və radiator sistemlərindən"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 201,
-        "question_text": "Dirsəkli val porşendən aldığı hərəkəti transmissiyaya hansı mexanizm vasitəsilə ötürür?",
-        "options": {
-            "a": "Klapanlarla",
-            "b": "Qazpaylama valı ilə",
-            "c": "Nazimçarx vasitəsilə",
-            "d": "Generatorun köməkliyi ilə"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 202,
-        "question_text": "Dirsəkli val porşenlə hansı detal vasitəsilə əlaqədə olur?",
-        "options": {
-            "a": "Klapanla",
-            "b": "Sürgüqolu ilə",
-            "c": "İkiçiyinli linglə",
-            "d": "Nazimçarxla"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 203,
-        "question_text": "Porşenin əsas vəzifəsi nədir?",
-        "options": {
-            "a": "Yanacaq-hava qarışığını hazırlamaq",
-            "b": "Burucu momenti stabilləşdirmək",
-            "c": "Klapanların açılıb bağlanmasını təmin etmək",
-            "d": "Genişlənmiş qazların təzyiqini qəbul edib onu mexaniki hərəkətə çevirmək"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 204,
-        "question_text": "Porşen aşağıdakı hansı səbəbdən qızır?",
-        "options": {
-            "a": "Sadəcə yanacaq çatışmazlığına görə",
-            "b": "Hava filtrinin çirklənməsi səbəbindən",
-            "c": "Həm yanmış qazların hərarətindən, həm də sürtünmədən",
-            "d": "Yalnız yağlama sisteminin təzyiqinə görə"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 205,
-        "question_text": "Radiator hansı hissələrdən ibarətdir?",
-        "options": {
-            "a": "Özül, yuxarı və aşağı tutumlar",
-            "b": "Blok silindr, porşen, klapanlar",
-            "c": "Su nasosu və termostat",
-            "d": "Yalnız özül"
-        },
-        "correct_answer": "a"
-    },
-    {
-        "question_number": 206,
-        "question_text": "Yanacaq nasosunun əsas vəzifəsi nədir?",
-        "options": {
-            "a": "Yağı silindrlərə çatdırmaq",
-            "b": "Yanacağın çəndən karbüratora təzyiq altında vurulmasını təmin etmək",
-            "c": "Havanı filtrdən keçirmək",
-            "d": "Mühərriki soyutmaq"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 207,
-        "question_text": "Benzin mühərriklərini işə salmaq üçün dirsəkli val neçə dövrə/dəqiqə ilə fırladılmalıdır?",
-        "options": {
-            "a": "20--40 dövrə/dəqiqə",
-            "b": "50--80 dövrə/dəqiqə",
-            "c": "100--150 dövrə/dəqiqə",
-            "d": "160--200 dövrə/dəqiqə"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 208,
-        "question_text": "Dizel mühərriklərini işə salmaq üçün dirsəkli valın tələb olunan fırlanma tezliyi nə qədərdir?",
-        "options": {
-            "a": "30--60 dövrə/dəqiqə",
-            "b": "50--80 dövrə/dəqiqə",
-            "c": "120--160 dövrə/dəqiqə",
-            "d": "180--220 dövrə/dəqiqə"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 209,
-        "question_text": "Baş ötürücünün əsas funksiyası nədir?",
-        "options": {
-            "a": "Yanacaq sərfiyyatını azaltmaq",
-            "b": "Akkumulyator batareyasının doldurulmasını təmin etmək",
-            "c": "Burucu momenti artırmaq və təkərlərə ötürmək",
-            "d": "Elektrik enerjisi ötürmək"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 210,
-        "question_text": "İşçi qarışığını yandırmaq üçün hansı qurğudan istifadə olunur?",
-        "options": {
-            "a": "Yanacaq nasosu",
-            "b": "Karbürator",
-            "c": "Generator",
-            "d": "Alışdırma şamları"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 211,
-        "question_text": "Alışdırma şamları hansı əsas hissələrdən ibarətdir?",
-        "options": {
-            "a": "Rotor, stator və tənzimləyici",
-            "b": "Mərkəzi elektrod, yan elektrod və izolyator",
-            "c": "Klapan, klapan oturacağı və yay",
-            "d": "Porşen, halqa və barmaq"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 212,
-        "question_text": "Avtomobil asqılarının əsas vəzifəsi nədir?",
-        "options": {
-            "a": "Mühərrikin gücünü artırmaq",
-            "b": "Kuzov ilə körpülər arasında sərt əlaqə yaratmaq",
-            "c": "Kuzov ilə körpülər və təkərlər arasında yumşaq əlaqə yaratmaq",
-            "d": "Yanacaq sərfiyyatını azaltmaq"
-        },
-        "correct_answer": "c"
-    },
-    {
-        "question_number": 213,
-        "question_text": "Avtomobillərdə əsasən hansı tip amortizatorlar tətbiq olunur?",
-        "options": {
-            "a": "Mexaniki və elektrik",
-            "b": "Hidravlik və pnevmatik",
-            "c": "Termik və mexaniki",
-            "d": "Elektromaqnit və hidravlik"
-        },
-        "correct_answer": "b"
-    },
-    {
-        "question_number": 214,
-        "question_text": "Sükan idarəsinin əsas funksiyası nədir?",
-        "options": {
-            "a": "Avtomobilin sürətini artırmaq",
-            "b": "Təkərlərin yeyilməsini azaltmaq",
-            "c": "Mühərrikin gücünü ötürmək",
-            "d": "Avtomobilin təyin olunmuş istiqamətdə hərəkətini təmin etmək"
-        },
-        "correct_answer": "d"
-    },
-    {
-        "question_number": 215,
-        "question_text": "Vakuum gücləndiricisinin əsas vəzifəsi nədir?",
-        "options": {
-            "a": "Tormoz pedalına təsir edən tormozlama qüvvəsini azaltmaq",
-            "b": "Tormoz pedalına təsir edən tormozlama qüvvəsini artırmaq",
-            "c": "Avtomobilin gücünü artırmaq",
-            "d": "Ötürmələr qutusunun işini yüngülləşdirmək"
-        },
-        "correct_answer": "b"
-    }
+  {
+    "question_number": 1,
+    "question_text": "Diaqnostika hansı texniki anlayışlarla sıx əlaqədədir?",
+    "options": {
+      "a": "araboşluqlar, yerdəyişmələr",
+      "b": "resurs,texniki vəziyyət",
+      "c": "texniki xidmət,cari təmir",
+      "d": "nominal qiymət,sərhəd qiyməti"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 2,
+    "question_text": "İmtana dedikdə nə başa düşülür?",
+    "options": {
+      "a": "Avtomobilin elə texniki halı başa düşülür ki ,onu qiymətləndirən gösdəricilərdən ən azı biri texniki sənədlərdə verilmiş qiymətlərinə uyğun gəlməsin.",
+      "b": "Avtomobilin texniki vəziyyətinin dəyişməsinə deyilir.",
+      "c": "Avtomobilin işləmə qabiliyyətinin tam yaxud qismən itirilməsinə deyilir.",
+      "d": "Avtomobilin öz funksiyasını yerinə yetirə bilmə qabiliyyətinə deyilir."
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 3,
+    "question_text": "Avtomobilin yaxud onun hər hansı bir elementinin istismara başladığı andan son həddinə qədər işləmə müddətinə onun ...... deyilir.",
+    "options": {
+      "a": "işləmə qabiliyyəti",
+      "b": "nasazlıq",
+      "c": "resursu",
+      "d": "xidmət müddəti"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 4,
+    "question_text": "Avtomobillərin texniki vəziyyəti neçə üsulla təyin olunur?",
+    "options": {
+      "a": "2",
+      "b": "3",
+      "c": "4",
+      "d": "5"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 5,
+    "question_text": "Aşağıdakılardan hansı texniki vəziyyətin təyin olunması üsuludur?",
+    "options": {
+      "a": "funksional üsul",
+      "b": "test sistemli üsul",
+      "c": "vizual müşahidələr yolu ilə",
+      "d": "optimal idarəetmə üsulu"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 6,
+    "question_text": "Avtomobilin texniki vəziyyətinin təyin olunma üsullarından hansı daha səmərəlidir?",
+    "options": {
+      "a": "vizual müşahidələr yolu ilə",
+      "b": "bilavasitə ölçmə əməliyyatlarını yerinə yetirməklə",
+      "c": "dolayı yolla ,yəni xarici təzahürlərə görə",
+      "d": "funksional və test sistemli"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 7,
+    "question_text": "Aşağıdakılardan hansı diaqnostika sistemini təşkil edir?",
+    "options": {
+      "a": "Obyekt,texnoloji avadanlıq və alqoritm",
+      "b": "mexanizm,nasazlıq və onun həlli prosesi",
+      "c": "detal ,xüsusi diaqnostika və alqoritm",
+      "d": "Obyekt,texniki vəziyyət və onların həlli yolları"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 8,
+    "question_text": "Avtomobilin diaqnostika avadanlığı ilə əhatə edilmə dərəcəsinə görə diaqnostika vasitələri neçə hissəyə bölünür?",
+    "options": {
+      "a": "2",
+      "b": "3",
+      "c": "4",
+      "d": "5"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 9,
+    "question_text": "İdarəolunmanın avtomatlaşdırma dərəcəsinə görə diaqnostika vasitələrinin neçə növü var?",
+    "options": {
+      "a": "2",
+      "b": "5",
+      "c": "4",
+      "d": "3"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 10,
+    "question_text": "Avtomobillərin texniki vəziyyətinin dəyişmə səbəbləri hansılardır?",
+    "options": {
+      "a": "sınma,detalların qızması",
+      "b": "termodinamik proseslərin pozulması,nasazlıq və imtinalar",
+      "c": "zərbəli yüklərin yaranması,sürtünmə və yeyilmələr.",
+      "d": "yeyilmə ,köhnəlmə və korroziya"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 11,
+    "question_text": "Sürtünmənin neçə növü var?",
+    "options": {
+      "a": "2",
+      "b": "4",
+      "c": "3",
+      "d": "6"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 12,
+    "question_text": "Sürtünmə əmsalının düsturu hansı bənddə düzgün qeyd olunmuşdur?",
+    "options": {
+      "a": "f=FN",
+      "b": "f=N/F",
+      "c": "f=F/N",
+      "d": "f=FN/2"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 13,
+    "question_text": "Yeyilmə nəyə deyilir?",
+    "options": {
+      "a": "Detalların forma ,çəki və ölçülərinin itirilməsinə",
+      "b": "Yeyilmə prosesinin məhsuluna",
+      "c": "Yeyilmənin mütləq qiymətinin yeyilmə müddətinə olan nisbətinə",
+      "d": "Yeyilmə prosesi nəticəsində detalların xətti ölçüsünün dəyişməsinə"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 14,
+    "question_text": "Diaqnostika nədir?",
+    "options": {
+      "a": "Avtomobilin texniki vəziyyətinin təyin olunma prosesinə",
+      "b": "Bir neçə diaqnostika prosesi üçün olan sistemə",
+      "c": "Diaqnostikanın köməyi ilə avtomobilin aqreqat və mexanizmlərində olan imtinaların aradan qaldırılmasına",
+      "d": "Avtomobilin texniki vəziyyətini onu sökmədən müxtəlif üsullar vasitəsilə təyin edən və qalıq resursunu proqnoz edilməsini öyrənən elm"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 15,
+    "question_text": "Yeyilmənin neçə növü var?",
+    "options": {
+      "a": "2",
+      "b": "4",
+      "c": "5",
+      "d": "3"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 16,
+    "question_text": "Aşağıdakılardan hansı yeyilmənin növüdür?",
+    "options": {
+      "a": "mexaniki",
+      "b": "diyirlənmə",
+      "c": "sürüşmə",
+      "d": "mürəkkəb"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 17,
+    "question_text": "Göstərilənlərdən hansı sürtünmə növüdür?",
+    "options": {
+      "a": "molekulyar mexaniki",
+      "b": "sürüşmə",
+      "c": "abraziv",
+      "d": "plastiki"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 18,
+    "question_text": "Sürtünmə nəyə deyilir?",
+    "options": {
+      "a": "Qarşılıqlı hərəkətdə olan iki sürtünən səth arasında əmələ gələn müqavimətə",
+      "b": "Detalların forma,çəki və ölçülərinin itirilməsinə",
+      "c": "Avtomobillərin texniki vəziyyətinin təyin olunma prosesinə",
+      "d": "Avtomobilin işləmə qabiliyyətinin tam yaxud qismən itirilməsinə"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 19,
+    "question_text": "Aşağıda gösdərilənlərdən hansı yeyilmənin təyin olunma üsullarından deyil?",
+    "options": {
+      "a": "Yeyilmə məhsulunun yağda miqdarının təyin olunma üsulu",
+      "b": "Detalların çəkilərinin təyin olunma üsulu",
+      "c": "Süni bazalar yaratmaq üsulu",
+      "d": "Bilavasitə ölçmə əməliyyatlarının yerinə yetirilməsi üsulu"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 20,
+    "question_text": "Metallarda gedən korroziya prosesi öz xarakterinə görə neçə yerə bölünür?",
+    "options": {
+      "a": "3",
+      "b": "2",
+      "c": "4",
+      "d": "5"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 21,
+    "question_text": "Korroziya əsasən hansı materiallarda gedir?",
+    "options": {
+      "a": "taxta materiallarında",
+      "b": "metal materiallarda",
+      "c": "rezin materiallarda",
+      "d": "qeyri metaldan hazırlanmış detallarda"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 22,
+    "question_text": "Köhnəlmə prosesi hansı detallarda daha sürətlə gedir?",
+    "options": {
+      "a": "sürtgü materiallarında",
+      "b": "soyuducu mayelərdə",
+      "c": "qeyri metaldan hazırlanmış hissələrdə",
+      "d": "metal materiallarda"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 23,
+    "question_text": "Göstərilənlərdən hansı avtomobillərin texniki vəziyyətinin dəyişməsinə təsir göstərmir?",
+    "options": {
+      "a": "istismar materiallarının ATV nə təsiri",
+      "b": "istismar şəraitinin ATV nə təsiri",
+      "c": "texniki qulluq və təmirin aparılma keyfiyyətinin ATV nə təsiri",
+      "d": "boş dayanmaların ATV nə təsiri"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 24,
+    "question_text": "Korroziya prosesi öz xarakterinə görə neçə qrupa bölünür?",
+    "options": {
+      "a": "2",
+      "b": "3",
+      "c": "4",
+      "d": "6"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 25,
+    "question_text": "Aşağıdakılardan hansı korroziyanın növü deyil?",
+    "options": {
+      "a": "elektrokimyəvi",
+      "b": "kimyəvi",
+      "c": "atmosfer şəraitində gedən",
+      "d": "abraziv"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 26,
+    "question_text": "Aparılma üsuluna görə diaqnostikanın hansı növləri var?",
+    "options": {
+      "a": "İxtisaslaşdırılmış,Texniki qulluq və Cari təmirlə birləşdirilmiş",
+      "b": "Ümumi ,Xüsusi",
+      "c": "Planlı,Təlabata uyğun",
+      "d": "Səyyar,Stasionar"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 27,
+    "question_text": "Diaqnostik avadanlıqların əsas vəzifəsi nədir?",
+    "options": {
+      "a": "Diaqnostik parametrləri ölçmək və alınmış nəticələri təhlil edərək obyektin texniki vəziyyətini dəqiq müəyyən etmək",
+      "b": "Avtomobilin texniki vəziyyətini müəyyən etmək və yaddaşda saxlamaq",
+      "c": "Avtomobillərdə baş verən nasazlıqları aradan qaldırmaq",
+      "d": "Baş verən nasazlıq və imtinaların aradan qaldırılması üsulların tətbiq etmək"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 28,
+    "question_text": "Detalların ,onların hazırlandıqları materialların ətraf mühitlə fiziki kimyəvi qarşılıqlı təsiri nəticəsində dağılması prosesinə ......deyilir.",
+    "options": {
+      "a": "sürtünmə",
+      "b": "yeyilmə",
+      "c": "köhnəlmə",
+      "d": "korroziya"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 29,
+    "question_text": "Soyutma sistemində kiplikləri yoxlamaq üçün radiatorun yuxarı ,su olmayan hissəsində nə qədər təzyiq yaradılır?",
+    "options": {
+      "a": "50 Kpa",
+      "b": "60 Kpa",
+      "c": "70 Kpa",
+      "d": "80 Kpa"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 30,
+    "question_text": "Karbüratorlu mühərriklərdə yanacaq kimi hansı yanacaq növündən istifadə edilir?",
+    "options": {
+      "a": "benzin",
+      "b": "dizel",
+      "c": "qaz yanacağı",
+      "d": "ağ neft"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 31,
+    "question_text": "Mühərrik yağlarının əsas göstəriciləri hansılardır?",
+    "options": {
+      "a": "yanacağın özlülüyü,öz özünə alışma qabiliyyəti,fraksiya tərkibi və.s",
+      "b": "detonasiyaya qarşı davamlılığı,mineral və üzvi turşuların miqdarıvə.s",
+      "c": "codluğu ,oksidləşmə qabiliyyəti ,şəffaflığı və.s",
+      "d": "yeyilməyə qarşı davamlılığı,korroziya xüsusiyyətləri,özlülüyü və.s"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 32,
+    "question_text": "Transmissiya yağlarından əsasən avtomobillərin hansı hissələrində istifadə olunur?",
+    "options": {
+      "a": "Avtomobillərin güc ötürücü aqreqatlarında,sürətlər qutusu və diferensialda",
+      "b": "Mühərrik onun hissə və mexanizmlərində",
+      "c": "Avtomobillərin bir çox açıq birləşmələrində,sürüşmə sürtünmə yastıqlarında",
+      "d": "Avtomobillərin hərəkət hissələrində"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 33,
+    "question_text": "Texniki diaqnostikada mexanizmlərin texniki vəziyyətinin parametrləri neçə qrupa ayrılır?",
+    "options": {
+      "a": "3",
+      "b": "4",
+      "c": "2",
+      "d": "5"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 34,
+    "question_text": "Struktur parametrləri neçə qrupa bölünür?",
+    "options": {
+      "a": "4",
+      "b": "3",
+      "c": "5",
+      "d": "2"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 35,
+    "question_text": "Məsələnin qoyuluşuna görə diaqnostikanın neçə növü vardır?",
+    "options": {
+      "a": "3",
+      "b": "2",
+      "c": "6",
+      "d": "4"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 36,
+    "question_text": "Aparılma üsuluna görə diaqnostikanın neçə növü var ?",
+    "options": {
+      "a": "2",
+      "b": "3",
+      "c": "4",
+      "d": "5"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 37,
+    "question_text": "Diaqnostikanın hansı növündə diaqnostik əlamət kimi səs siqnallarından istifadə edilir?",
+    "options": {
+      "a": "vibrometrik",
+      "b": "akustik",
+      "c": "funksional",
+      "d": "qarışıq"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 38,
+    "question_text": "Avtomobillərin texniki vəziyyətinin öyrənilməsində geniş yayılmış üsul hansıdır?",
+    "options": {
+      "a": "funksional",
+      "b": "vibrometrik",
+      "c": "vibroakustik",
+      "d": "qarışıq"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 39,
+    "question_text": "Kompressiyanın ölçülməsi zamanı mühərrikdə temperatur nə qədər olmalıdır?",
+    "options": {
+      "a": "50-55 ^0^C",
+      "b": "60-65 ^0^C",
+      "c": "65-70 ^0^C",
+      "d": "75-80 ^0^C"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 40,
+    "question_text": "Karbüratorlu mühərriklərdə kompressiya nə qədər olmalıdır ?",
+    "options": {
+      "a": "0.45-0.8MPa",
+      "b": "0.5- 1MPa",
+      "c": "0.2- 0.5 MPa",
+      "d": "1-1.5MPa"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 41,
+    "question_text": "Dizel mühərriklərində kompressiya nə qədər olmalıdır?",
+    "options": {
+      "a": "1MPa",
+      "b": "1.5 MPa",
+      "c": "2 MPa.",
+      "d": "2.5MPa"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 42,
+    "question_text": "Karterə keçən qazların miqdarı hansı cihazla ölçülür?",
+    "options": {
+      "a": "Kompressometrlə.",
+      "b": "Vakumetrlə.",
+      "c": "Fonendoskop və ya indikatorla",
+      "d": "Qaz sayğacı və ya reometrlə"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 43,
+    "question_text": "Sorma kollektorundakı seyrəkliyi hansı cihazla ölçürlər?",
+    "options": {
+      "a": "Fonendoskopla",
+      "b": "indikatorla",
+      "c": "reometrlə",
+      "d": "vakumetrlə"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 44,
+    "question_text": "Sorma kollektorunda seyrəkliyin normativ qiyməti nə qədər olmalıdır?",
+    "options": {
+      "a": "300-350Pa",
+      "b": "350-400Pa",
+      "c": "450-500Pa",
+      "d": "500-570Pa"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 45,
+    "question_text": "Klapanların bağlı vəziyyətində slindrdən sıxılmış havanın uçması hansı cihazla təyin edilir?",
+    "options": {
+      "a": "Fonendoskop və ya indikatorla",
+      "b": "Kompressometrlə",
+      "c": "Reometrlə",
+      "d": "Vakumetrlə"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 46,
+    "question_text": "Texniki cəhətdən saz olan yanacaq nasosunun məhsuldarlığı nə qədər olmalıdır?",
+    "options": {
+      "a": "0.5-1 L/dəq.",
+      "b": "0.7-2 L/dəq",
+      "c": "0.6-1.5L/dəq.",
+      "d": "1-1.5L/dəq"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 47,
+    "question_text": "Avtomobillərin soyutma sistemində soyuducu maye kimi hansı mayelərdən istifadə edilir?",
+    "options": {
+      "a": "mayeləşdirilmiş qazlardan",
+      "b": "jitqisdən",
+      "c": "su və antifrizdən",
+      "d": "mühərrik yağlarından"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 48,
+    "question_text": "Mühərriklərin normal iş rejimində soyuducu mayenin temperaturu nə qədər olmalıdır?",
+    "options": {
+      "a": "75^0^",
+      "b": "80^0^",
+      "c": "85^0^",
+      "d": "95^0^"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 49,
+    "question_text": "Radiatorun aşağı və yuxarı hissələri arasındakı temperatur fərqi nə qədər olmalıdır?",
+    "options": {
+      "a": "5-10 ^0^C.",
+      "b": "10-15 ^0^C.",
+      "c": "8-12 ^0^C.",
+      "d": "15-18 ^0^C"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 50,
+    "question_text": "Termostatın klapanı hansı temperaturda açılmağa başlamalıdır?",
+    "options": {
+      "a": "50-55 ^0^C",
+      "b": "55-60 ^0^C",
+      "c": "70-75 ^0^C",
+      "d": "65-70^0^ C"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 51,
+    "question_text": "Termostatın klapanı hansı temperaturda tam açıq vəziyyətdə olmalıdır?",
+    "options": {
+      "a": "80-85^0^ C",
+      "b": "85-90^0^ C",
+      "c": "90-95^0^ C",
+      "d": "95-100^0^ C"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 52,
+    "question_text": "Silindrlərdəki kompressiyanı hansı cihazla ölçürlər?",
+    "options": {
+      "a": "Dinamometrlə",
+      "b": "Kompressometrlə",
+      "c": "Lüftometrlə",
+      "d": "Vakumetrlə"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 53,
+    "question_text": "Diaqnostikanın texniki vasitələri neçə qrupa bölünür?",
+    "options": {
+      "a": "2",
+      "b": "3",
+      "c": "4",
+      "d": "5"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 54,
+    "question_text": "Plastik yağlardan hansı hissələrin yağlanmasında istifadə olunur?",
+    "options": {
+      "a": "Sükan gücləndiricisinin",
+      "b": "Ötürmələr qutusunun və onun dişli çarxlarının",
+      "c": "Diferensialın və baş ötürücünün",
+      "d": "Sürüşmə yastıqlarında və bəzi açıq birləşmələrdə"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 55,
+    "question_text": "Mühərriklərdə yağ itgisi hansı səbəblərdən baş verir?",
+    "options": {
+      "a": "Silindirin ,porşenin , porşen üzüklərinin yeyilməsi və karterdə kipliklərin pozulması nəticəsində",
+      "b": "Çarx qolu ,sürgüqolu mexanizminin iş prinsipinin pozulmasına görə",
+      "c": "Qazpaylama mexanizminin iş prinsipinin pozulmasına görə",
+      "d": "Transmissiya vasitələrində hermetikliyin pozulması nəticəsində"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 56,
+    "question_text": "Diaqnostik avadanlıqların əsas vəzifəsi nədir?",
+    "options": {
+      "a": "Baş vermiş imtina və nasazlıqları aradan qaldırmaq",
+      "b": "Diaqnostik parametrləri ölçmək və alınmış nəticələri təhlil edərək obyektin vəziyyətini dəqiq müəyyən etmək",
+      "c": "Texniki qulluq və təmir üsullarını çatdırmaq",
+      "d": "Avtomobilin estetik görünüşünü artırmaq"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 57,
+    "question_text": "Yanacaq sisteminin nasazlığı nəticəsində hansı əlamət ortaya çıxa bilər?",
+    "options": {
+      "a": "Mühərrikin səsi azalır",
+      "b": "Avtomobilin sürəti artır",
+      "c": "Mühərrikdə titrəyiş və güc itkisi",
+      "d": "Soyuducu mayenin azalması"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 58,
+    "question_text": "Qida sistemində nasazlıqların yaranmasının xarici əlamətləri hansılardır?",
+    "options": {
+      "a": "Transmissiya vasitələrindən səs küyün gəlməsi ,yağın səviyyəsinin aşağı düşməsi",
+      "b": "Tormozlama yolunun uzanması,tormoz mexanizmlərində kipliyin pozulması",
+      "c": "Yağ səviyyəsinin aşağı düşməsi,və mühərrikdən səs küyün gəlməsi",
+      "d": "mühərrikin çətin işə düşməsi ,qeyri müntəzəm işləməsi,yanacaq sərfinin artması"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 59,
+    "question_text": "Kompressometrlə nəyi ölçürlər?",
+    "options": {
+      "a": "sorma kollektorundakı seyrəkliyi",
+      "b": "karterə keçən qazların miqdarını",
+      "c": "silindirlərdəki kompressiyanı",
+      "d": "klapanların bağlı vəziyyətində slindrdən sıxılmış havanın uçmasını"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 60,
+    "question_text": "Vakumetrlə nəyi ölçürlər?",
+    "options": {
+      "a": "silindirlərdəki kompressiyanı",
+      "b": "sükan çarxının lüftünü",
+      "c": "sorma kollektorundakı seyrəkliyi",
+      "d": "karterə keçən qazların miqdarını"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 61,
+    "question_text": "Diaqnostikanın əsas məqsədi nədir?",
+    "options": {
+      "a": "Avtomobilin qiymətini artırmaq",
+      "b": "Nasazlıqları müəyyən etmək",
+      "c": "Təmizləmə işləri aparmaq",
+      "d": "Yanacaq istehlakını artırmaq"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 62,
+    "question_text": "Soyutma sisteminin əsas vəzifəsi nədir?",
+    "options": {
+      "a": "Yanacaq istehlakını azaltmaq",
+      "b": "Mühərrikin istilik balansını tənzimləmək",
+      "c": "yanacağın temperaturunu artırmaq",
+      "d": "Tormoz sistemini gücləndirmək"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 63,
+    "question_text": "Soyutma sistemi hansı hissələrdən ibarətdir?",
+    "options": {
+      "a": "Yalnız radiator",
+      "b": "Radiator, su nasosu , termostat,birləşdirici borular və .s",
+      "c": "Yalnız motor yağı, süzgəclər,dişli çarxlar,qayış ötürməsi və.s",
+      "d": "Süzgəc ,üzlüklər,qoruyucular və.s"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 64,
+    "question_text": "Avtomobilin işıq sistemində problemin olub-olmadığını yoxlamaq üçün hansı müayinə aparılır?",
+    "options": {
+      "a": "İşıq lampalarının gərginliyinin ölçülməsi",
+      "b": "Yanacaq təzyiqinin yoxlanması",
+      "c": "Tormoz sisteminin müayinəsi",
+      "d": "Yağlama sisteminin müayinəsi"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 65,
+    "question_text": "Avtomobildə Soyutma sistemi nə üçündür?",
+    "options": {
+      "a": "Tormoz yolunu kiçiltmək",
+      "b": "İstilik balansını qorumaq",
+      "c": "Sürtünmə qüvvəsini minimuma endirmək",
+      "d": "Elektrik enerjisi istehsal etmək"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 66,
+    "question_text": "Bu nasazlıqlardan hansı soyutma sisteminin nasazlıqlarına aid deyil?",
+    "options": {
+      "a": "soyutma mayesinin sızması",
+      "b": "termostatın nasazlığı",
+      "c": "radiatorun çirklənməsi",
+      "d": "dişli carxların yeyilməsi"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 67,
+    "question_text": "Yanacaq filtirinin əsas vəzifəsi nədir?",
+    "options": {
+      "a": "yanacağın sıxılmasını təmin etmək",
+      "b": "yanacağı çirklərdən təmizləmək (süzmək)",
+      "c": "yanacağın temperaturunu artırmaq",
+      "d": "yanacaq nasosunun işini tənzimləmək"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 68,
+    "question_text": "Yanacaq nasosunun nasazlığı hansına səbəb ola bilər?",
+    "options": {
+      "a": "Mühərrikdə yeyilmələrin artmasına",
+      "b": "Mühərrikin işə düşməməsinə",
+      "c": "Yanacaq sərfiyatının azalması",
+      "d": "Mühərrikin daha səmərəli işləməsi"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 69,
+    "question_text": "Yanacaq sistemində nasazlıq zamanı mühərrikdə hansı hallar baş verə bilər?",
+    "options": {
+      "a": "Yüksək sürət",
+      "b": "Hissələrin yeyilməsi",
+      "c": "İstilik artımı",
+      "d": "Güc itirilməsi və ya mühərrikin titrəməsi"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 70,
+    "question_text": "Diaqnostik sistemin məqsədi nədir?",
+    "options": {
+      "a": "Avtomobilin performansını artırmaq",
+      "b": "Problemləri aşkar etmək",
+      "c": "Avtomobilin görünüşünü yaxşılaşdırmaq",
+      "d": "Yanacaq sərfini azaltmaq"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 71,
+    "question_text": "Elektrik sistemi hansı hissələrdən ibarətdir?",
+    "options": {
+      "a": "Generator, akkumulyator, starter,naqillər ,qoruyucular və.s",
+      "b": "Tormoz sistemi, sükan sistemi,sükan gücləndiricisi və.s",
+      "c": "Yanacaq sistemi, soyutma sistemi,süzgəclər və s",
+      "d": "Əyləc, sürət göstəricisi,ressorlar,amartizatorlar və.s"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 72,
+    "question_text": "Diaqnostika prosesi zamanı mühafizə sisteminin rolu nədir?",
+    "options": {
+      "a": "Avadanlığın görünüşünü yaxşılaşdırmaq",
+      "b": "İşçi təhlükəsizliyini təmin etmək",
+      "c": "Avadanlığın səmərəliliyini artırmaq",
+      "d": "Təmizliyi qorumaq"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 73,
+    "question_text": "Diaqnostika zamanı tapılan xətaların aradan qaldırılması üçün nə edilməlidir?",
+    "options": {
+      "a": "Hissə və mexanizmlərin bütün hissələri dəyişilməlidir",
+      "b": "Yalnız yeni avadanlıq alınmalıdır",
+      "c": "Müvafiq təmir ,düzəlişlər və nizamlama işləri aparılmalıdır",
+      "d": "Problemləri gizlətmək"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 74,
+    "question_text": "Elektrik avadanlıqlarının qısa qapanması zamanı hansı məsələlər önəmlidir?",
+    "options": {
+      "a": "Xəttin uzunluğu",
+      "b": "Mühafizə qurğularının işləməsi",
+      "c": "Sazlama parametrləri",
+      "d": "Daxili komponentlərin rəngi"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 75,
+    "question_text": "Ayrı -ayrı silindrlərdə kompressiyanın qiymətləri arasındakı fərq nə qədər olmalıdır?",
+    "options": {
+      "a": "0.1Mpa",
+      "b": "0.3Mpa",
+      "c": "0.5Mpa",
+      "d": "0.4Mpa"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 76,
+    "question_text": "Avtomobillərin diaqnostika sisteminin əsas məqsədi aşağıdakılardan hansıdır?",
+    "options": {
+      "a": "Yanacaq istehlakını artırmaq",
+      "b": "Avtomobilin təhlükəsizliyini yoxlamaq və baş verə biləcək imtina və nasazlıqların qarşısını almaq",
+      "c": "İstilik sistemini tənzimləmək",
+      "d": "Avtomobilin səmərəliliyini azaltmaq"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 77,
+    "question_text": "Diaqnostika prosesinin ilk mərhələsi hansıdır?",
+    "options": {
+      "a": "Avtomobilin yuyulması",
+      "b": "Problemin müayinəsi və məlumatın toplanması",
+      "c": "Yalnız mühərrikin yoxlanması",
+      "d": "Təkərlərin dəyişdirilməsi"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 78,
+    "question_text": "Yağın səviyyəsinin aşağı olması nəyə səbəb olur?",
+    "options": {
+      "a": "Matorun sürətinin artması",
+      "b": "Sürtünmənin artması və motorun zədələnməsi araboşluqların böyüməsi",
+      "c": "Yanacaq istehlakının azalması",
+      "d": "Tormoz yolunun artması"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 79,
+    "question_text": "Avtomobildə güc aqreqatının əsas elementi hansıdır?",
+    "options": {
+      "a": "Termostat",
+      "b": "Süzgəc",
+      "c": "Transmissiya",
+      "d": "Mühərrik"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 80,
+    "question_text": "Soyutma sistemini diaqnostika etdikdə birinci növbədə sistemin hansı halı təyin olunur?",
+    "options": {
+      "a": "Yağlanma halı",
+      "b": "İdarəetmə halı",
+      "c": "Avtomobilin xaricetmə halı",
+      "d": "İstilik halı"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 81,
+    "question_text": "Avtomobilin diaqnostikasında ən çox istifadə olunan alət hansıdır?",
+    "options": {
+      "a": "Manometr",
+      "b": "OBD-II skaner",
+      "c": "Röntgen cihazı",
+      "d": "Kompressor"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 82,
+    "question_text": "OBD-II skaner nəyi ölçür?",
+    "options": {
+      "a": "Yanacaq istehlakını",
+      "b": "Yağın səviyyəsini",
+      "c": "Təkərlərin təzyiqini",
+      "d": "Mühərrikin işləmə vəziyyətini"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 83,
+    "question_text": "Ekspress diaqnostika nəyə deyilir?",
+    "options": {
+      "a": "Avtomobilin bütövlükdə texniki vəziyyətini müəyyən etmək üçün yerinə yetirilən prosesə",
+      "b": "Yoxlanılan obyektin texniki vəziyyəti haqqında ilkin məlumatın verilməsinə",
+      "c": "Avtomobil yüksək təhlükəli istismar şəraitində işlədikdə ümumi diaqnostikanın aparılma periodikliyinin 3-4 dəfə qısa götürülməsinə",
+      "d": "Müəyyən gəzdirilə bilən diaqnostik cihazlar vasitəsilə elementlər üzrə diaqnostikanın aparılmasına"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 84,
+    "question_text": "Nəzarət diaqnostikasının məqsədi nədir?",
+    "options": {
+      "a": "Texniki qulluqda və cari təmirdə görülən işlərin keyfiyyətini yoxlamaq",
+      "b": "Diaqnostik cihazları təkmilləşdirmək",
+      "c": "Görüləsi işləri planlaşdırmaq",
+      "d": "Diaqnostik cihazlar haqqında məlumat vermək"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 85,
+    "question_text": "Aparılma rejiminə görə diaqnostikanın neçə növü var?",
+    "options": {
+      "a": "3",
+      "b": "2",
+      "c": "4",
+      "d": "5"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 86,
+    "question_text": "Elektrik sistemlərinin diaqnostikası üçün ən vacib parametr hansıdır?",
+    "options": {
+      "a": "Akkumulyator gərginliyi",
+      "b": "Külək sürəti",
+      "c": "Su temperaturu",
+      "d": "Yağ təzyiqi"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 87,
+    "question_text": "Diaqnostika prosesinin yerinə yetirilməsində əsas məqsəd nədir?",
+    "options": {
+      "a": "Problemləri gizlətmək",
+      "b": "Problemləri müəyyən etmək və həll yolları təklif etmək",
+      "c": "İmtahan nəticələrini artırmaq",
+      "d": "Yalnız statistik məlumat toplamaq"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 88,
+    "question_text": "Soyutma sistemi nasazlığı səbəbindən mühərrikin hansı hissəsi ən çox zədələnə bilər?",
+    "options": {
+      "a": "Yağlama sistemi.",
+      "b": "Mühərrik başlığı(qalofka) və silindirlər.",
+      "c": "Sükan idarəetmə mexanizmi",
+      "d": "Transmissiya vasitələri."
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 89,
+    "question_text": "Dizel mühərrikinin qızdırıcı şamlarının nasazlığı nəticəsində nə baş verə bilər?",
+    "options": {
+      "a": "Mühərrikin işə salınmasının çətinləşməsi",
+      "b": "Yanacağın yanmasının yaxşılaşması",
+      "c": "Daha az səs-küy",
+      "d": "Yüksək yanacaq səmərəliliyi"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 90,
+    "question_text": "Dizel mühərrikində yanacaq sisteminin nasazlığı hansını yarada bilər?",
+    "options": {
+      "a": "Mühərrikin sönməsi",
+      "b": "Sürətlənmənin aşağı düşməsi",
+      "c": "Artıq yanacaq sərfi",
+      "d": "Hamısı"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 91,
+    "question_text": "Avtomobilin dartıcı keyfiyyətini qiymətləndirən parametrlər hansılardır?",
+    "options": {
+      "a": "təkərlərdə yaranan güc və dartıcı qüvvə,sürətlənmə vaxtı,sürətlənmə təcili, yanacaq sərfi və.s",
+      "b": "təkərlərdəki tormozlama qüvvələri,tormoz yolu,yavaşıma təcili,yavaşıma yolu və yavaşıma vaxtı",
+      "c": "şinlə yol arasındakı toxunma sahəsinə təsir edən yan qüvvələr",
+      "d": "tormoz yolu,yavaşıma təcili,sürətlənmə təcili,sürətlənmə yolu,işlənmiş qazlarda CO -nun miqdarı"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 92,
+    "question_text": "Tormozlamanın keyfiyyətini xarakterizə edən parametrlər hansılardır?",
+    "options": {
+      "a": "təkərlərdəki tormozlama qüvvələri,tormoz yolu,yavaşıma təcili,yavaşıma yolu və yavaşıma vaxtı",
+      "b": "şinlə yol arasındakı toxunma sahəsinə təsir edən yan qüvvələr",
+      "c": "tormoz yolu,yavaşıma təcili,sürətlənmə təcili,sürətlənmə yolu,işlənmiş qazlarda CO -nun miqdarı",
+      "d": "təkərlərdə yaranan güc və dartıcı qüvvə,sürətlənmə vaxtı,sürətlənmə təcili, yanacaq sərfi ölçürlər?"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 93,
+    "question_text": "Yavaşıma təcilini hansı cihazla ölçürlər?",
+    "options": {
+      "a": "Deselerometrlə",
+      "b": "Dinamometrlə",
+      "c": "İndikatorla",
+      "d": "Kompressometrlə"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 94,
+    "question_text": "Nasosdan sonra yanacağın təzyiqi nə qədər olmalıdır?",
+    "options": {
+      "a": "5-10kPa",
+      "b": "10-15kPa",
+      "c": "15-30kPa",
+      "d": "20-30kPa"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 95,
+    "question_text": "Yanacağın başlanğıc verilmə anı hansı cihazla qeyd olunur?",
+    "options": {
+      "a": "Fonendoskopla",
+      "b": "Momentoskop",
+      "c": "Dinamometrlə",
+      "d": "İndikatorla"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 96,
+    "question_text": "Hansı istismar şəraiti avtomobilin mühərrikinin ömrünü azaldır?",
+    "options": {
+      "a": "Yüksək temperatur",
+      "b": "Aşağı sürət",
+      "c": "Örtüklü yollarda hərəkət",
+      "d": "Qısa məsafələrdə sürüş"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 97,
+    "question_text": "Yanacaq nasosunun işləmə qabiliyyəti hansı cihazda yoxlanılır.",
+    "options": {
+      "a": "M437B",
+      "b": "M537A",
+      "c": "M637B",
+      "d": "M527B"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 98,
+    "question_text": "Sıx şəhər içi istismar şəraitinin avtomobilin texniki vəziyyətinə təsiri necədir?",
+    "options": {
+      "a": "Daha az yanacaq istehlakı",
+      "b": "Motorun daha az aşınması",
+      "c": "Tez-tez əyləc sisteminin aşınması",
+      "d": "Daha uzun xidmət müddəti"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 99,
+    "question_text": "Hansı istismar şəraiti avtomobilin təkərlərinin daha sürətlə yeyilməsinə səbəb olur?",
+    "options": {
+      "a": "Düz yol",
+      "b": "Örtüklü yol",
+      "c": "Yol örtüyü olmayan ərazilər",
+      "d": "Avtomobil parkı"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 100,
+    "question_text": "Müntəzəm qulluq və düzgün istismar avtomobilin hansı xüsusiyyətini artırır?",
+    "options": {
+      "a": "Təhlükəsizlik və etibarlılığı",
+      "b": "Yanacaq istehlakını",
+      "c": "Köhnəlmə prosesini",
+      "d": "Şinlərin yeyilməsini"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 101,
+    "question_text": "Sürgüqolu mexanizminin əsas məqsədi nədir?",
+    "options": {
+      "a": "Hərəkətin sürətini artırmaq",
+      "b": "Hərəkətin istiqamətini dəyişdirmək",
+      "c": "Hərəkətin dayanıqlığını təmin etmək",
+      "d": "Hərəkəti mütənasibləşdirmək"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 102,
+    "question_text": "Sürgüqolu mexanizminin düzgün işləmədiyini göstərən əlamət hansıdır?",
+    "options": {
+      "a": "Səs-küyün artması",
+      "b": "Sürətin artırılması",
+      "c": "İstilik artımı",
+      "d": "İstifadə müddətinin uzanması"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 103,
+    "question_text": "Dizel mühərrikinin yanacaq filtrində tıxanma baş verərsə, hansı problem yaranar?",
+    "options": {
+      "a": "Mühərrikin daha yüksək güc istehsal etməsi",
+      "b": "Mühərrikin işində dayanmalar",
+      "c": "Yanacaq istehlakının azalması",
+      "d": "Mühərrikin səs-küyünün artması"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 104,
+    "question_text": "Yanacaq nasosunun nasazlığı hansı əlamətlərlə özünü göstərə bilər?",
+    "options": {
+      "a": "Mühərrik daha sürətlə fırlanır",
+      "b": "Yağın səviyyəsinin aşağı düşməsi",
+      "c": "Mühərrikin işə düşməməsi",
+      "d": "Mühərrikin gücünün artması"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 105,
+    "question_text": "Dizel mühərrikində hava və yanacaq qarışığının düzgün olmaması hansı nəticəyə gətirib çıxarır?",
+    "options": {
+      "a": "Mühərrikin daha böyük güc istehsalı",
+      "b": "Yanacaqın tam yanması",
+      "c": "Yanacaq istehlakının artması",
+      "d": "Mühərrikin daha az istilik istehsalı"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 106,
+    "question_text": "Yanacaq injektorlarının nasazlığı hansı problemi yarada bilər?",
+    "options": {
+      "a": "Mühərrikdə titrəmə",
+      "b": "Yüksək yanacaq qənaəti",
+      "c": "Mühərrikin daha az səs-küy yaratması",
+      "d": "İnkjetlərin səmərəliliyinin artması"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 107,
+    "question_text": "İlişmə muftasında baş verən imtina və nasazlıqların xarici əlamətləri hansılardır?",
+    "options": {
+      "a": "valın şlislərinin ,xaçvari barmağın və yastıqların yeyilməsi,kardan valının düzgün yığılmaması nəticəsində onun vurması ,oynaqlarda araboşluğunun yaranması və səslərin əmələ gəlməsi",
+      "b": "Üzlüklərin yeyilməsi,sıxıcı yayların gərilmə xüsusiyyətlərinin zəifləməsi və pedalın sərbəst gedişinin normada olmaması",
+      "c": "Normadan artıq titrəmələr,səslər,araboşluqlar,mexaniki itgilər ,qızma və.s",
+      "d": "Hamısı"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 108,
+    "question_text": "Kardan valının lüftü hansı cihazla ölçülür?",
+    "options": {
+      "a": "Momentoskopla",
+      "b": "Fonendoskopla",
+      "c": "Dinamometr-lüftomerlə",
+      "d": "Vakumetrlə"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 109,
+    "question_text": "Kardan ötürməsində baş verən imtina və nasazlıqların xarici əlamətləri hansılardır?",
+    "options": {
+      "a": "valın şlislərinin ,xaçvari barmağın və yastıqların yeyilməsi,kardan valının düzgün yığılmaması nəticəsində onun vurması ,oynaqlarda araboşluğunun yaranması və səslərin əmələ gəlməsi",
+      "b": "Üzlüklərin yeyilməsi,sıxıcı yayların gərilmə xüsusiyyətlərinin zəifləməsi və pedalın sərbəst gedişinin normada olmaması",
+      "c": "Normadan artıq titrəmələr,səslər,araboşluqlar,mexaniki itgilər ,qızma və.s",
+      "d": "Hamısı"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 110,
+    "question_text": "Alışdırma şamlarının normal işləməsi üçün izolyatorun aşağı hissəsinin temperaturu nə qədər olmalıdır?",
+    "options": {
+      "a": "300-400 ^0^S",
+      "b": "400-500 ^0^S",
+      "c": "500-600 ^0^S",
+      "d": "600-700 ^0^S"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 111,
+    "question_text": "Mühərrik üzərindən çıxarılmış karbüratorda yanacağın səviyyəsini hansı cihazda təyin edirlər?",
+    "options": {
+      "a": "M460B",
+      "b": "M637",
+      "c": "M577",
+      "d": "M477C"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 112,
+    "question_text": "Akkumulyator batareyasında baş verən nasazlıqlar hansılardır?",
+    "options": {
+      "a": "batareyanın öz özünə boşalmasının artması,tam boşalması,qısa qapanması və akkumulyator tutumunun azalması",
+      "b": "fırçaların yeyilməsi,fırça tutucu yayların sınması,kollektorun çirklənməsi",
+      "c": "qurumun yaranması,elektrodlar arasında araboşluğunun yaranması",
+      "d": "gərginlik və cərəyan nizamlayıcılarında ,əks cərəyan relesində nizamlamaların pozulması"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 113,
+    "question_text": "Qazpaylayıcı valın müntəzəm baxımı üçün hansı əməliyyatlar lazımdır?",
+    "options": {
+      "a": "Yalnız elektrik sisteminin yoxlanması",
+      "b": "Mexaniki hissələrin yağlanması və təmizlənməsi",
+      "c": "Suyun əlavə edilməsi",
+      "d": "Qazın kimyəvi analiz edilməsi"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 114,
+    "question_text": "Müasir avtomobillərdə sükan çarxının lüftü nə qədər olmalıdır?",
+    "options": {
+      "a": "10-15^0^",
+      "b": "15-20^0^",
+      "c": "20-25^0^",
+      "d": "25-30^0^"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 115,
+    "question_text": "Jiklyorun məhsuldarlığı hansı cihaz ilə ölçülür?",
+    "options": {
+      "a": "M426B",
+      "b": "M537B",
+      "c": "NİİAT-428",
+      "d": "NİİAT--528"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 116,
+    "question_text": "Klapanın əməliyyat zamanı səs-küy yaratması hansı problemi göstərə bilər?",
+    "options": {
+      "a": "Normal iş",
+      "b": "Nasazlıq və ya yeyilmə",
+      "c": "Hava sıxılması",
+      "d": "Yanlış quraşdırma"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 117,
+    "question_text": "Ötürmə qutusunda yağ sızması aşkarlandıqda, nə edilməlidir?",
+    "options": {
+      "a": "Yanacaq əlavə edilməlidir",
+      "b": "Həmişə çalışmalıdır",
+      "c": "Mütləq texniki qulluq göstərilməlidir",
+      "d": "Problem yoxdur"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 118,
+    "question_text": "Sükanın sərtləşməsi nə ilə əlaqədar ola bilər?",
+    "options": {
+      "a": "Sükan sisteminin yağsız qalması",
+      "b": "Tormoz sisteminin nasazlığı",
+      "c": "Aşırı sürət",
+      "d": "Dəyişən yol şəraiti"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 119,
+    "question_text": "Sükanın sağa ya da sola tərpənməsi hansının əlaməti ola bilər?",
+    "options": {
+      "a": "Tormozların qeyri-bərabər işləməsi",
+      "b": "Sükan dişlisinin nasazlığı",
+      "c": "Təkərlərin qeyri-bərabər hava təzyiqi",
+      "d": "Mühərrik səs-küyü"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 120,
+    "question_text": "Sükan nasazlığı olan avtomobilin ən təhlükəli cəhəti hansıdır?",
+    "options": {
+      "a": "Yavaşlaması",
+      "b": "İdarəetmənin çətinləşməsi",
+      "c": "Yanacaq sərfiyatının artması",
+      "d": "Səs-küy"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 121,
+    "question_text": "Sükanın tərpənməsindəki sərbəstlik hissi hansı problemi göstərə bilər?",
+    "options": {
+      "a": "Daxili nasazlıq",
+      "b": "Sıxılmış hava",
+      "c": "Mühərrik nasazlığı",
+      "d": "Sükan mexanizminin yeyilməsi"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 122,
+    "question_text": "Hansı əlamət yağlama sisteminin nasazlığını göstərir?",
+    "options": {
+      "a": "Motorun səs-küyünün azalması",
+      "b": "Yağ təzyiqinin aşağı düşməsi",
+      "c": "Yanacaq istehlakının artması",
+      "d": "Sükanın sərt olması"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 123,
+    "question_text": "Yağlama sistemində hansı problem motorun yeyilməsinə səbəb ola bilər?",
+    "options": {
+      "a": "Yağ süzgəcinin çirklənməsi və yağın keyfiyyətinin itirilməsi",
+      "b": "Yanacaq süzgəcinin keyfiyyətinin aşağı olması",
+      "c": "Radiatorun çirklənməsi",
+      "d": "Elektrik sisteminin qırılması"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 124,
+    "question_text": "Hansı faktor yağın keyfiyyətini aşağı sala bilər?",
+    "options": {
+      "a": "Yağın uzun müddət istifadəsi",
+      "b": "Müxtəlif tiplərdə yağların qarışması",
+      "c": "Yağ temperaturunun yüksək olması",
+      "d": "Bütün yuxarıdakılar"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 125,
+    "question_text": "Mühərrik valının nasazlığının səbəbi nə ola bilər?",
+    "options": {
+      "a": "Yanacaq keyfiyyəti",
+      "b": "Yağ səviyyəsinin və keyfiyyətinin aşağı olması",
+      "c": "Tormoz sisteminin nasazlığı",
+      "d": "Elektrik sisteminin düzgün olmaması"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 126,
+    "question_text": "Mühərrik valının nasazlığını necə müəyyən etmək olar?",
+    "options": {
+      "a": "Mühərrikdə səs-küyün artması və mühərrikin gücünün aşağı düşməsi",
+      "b": "Avtomobilin rənginin dəyişməsi",
+      "c": "Tormoz pedalının sertliyi",
+      "d": "Mühərrikin yanacaq sərfinin artması"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 127,
+    "question_text": "Tormoz pedalına basdığınızda pedal yumşaqdır. Bu nəyi göstərir?",
+    "options": {
+      "a": "Tormoz mayesi azdır",
+      "b": "Tormoz diskləri yeyilmişdir",
+      "c": "Tormoz sistemində hava var",
+      "d": "Tormoz kaliperləri nasazdır"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 128,
+    "question_text": "Tormoz edərkən avtomobil yan tərəfə çəkilirsə, bunun səbəbi nə ola bilər?",
+    "options": {
+      "a": "Tormoz mayesi köhnəlib",
+      "b": "Tormozlar bərabər işləməyə bilər",
+      "c": "Tormoz diskləri təmizdir",
+      "d": "Tormoz pedalında problem var"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 129,
+    "question_text": "Tormoz işıqları yanmırsa, bunun səbəbi nədir?",
+    "options": {
+      "a": "Tormoz mayesi azdır",
+      "b": "Tormoz disklərində yeyilmələr var",
+      "c": "Tormoz lampası nasazdır və ya elektrik sistemində nasazlıq var",
+      "d": "Tormoz sistemində heç bir problem yoxdur"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 130,
+    "question_text": "Dinamometr-lüftomerlə nəyi ölçürlər?",
+    "options": {
+      "a": "Slindrlərdəki kompressiyanı",
+      "b": "Sükan çarxının lüftünü",
+      "c": "Yanacağın başlanğıc verilmə anını",
+      "d": "Sorma kollektorundakı seyrəkliyi"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 131,
+    "question_text": "Kardan valının lüftü maksimum nə qədər olmalıdır?",
+    "options": {
+      "a": "2^0^",
+      "b": "4^0^",
+      "c": "6^0^",
+      "d": "8^0^"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 132,
+    "question_text": "Yağ nasosunun nasazlığının ilk əlaməti hansıdır?",
+    "options": {
+      "a": "Yağ səviyyəsinin aşağı olması",
+      "b": "Motorun səsini artırması",
+      "c": "Yağ təzyiqinin azalması",
+      "d": "Yanacaq istehlakının artması"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 133,
+    "question_text": "Alışdırma sisteminin əsas komponenti hansıdır?",
+    "options": {
+      "a": "Filtr",
+      "b": "İnjektor",
+      "c": "Katalizator",
+      "d": "Su nasosu"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 134,
+    "question_text": "Aşağıdakılardan hansı Soyutma sisteminin elementidir?",
+    "options": {
+      "a": "Dişli çarxlar",
+      "b": "Süzgəclər",
+      "c": "Kondensator",
+      "d": "Su nasosu( pompa)"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 135,
+    "question_text": "Yağlama sisteminin hansı komponenti yağı təmizləmək ( süzmək) üçün istifadə olunur?",
+    "options": {
+      "a": "Yağ nasosu",
+      "b": "Yağ filtri",
+      "c": "Radiator",
+      "d": "Silindr"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 136,
+    "question_text": "Yağlama sisteminin nasazlığı hansı problemə səbəb ola bilər?",
+    "options": {
+      "a": "Yüksək yanma temperaturu",
+      "b": "Sürtünmə nəticəsində yeyilmə",
+      "c": "Yanacaq sızması",
+      "d": "Elektrik problemi"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 137,
+    "question_text": "Yağ nasosunun əsas vəzifəsi nədir?",
+    "options": {
+      "a": "Su nəql etmək",
+      "b": "Yanacaq ötürmək",
+      "c": "Yağı dövr etmək",
+      "d": "Havanı dövr etmək"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 138,
+    "question_text": "Yağ nasosları hansı sistemdə geniş istifadə olunur?",
+    "options": {
+      "a": "Elektrik sistemlərində",
+      "b": "Sıxılmış hava sistemlərində",
+      "c": "Avtomobil mühərriklərində",
+      "d": "Su təchizatı sistemlərində"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 139,
+    "question_text": "Mühərrikdə istilik artımının səbəbi nə ola bilər?",
+    "options": {
+      "a": "Yanacaq filtrinin tıxanması",
+      "b": "Soyutma mayesinin səviyyəsinin aşağı olması və ya soyutma sistemində nasazlıqların olması",
+      "c": "Yağ nasosunun nasazlığı",
+      "d": "Bütün yuxarıdakılar"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 140,
+    "question_text": "Yanacaq nasosunun işə düşməməsi halında, hansı əlamət müşahidə oluna bilər?",
+    "options": {
+      "a": "Səs- küy artar",
+      "b": "Tüstü çıxışı artar",
+      "c": "Yanacaq göstəricisi tamdır",
+      "d": "Mühərrik sönür"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 141,
+    "question_text": "Yanacaq nasosunun düzgün işlədiyini necə yoxlamaq olar?",
+    "options": {
+      "a": "Yanacaq təzyiqini ölçməklə",
+      "b": "Mühərrikin temperaturunu yoxlamaqla",
+      "c": "Radiatorun vəziyyətini qiymətləndirməklə",
+      "d": "Yağ səviyyəsini yoxlamaqla"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 142,
+    "question_text": "Müasir avtomobillərdə sükan çarxının lüftü nə qədər olmalıdı?",
+    "options": {
+      "a": "5-10^0^",
+      "b": "10-15^0^",
+      "c": "15-20^0^",
+      "d": "20-25^0^"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 143,
+    "question_text": "Mühərriklərin qida sisteminin əsas funksiyası nədir?",
+    "options": {
+      "a": "Mühərrikin soyudulması",
+      "b": "Yanacağın düzgün qarışdırılması və yanma prosesinin təmin edilməsi",
+      "c": "Yağlama sisteminin işləməsi",
+      "d": "Elektrik enerjisinin təmin edilməsi"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 144,
+    "question_text": "Hansı komponent müstəqil olaraq yanıcı qarışığın hazırlanmasına xidmət edir?",
+    "options": {
+      "a": "Karbürator",
+      "b": "Radiator",
+      "c": "Yağ pompası",
+      "d": "Qızdırıcı şam"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 145,
+    "question_text": "Mühərrikdə soyutma sisteminin nasazlığı hansı əlamətlərlə özünü büruzə verə bilər?",
+    "options": {
+      "a": "Mühərrikdə qızma",
+      "b": "Soyutma mayesinin səviyyəsinin azalması",
+      "c": "Su buxarı çıxması",
+      "d": "Bütün yuxarıdakılar"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 146,
+    "question_text": "Mühərrikin soyutma sisteminin əsas funksiyası nədir?",
+    "options": {
+      "a": "Mühərrikdəki yanma prosesini sürətləndirmək",
+      "b": "Mühərrikin temperaturunu normal səviyyədə saxlamaq",
+      "c": "Mühərrik yağının dövranını təmin etmək",
+      "d": "Yanacaq sisteminin işləməsini tənzimləmək"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 147,
+    "question_text": "Güc ötürücü aqreqatlarının əsas funksiyası nədir?",
+    "options": {
+      "a": "Yanma prosesini sürətləndirmək",
+      "b": "Mühərrikdən alınan gücü aparan təkərlərə ötürmək",
+      "c": "Avtomobilin yanacaq istehlakını azaltmaq",
+      "d": "Soyutma sistemini idarə etmək"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 148,
+    "question_text": "Hansı test güc ötürücü aqreqatlarının vəziyyətini qiymətləndirmək üçün istifadə edilir?",
+    "options": {
+      "a": "Dinamometr testi",
+      "b": "Sıxma testi",
+      "c": "Yağ analizi",
+      "d": "Termal görüntüləmə"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 149,
+    "question_text": "Tormoz sistemində vibrasiya hiss edildikdə, bu nəyi göstərə bilər?",
+    "options": {
+      "a": "Tormoz mayesinin az olduğunu",
+      "b": "Tormoz disklərinin deformasiya olduğunu",
+      "c": "Tormoz pedalı düzgün işlədiyini",
+      "d": "Tormoz linzalarının sağlam olduğunu"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 150,
+    "question_text": "Yağlama sisteminin müntəzəm yoxlanılması hansı məqsədə xidmət edir?",
+    "options": {
+      "a": "Mühərrikin ömrünü uzatmaq",
+      "b": "Yanacaq istehlakını azaltmaq",
+      "c": "Yağlama sisteminin qırılmasını təmin etmək",
+      "d": "Yalnız estetik məqsədlər üçün"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 151,
+    "question_text": "Yağ nasosunun çox səs çıxarması aşağıdakılardan hansı səbəbdən ola bilər?",
+    "options": {
+      "a": "Yağın yüksək temperaturu",
+      "b": "Nasosun yeyilməsi nəticəsində araboşluğun böyüməsi",
+      "c": "Nasosun düzgün işləməsi",
+      "d": "Yağın keyfiyyəti yaxşıdır"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 152,
+    "question_text": "Yanacaq nasosunun işləməməsinin səbəbi nə ola bilər?",
+    "options": {
+      "a": "Yanacaqın filtirinin tıxanması",
+      "b": "Nasosun elektrik əlaqəsinin kəsilməsi",
+      "c": "Yanacaq sistemində hava olması",
+      "d": "Yanacaq nasosunun aşınması"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 153,
+    "question_text": "Yanacaq nasosunun işində zəiflik, mühərrikin gücünün azalması hansı problemi göstərə bilər?",
+    "options": {
+      "a": "Nasosun çürüməsi və ya zəifləməsi",
+      "b": "Yanacaq filtrinin tıxanması",
+      "c": "Yanacaqın keyfiyyətinin pis olması",
+      "d": "Bütün yuxarıdakılar"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 154,
+    "question_text": "Universal diaqnostika sistemi nədir?",
+    "options": {
+      "a": "Diaqnostik avadanlıqları öyrənən sistem",
+      "b": "Bir diaqnostik prosesi nəzərdə tutan sistem",
+      "c": "Bir neçə diaqnostika prosesi üçün olan sistem",
+      "d": "Avtomobillərin texniki vəziyyətini öyrənən sistem"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 155,
+    "question_text": "Xüsusi diaqnostika sistemi nədir?",
+    "options": {
+      "a": "Diaqnostik avadanlıqları öyrənən sistem",
+      "b": "Bir diaqnostik prosesi nəzərdə tutan sistem",
+      "c": "Bir neçə diaqnostika prosesi üçün olan sistem",
+      "d": "Avtomobillərin texniki vəziyyətini öyrənən sistem"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 156,
+    "question_text": "Tormoz sisteminin əsas funksiyası nədir?",
+    "options": {
+      "a": "Hərəkət sürətini azaltmaq",
+      "b": "Hərəkət sürətini artırmaq",
+      "c": "Avtomobilin hərəkət istiqamətini dəyişmək",
+      "d": "Yanıcı qarışığın hazırlanması"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 157,
+    "question_text": "Differensialın qeyri-sabit işləməsinin səbəbi nə ola bilər?",
+    "options": {
+      "a": "Yağ səviyyəsinin çox olması",
+      "b": "Yağın keyfiyyətinin pis olması",
+      "c": "Diferensialın mühərriklə əlaqəsinin itməsi",
+      "d": "Mühərrik baş verən yeyilmələr"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 158,
+    "question_text": "Differensialın işində səs-küyün yaranması hansı hallarda müşahidə edilir?",
+    "options": {
+      "a": "Dişlilərin düzgün işləməsi",
+      "b": "Yağ səviyyəsinin normada olması zamanı",
+      "c": "Dişlilərin zədələnməsi və ya yeyilməsi zamanı",
+      "d": "Yağ filtirinin çirklənməsi halında"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 159,
+    "question_text": "Starteri işlətmək üçün hansı hissə mühüm rol oynayır?",
+    "options": {
+      "a": "Gərginlik dəyişdiricisi",
+      "b": "Qırıcı paylayıcı",
+      "c": "Benzin filtri",
+      "d": "Akkumulyator"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 160,
+    "question_text": "Differensialda istilik artımının səbəbi nə ola bilər?",
+    "options": {
+      "a": "Yüksək sürətlə hərəkət etmək",
+      "b": "Yağın az olması",
+      "c": "Təkərlərin çox kiçik olması",
+      "d": "Sürət məhdudlaşdırıcısının olması"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 161,
+    "question_text": "Qırıcı paylayıcısının düzgün işləməsi hansı nəticəni doğurur?",
+    "options": {
+      "a": "Yanma prosesinin düzgün həyata keçirilməsi",
+      "b": "Sürətlənmənin aşağı düşməsi",
+      "c": "Yağlanma sisteminin yaxşılaşması",
+      "d": "Təhlükəsizlik sistemlərinin işə düşməsi"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 162,
+    "question_text": "Yumruqlu valın nasazlığı zamanı hansı təmir işləri tələb oluna bilər?",
+    "options": {
+      "a": "Valın balanslaşdırılması",
+      "b": "Klapanların dəyişdirilməsi",
+      "c": "Kardan valının balanslaşdırılması",
+      "d": "Yağ filtrinin təmizlənməsi"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 163,
+    "question_text": "Mühərrikdə yanacaq sisteminin nasazlığı necə təyin edilə bilər?",
+    "options": {
+      "a": "Yüksək temperaturun ölçülməsi ilə",
+      "b": "Yanacaq filtrinin təmizlənməsi vasitəsilə",
+      "c": "Yanacaq təzyiqinin yoxlanması ilə",
+      "d": "Hava filtrini dəyişdirməklə"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 164,
+    "question_text": "Mühərrikdə nasazlıq nəticəsində əgər çıxan dumanın rəngi mavi olursa, bu nəyi göstərir?",
+    "options": {
+      "a": "Yanacaqın düzgün yanmaması",
+      "b": "Yağ qarışığının yanmasını",
+      "c": "Yanıcı qarışığın tam yanmasını",
+      "d": "Qazların soyuq olması"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 165,
+    "question_text": "Karbürator sistemində hansı nasazlıq mühərrikin yüksək sürətdə qeyri-sabit işləməsinə səbəb ola bilər?",
+    "options": {
+      "a": "Yanacaq sərfiyyatının az olması",
+      "b": "Karbüratorun artıq qidalandırılması",
+      "c": "Hava filtrinin təmiz olması",
+      "d": "Karbüratorda kirlənmə"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 166,
+    "question_text": "Karbüratorun hava filtirində tıxanma olması hansı problemi yaradır?",
+    "options": {
+      "a": "Yanacaq təzyiqinin çoxalması",
+      "b": "Yanacaqın çatışmazlığı",
+      "c": "Mühərrikin zəif işə düşməsi və az güc sərf etməsi",
+      "d": "Mühərrikdə səs və titrəyişin artması"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 167,
+    "question_text": "Kardan ötürməsinin düzgün işləmədiyini necə anlamaq olar?",
+    "options": {
+      "a": "Avtomobilin sürəti artdıqca mühərrikdən müəyyən səslər gəlir.",
+      "b": "Sürət dəyişəndə kardan sistemində səs və vibrasiya yaranır",
+      "c": "Yalnız yanacaq göstəricisi dəyişir",
+      "d": "Avtomobilin diferensialında uğultu səsləri gəlir."
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 168,
+    "question_text": "Diferensialda dişli çarxlarının düzgün tənzimlənməməsi nə nəticələrə səbəb ola bilər?",
+    "options": {
+      "a": "Mühərrikin sürətinin azalması",
+      "b": "Yolda sürüşmənin yaranması",
+      "c": "Yüksək yanacaq istehlakı",
+      "d": "Mexanizmin səssiz işləməsi"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 169,
+    "question_text": "Təkər toplarının düzgün balanslanmaması hansı problemlərə səbəb ola bilər?",
+    "options": {
+      "a": "Şinlərin sürətlə yeyilməsinə",
+      "b": "Yanacaq sərfiyyatının azalması",
+      "c": "Mühərrikin işinin pozulmasına",
+      "d": "Səs-küyün azalması"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 170,
+    "question_text": "Təkər toplarında hansı nasazlıq nəticəsində təkər çox sürətlə isinir?",
+    "options": {
+      "a": "Təkərin havasının az olması",
+      "b": "Təkərin balansının pozulması",
+      "c": "Təkər kənarlarının bərk olması",
+      "d": "Təkər havasının çox olması"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 171,
+    "question_text": "Ötürmə qutusunun səs-küy etməsi, hansı problemə işarə edir?",
+    "options": {
+      "a": "Sıxılmış ötürmə dişlisi",
+      "b": "Dişli zəncirinin sıxlığı",
+      "c": "Yeyilmiş və ya zədələnmiş dişlilər",
+      "d": "Yağ səviyyəsinin yüksək olması"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 172,
+    "question_text": "Ötürmə qutusunda yağı dəyişdirmədikdə hansı nəticələr baş verə bilər?",
+    "options": {
+      "a": "Yüksək səs-küy və sürət dəyişmələrində çətinlik",
+      "b": "Yağ qalıqları daha az çirklənir",
+      "c": "Dişlilər daha uzun ömür sürər",
+      "d": "Dişli zənciri daha rahat işləyir"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 173,
+    "question_text": "İlişmə mufdasının yeyilməsi nəticəsində hansı nəticələr baş verə bilər?",
+    "options": {
+      "a": "Sürət dəyişikliyi çox sürətli olur",
+      "b": "İlişmə çox çətin və ya mümkün olmur",
+      "c": "Avtomobilin yanacaq istehlakı azalır",
+      "d": "Avtomobilin hərəkət etməsi çox asanlaşır"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 174,
+    "question_text": "İnjektorda nasazlıq zamanı hansı əlamət müşahidə oluna bilər?",
+    "options": {
+      "a": "Mühərrikin sürətinin artması",
+      "b": "Yanacaq sərfiyyatının azalması",
+      "c": "Mühərrikin işində qeyri-sabitlik və zəif güc",
+      "d": "Avtomobilin səsli işləməsi"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 175,
+    "question_text": "İnjektorun düzgün işləməməsi nəticəsində hansı problemlər yarana bilər?",
+    "options": {
+      "a": "Yanacaqın qeyri-bərabər paylanması",
+      "b": "Mühərrikin səsli işləməsi",
+      "c": "İstilik artır",
+      "d": "Bütün yuxarıdakı hallar"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 176,
+    "question_text": "Yağ filtrinin nasazlığı hansı mühərrik problemini yarada bilər?",
+    "options": {
+      "a": "Yağ təzyiqinin artması",
+      "b": "Yağın tədricən azalmağı",
+      "c": "Yağ dövranının pozulması",
+      "d": "Avtomobilin sürətinin azalması"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 177,
+    "question_text": "Yanacaq filtrinin dəyişdirilməməsi hansı problemlərə səbəb ola bilər?",
+    "options": {
+      "a": "Yanacağın çirklənməsi və mühərrikin zədələnməsi",
+      "b": "Mühərrikin sürətinin artması",
+      "c": "Yanacaq sərfiyyatının azalması",
+      "d": "Yağ mübadiləsinin yaxşılaşması"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 178,
+    "question_text": "Yanacaq filtrinin nasazlığı hansı simptomlara səbəb ola bilər?",
+    "options": {
+      "a": "Mühərrikin gücünün artması",
+      "b": "Yanacaqın düzgün daxil olmaması və mühərrikin işləməməsi",
+      "c": "Avtomobilin səsli işləməsi",
+      "d": "Avtomobilin düzgün sürətlənməsi"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 179,
+    "question_text": "Dönmə siqnalı yanmırsa, hansı nasazlıq ola bilər?",
+    "options": {
+      "a": "Lampa qırılıb",
+      "b": "Elektrik şnurunda qırılma var",
+      "c": "Siqnal düyməsi işləməyib",
+      "d": "Bütün yuxarıdakı hallar"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 180,
+    "question_text": "Dönmə siqnalı davamlı yanmağa başlayırsa, bu hansı problemi göstərə bilər?",
+    "options": {
+      "a": "Dönmə siqnalının relesi nasazdır",
+      "b": "Dönmə siqnalının şüşəsi qırılıb",
+      "c": "Lampa düzgün işləyir",
+      "d": "Elektrik sistemi yaxşı"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 181,
+    "question_text": "Starterin çox səsli işləməsi hansı problemi göstərir?",
+    "options": {
+      "a": "Starter motorunun zədələnməsi",
+      "b": "Sıxılmış mühərrik",
+      "c": "Starter dişlisinin yeyilməsi",
+      "d": "Akumulyatorun güclü olması"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 182,
+    "question_text": "Starterin işə düşməməsinin əsas səbəbi nə ola bilər?",
+    "options": {
+      "a": "Akumulyatorun boş olması",
+      "b": "Starter motorunun zədələnməsi",
+      "c": "Elektrik naqilində qırılma",
+      "d": "Hamısı"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 183,
+    "question_text": "Dönmə siqnalı yavaş və ya qeyri-adi sürətlə yanıb-sönür, bu hansı problemi göstərir?",
+    "options": {
+      "a": "Siqnalın qırılmış olması.",
+      "b": "Naqillərdə qısa qapanma.",
+      "c": "Akumulyatorun enerjisinin azalması.",
+      "d": "Lampa və ya siqnalın köhnəlməsi."
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 184,
+    "question_text": "Dönmə siqnalı işə salındıqda siqnal səsi eşidilmir, bu hansı nasazlığı göstərir?",
+    "options": {
+      "a": "Dönmə siqnalının lampa hissəsinin işləməməsi.",
+      "b": "Elektrik şəbəkəsinin gücünün azalması.",
+      "c": "Siqnalın elektrik dövrəsinin qırılması.",
+      "d": "Siqnal reləsinin nasazlığı."
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 185,
+    "question_text": "Dirsəkli valın yeyilməsi nəticəsində hansı problem yaranır?",
+    "options": {
+      "a": "Yanacaq sərfiyyatının azalması",
+      "b": "Mühərrik səs-küyünün artması",
+      "c": "Yağlamanın aşağı düşməsi",
+      "d": "Yağ sərfiyyatının azalması"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 186,
+    "question_text": "Nazimçarxın nasazlığını diaqnoz etmək üçün hansı metod istifadə edilir?",
+    "options": {
+      "a": "Vizual yoxlama",
+      "b": "Dinamik balanslama",
+      "c": "Vibrasiya analizi",
+      "d": "Yuxarıda göstərilənlərin hamısı"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 187,
+    "question_text": "Sürüşmə yastığının köhnəlməsi və yeyilməsi hansı nəticələrə gətirib çıxara bilər?",
+    "options": {
+      "a": "Hərəkətin sürətinin artması",
+      "b": "Daha yaxşı səmərəlilik",
+      "c": "Güc itkisi və səs-küy",
+      "d": "Həddindən artıq temperatur"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 188,
+    "question_text": "Porşen üzüklərinin nasazlıq əlamətləri hansılardır?",
+    "options": {
+      "a": "Yağ istehlakının artması",
+      "b": "Güc itkisi və sürətin azalması",
+      "c": "Yüksək səs və duman",
+      "d": "Yuxarıda göstərilənlərin hamısı"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 189,
+    "question_text": "Porşen üzüklərinin yeyilməsinin (və ya yatmasının) səbəbləri nələrdir?",
+    "options": {
+      "a": "Yüksək sürət və həddindən artıq temperatur",
+      "b": "Düzgün yağlanmama və pis keyfiyyətli yanacaq",
+      "c": "Üzüklərin materialının zəifliyi və quraşdırma səhvləri",
+      "d": "Yuxarıda göstərilənlərin hamısı"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 190,
+    "question_text": "Porşen üzüklərinin nasazlığını aşkar etmək üçün hansı metodlar istifadə olunur?",
+    "options": {
+      "a": "Vizual yoxlama",
+      "b": "Kompressiya testi",
+      "c": "Yanacaq və yağ təhlili",
+      "d": "Yuxarıda göstərilənlərin hamısı"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 191,
+    "question_text": "ABS sisteminin nasaz olması nəticəsində nə baş verə bilər?",
+    "options": {
+      "a": "Tormoz yolunun artması",
+      "b": "Tormozların çox tez işə düşməsi",
+      "c": "Arxa tormozların effektivliyinin artması",
+      "d": "Tormoz yolunun azalması"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 192,
+    "question_text": "ABS sisteminin məqsədi nədir?",
+    "options": {
+      "a": "Yolda sürəti artırmaq",
+      "b": "Tormozlama zamanı təkərlərin kilidlənməsinin qarşısını almaq",
+      "c": "Tormoz yolunu artırmaq",
+      "d": "Tormoz mayesinin səviyyəsini tənzimləmək"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 193,
+    "question_text": "Diskli tormoz sistemində hansı nasazlıq tormozların qeyri-bərabər işləməsinə səbəb ola bilər?",
+    "options": {
+      "a": "Tormoz üzlüklərinin fərqli qalınlıqda olması",
+      "b": "Tormoz mayesinin təzələnməsi",
+      "c": "Tormoz diskinin həddindən artıq incəlməsi",
+      "d": "Tormoz pedalı sıx olması"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 194,
+    "question_text": "Qırıcı paylayıcının əsas vəzifəsi nədir?",
+    "options": {
+      "a": "Yanacağın karbüratordan mühərrikə ötürülməsini təmin etmək",
+      "b": "Elektrik siqnallarının alışdırma şamlarına düzgün ötürülməsini təmin etmək",
+      "c": "Akkumulyator batareyasının doldurulmasını təmin etmək",
+      "d": "Mühərrikin yüksək sürətdə işləməsini təmin etmək"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 195,
+    "question_text": "Alışdırma şamı nasaz olduqda mühərrikdə hansı əlamətlər müşahidə edilə bilər?",
+    "options": {
+      "a": "Mühərrikin daha asan işə düşməsi",
+      "b": "Mühərrikin qeyri-sabit işləməsi və yaxud çətin işə düşməsi",
+      "c": "Avtomobilin daha effektiv işləməsi",
+      "d": "Avtomobilin yanacaq sərfiyyatının azalması"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 196,
+    "question_text": "Mühərrik yağının əsas funksiyası hansıdır?",
+    "options": {
+      "a": "Mühərrikin səs-küyünü artırmaq",
+      "b": "Mühərrikin xarici hissələrini qorumaq",
+      "c": "Mühərrikin yanacaq sərfiyyatını artırmaq",
+      "d": "Mühərrikin daxili hissələrini yağlayaraq sürtünməni azaltmaq"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 197,
+    "question_text": "Starterin işləməməsinin əsas səbəbi nə ola bilər?",
+    "options": {
+      "a": "Yanacağın olmaması",
+      "b": "Qida sisteminin nasaz olması",
+      "c": "Akkumulyator batareyasının boş olması",
+      "d": "Soyutma sisteminin nasaz olması"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 198,
+    "question_text": "Yağlama sistemində filtrin tutulması hansı nəticələrə səbəb olur?",
+    "options": {
+      "a": "Yağ təzyiqinin artması",
+      "b": "Yağ sızmasına",
+      "c": "Yağ axınının məhdudlaşması və motorun zədələnməsi",
+      "d": "Yağ səviyyəsinin artmasına"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 199,
+    "question_text": "Kalbüratorun hava və yanacaq qarışığını düzgün tənzimləməməsi nə ilə nəticələnə bilər?",
+    "options": {
+      "a": "Avtomobilin daha az yanacaq sərf etməsi",
+      "b": "Mühərrikin gücünün azalması ,işlənmiş qazların tərkibində zəhərli qazların çox olması",
+      "c": "Avtomobilin səs-küyünün azalması",
+      "d": "Yanacağın təziqinin aşağı düşməsi"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 200,
+    "question_text": "Slindr blokunun qırılması və ya çatlaması hansı səbəbdən ola bilər?",
+    "options": {
+      "a": "Termostatın düzgün işləməməsi",
+      "b": "Soyutma sistemində hava qalması",
+      "c": "Yağ təzyiqinin yüksək olması",
+      "d": "Mühərrikin çox yüklənməsi və ya mühərrikin həddən artıq qızması"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 201,
+    "question_text": "Avtomobilin və ya onun hər hansı bir elementinin işləmə müddətinə nə deyilir?",
+    "options": {
+      "a": "Gücü",
+      "b": "Resursu",
+      "c": "Effektivliyi",
+      "d": "İstismarı"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 202,
+    "question_text": "Avtomobilin işləmə qabiliyyətinin tam və ya qismən itirilməsinə nə deyilir?",
+    "options": {
+      "a": "Resurs",
+      "b": "İstismar",
+      "c": "İmtina",
+      "d": "Təmir"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 203,
+    "question_text": "Aşağıdakılardan hansı \"imtina\" anlayışını xarakterizə edir?",
+    "options": {
+      "a": "Avtomobilin işləmə qabiliyyətinin qorunması",
+      "b": "Avtomobilin normal istismar vəziyyəti",
+      "c": "Avtomobilin işləmə qabiliyyətinin tam və ya qismən itirilməsi",
+      "d": "Texniki qulluq prosesi"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 204,
+    "question_text": "Ümumiyyətlə, avtomobillərin texniki vəziyyəti neçə üsulla təyin edilir?",
+    "options": {
+      "a": "Üç üsulla",
+      "b": "İki üsulla",
+      "c": "Dörd üsulla",
+      "d": "Beş üsulla"
+    },
+    "correct_answer": "a"
+  },
+  {
+    "question_number": 205,
+    "question_text": "Texniki vəziyyətin bilavasitə ölçmə əməliyyatı ilə təyin edilməsi nə deməkdir?",
+    "options": {
+      "a": "Yalnız səsə qulaq asmaq",
+      "b": "Ölçü cihazları ilə konkret parametrlərin yoxlanılması",
+      "c": "Avtomobili sınaq yürüşünə çıxarmaq",
+      "d": "Vizual baxış keçirmək"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 206,
+    "question_text": "Ümumiyyətlə, neçə növ sürtünmə mövcuddur?",
+    "options": {
+      "a": "2",
+      "b": "5",
+      "c": "4",
+      "d": "3"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 207,
+    "question_text": "Ümumiyyətlə, texnikada yeyilmənin neçə əsas növündən istifadə edilir?",
+    "options": {
+      "a": "İki",
+      "b": "Üç",
+      "c": "Dörd",
+      "d": "Beş"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 208,
+    "question_text": "Sürtünmə əmsalının düsturu hansı bənddə düzgün qeyd olunmuşdur?",
+    "options": {
+      "a": "f=FN",
+      "b": "f=N/F",
+      "c": "f=F/N",
+      "d": "f=FN/2"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 209,
+    "question_text": "Köhnəlmə prosesi hansı detallarda daha sürətlə gedir?",
+    "options": {
+      "a": "sürtgü materiallarında",
+      "b": "soyuducu mayelərdə",
+      "c": "qeyri metaldan hazırlanmış hissələrdə",
+      "d": "metal materiallarında"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 210,
+    "question_text": "Avtomobillərin texniki vəziyyətinin dəyişmə səbəbləri hansılardır?",
+    "options": {
+      "a": "sınma,detalların qızması",
+      "b": "termodinamik proseslərin pozulması,nasazlıq və imtinalar",
+      "c": "zərbəli yüklərin yaranması,sürtünmə və yeyilmələr.",
+      "d": "yeyilmə ,köhnəlmə və korroziya"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 211,
+    "question_text": "Avtomobilin dartıcı--iqtisadi keyfiyyətini qiymətləndirən parametrlərə hansı aiddir?",
+    "options": {
+      "a": "Tormoz yolu, yavaşıma təcili, yavaşıma vaxtı.",
+      "b": "Təkərlərdə yaranan güc, sürət, yanacaq sərfi, CO miqdarı.",
+      "c": "Şinlə yol arasındakı yan qüvvələr.",
+      "d": "Asqının sərtliyi və elastikliyi."
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 212,
+    "question_text": "Karbüratorlu mühərriklərdə kompressiya hansı hədlərdə dəyişə bilər?",
+    "options": {
+      "a": "0,1...0,3 MPa",
+      "b": "0,45...0,8 MPa",
+      "c": "1,0...1,5 MPa",
+      "d": "1,8...2,0 MPa"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 213,
+    "question_text": "Dizel mühərriklərində kompressiya təxminən nə qədər ola bilər.",
+    "options": {
+      "a": "0,8 MPa qədər",
+      "b": "1,2 MPa qədər",
+      "c": "1,5 MPa qədər",
+      "d": "2 MPa qədər"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 214,
+    "question_text": "Ayrı-ayrı silindrlərdə kompressiya fərqi maksimum nə qədər olmalıdır?",
+    "options": {
+      "a": ". 0,05 MPa",
+      "b": "0,1 MPa",
+      "c": "0,2 MPa",
+      "d": "0,5 MPa"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 215,
+    "question_text": "Slindrlərdəki kompressiya hansı alətlə ölçülür?",
+    "options": {
+      "a": "Manometr",
+      "b": "Taxometr",
+      "c": "Kompressometr",
+      "d": "Barometr"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 216,
+    "question_text": "QS üçün əsas xarakterik nasazlıqlardan biri hansıdır?",
+    "options": {
+      "a": "Silindrlərin ölçülərinin dəyişməsi",
+      "b": "Birləşmələrdə kipliklərin pozulması",
+      "c": "Təkərlərin balanssızlığı",
+      "d": "Radiatorun soyutmaması"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 217,
+    "question_text": "Karbüratorlu mühərriklərdə hansı nasazlıq baş verə bilər?",
+    "options": {
+      "a": "Turbocompressorun sıradan çıxması.",
+      "b": "Jiklyorların maye buraxma qabiliyyətinin dəyişməsi",
+      "c": "Elektron beyin blokunun yanması.",
+      "d": "Su nasosunun dönmə sürətinin artması."
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 218,
+    "question_text": "Dizel mühərriklərində yüksək təzyiqli yanacaq nasosunda hansı nasazlıq qeyd olunur?",
+    "options": {
+      "a": "Ventilyator kəmərinin qırılması",
+      "b": "Plunjer cütlüyünün yeyilməsi",
+      "c": "Şamların qızmaması",
+      "d": "Termostatın ilişməsi"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 219,
+    "question_text": "Qida sistemində yaranan nasazlıqların nəticəsi nə olur?",
+    "options": {
+      "a": "Mühərrikin temperaturu kəskin aşağı düşür",
+      "b": "Yağlama sisteminin təzyiqi artır",
+      "c": "Mühərrikin gücü azalır və yanacaq sərfi artır",
+      "d": "Təkərlərin aşınması sürətlənir"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 220,
+    "question_text": "Mühərrik işə salındıqdan sonra onun qızma tempinin müşahidə edilməsi nəyi göstərir?",
+    "options": {
+      "a": "Yanacaq nasosunun sazlığını",
+      "b": "Termostatın sazlıq dərəcəsini",
+      "c": "Ventilyatorun işləmə rejimini",
+      "d": "Karbüratorun tənzimlənməsini"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 221,
+    "question_text": "Termostatın klapanı normal halda hansı temperaturda açılmağa başlamalıdır?",
+    "options": {
+      "a": "40--45°S",
+      "b": "55--60°S",
+      "c": "65--70°S",
+      "d": "90--95°S"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 222,
+    "question_text": "Termostatın klapanı tam açılma temperaturu nə qədər olmalıdır?",
+    "options": {
+      "a": "70--75°S",
+      "b": "80--85°S",
+      "c": "90--95°S",
+      "d": "50--55°S"
+    },
+    "correct_answer": "b"
+  },
+  {
+    "question_number": 223,
+    "question_text": "Yanacaq nasosunun işləmə qabiliyyəti hansı cihazda yoxlanılır?",
+    "options": {
+      "a": "M402A",
+      "b": "M210D",
+      "c": "M527B",
+      "d": "M101K"
+    },
+    "correct_answer": "c"
+  },
+  {
+    "question_number": 224,
+    "question_text": "Vakuummetr cihazı hansı parametri ölçmək üçün istifadə edilir?",
+    "options": {
+      "a": "Yağ təzyiqini",
+      "b": "Suyun temperaturunu",
+      "c": "Yanacağın səviyyəsini",
+      "d": "Seyrəkliyi"
+    },
+    "correct_answer": "d"
+  },
+  {
+    "question_number": 225,
+    "question_text": "Transmissiyanın texniki vəziyyəti hansı əsas göstəriciyə görə qiymətləndirilir?",
+    "options": {
+      "a": "Mühərrikin sıxılma dərəcəsinə",
+      "b": "Güc itkisinə",
+      "c": "Şinlərin yol ilə təmasına",
+      "d": "Akumulyatorun gərginliyinə"
+    },
+    "correct_answer": "b"
+  }
 ];
         // Oyun dəyişənləri
 // Oyun dəyişənləri
@@ -3409,6 +3537,7 @@ let currentQuestionIndex = 0;
 let userAnswers = [];
 let quizStarted = false;
 let userName = '';
+let startQuestionNumber = 1; // Yeni dəyişən: başlama sual nömrəsi
 let timerInterval;
 const totalTime = 40;
 let timeLeft = totalTime;
@@ -3453,6 +3582,9 @@ window.onload = function() {
         userGreeting.innerHTML = `<strong>${userName}</strong> olaraq giriş etdiniz!`;
     }
     
+    // Başlama sual nömrəsi inputunu yarat
+    createStartQuestionInput();
+    
     // Particles yarat
     createParticles();
     
@@ -3463,10 +3595,109 @@ window.onload = function() {
     setupEventListeners();
 };
 
+// ====== BAŞLAMA SUAL NÖMRƏSİ INPUTU ======
+function createStartQuestionInput() {
+    const startBtn = document.getElementById('start-btn');
+    const startBtnContainer = startBtn.parentElement;
+    
+    // Input container yarat
+    const inputContainer = document.createElement('div');
+    inputContainer.className = 'start-question-input';
+    inputContainer.style.cssText = `
+        margin: 15px 0;
+        text-align: center;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        border: 1px solid rgba(67, 97, 238, 0.3);
+    `;
+    
+    // Label yarat
+    const label = document.createElement('label');
+    label.textContent = 'Başlama sual nömrəsi: ';
+    label.style.cssText = `
+        color: var(--text-white);
+        font-size: 0.9rem;
+        margin-right: 10px;
+        display: inline-block;
+    `;
+    
+    // Input yarat
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.id = 'start-question-input';
+    input.min = 1;
+    input.max = allQuestions.length;
+    input.value = 1;
+    input.style.cssText = `
+        width: 60px;
+        padding: 5px 10px;
+        border: 2px solid var(--primary-blue);
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.9);
+        color: var(--primary-blue);
+        font-weight: bold;
+        text-align: center;
+        font-size: 1rem;
+    `;
+    
+    // Info mesajı
+    const infoText = document.createElement('div');
+    infoText.textContent = `(1 - ${allQuestions.length} arası)`;
+    infoText.style.cssText = `
+        color: var(--accent-pink);
+        font-size: 0.8rem;
+        margin-top: 5px;
+        opacity: 0.8;
+    `;
+    
+    inputContainer.appendChild(label);
+    inputContainer.appendChild(input);
+    inputContainer.appendChild(infoText);
+    
+    // Start button-dan əvvəl əlavə et
+    startBtnContainer.insertBefore(inputContainer, startBtn);
+    
+    // Input event listener
+    input.addEventListener('change', function() {
+        let value = parseInt(this.value);
+        
+        if (value < 1) {
+            value = 1;
+            this.value = 1;
+        } else if (value > allQuestions.length) {
+            value = allQuestions.length;
+            this.value = allQuestions.length;
+        }
+        
+        startQuestionNumber = value;
+    });
+}
+
 function setupEventListeners() {
     // Start button
     document.getElementById('start-btn').addEventListener('click', () => {
         console.log('Start button clicked!');
+        
+        // Başlama sual nömrəsini götür
+        const input = document.getElementById('start-question-input');
+        let questionNum = parseInt(input.value);
+        
+        // Validasiya
+        if (questionNum < 1) questionNum = 1;
+        if (questionNum > allQuestions.length) questionNum = allQuestions.length;
+        
+        // Sualın index-ni tap
+        const questionIndex = findQuestionIndexByNumber(questionNum);
+        
+        if (questionIndex !== -1) {
+            currentQuestionIndex = questionIndex;
+            startQuestionNumber = questionNum;
+        } else {
+            currentQuestionIndex = 0;
+            startQuestionNumber = 1;
+        }
+        
         startContainer.style.display = 'none';
         quizHeader.style.display = 'grid';
         quizContainer.style.display = 'block';
@@ -3482,6 +3713,16 @@ function setupEventListeners() {
     
     // Restart button
     document.getElementById('restart-btn').addEventListener('click', restartQuiz);
+}
+
+// ====== SUAL NÖMRƏSİNƏ GÖRƏ INDEX TAPMAQ ======
+function findQuestionIndexByNumber(questionNumber) {
+    for (let i = 0; i < allQuestions.length; i++) {
+        if (allQuestions[i].question_number === questionNumber) {
+            return i;
+        }
+    }
+    return -1; // Tapılmadı
 }
 
 // ====== PARTİCLE SİSTEMİ ======
@@ -3590,8 +3831,11 @@ function loadQuestion(questionIndex) {
 
     const currentQuestion = allQuestions[questionIndex];
     
+    // Sual nömrəsinin real dəyərini göstər
     questionElement.innerHTML = `<span style="color: var(--accent-pink);">${currentQuestion.question_number}.</span> ${currentQuestion.question_text}`;
-    progressElement.textContent = `Sual ${questionIndex + 1} / ${allQuestions.length}`;
+    
+    // Progress-də cari və ümumi sual sayını göstər
+    progressElement.textContent = `Sual ${currentQuestion.question_number} / ${allQuestions.length}`;
     questionCounterElement.textContent = `${questionIndex + 1} / ${allQuestions.length}`;
 
     optionsContainer.innerHTML = '';
@@ -3674,13 +3918,17 @@ function showResult() {
     const totalQuestions = allQuestions.length;
     const percentage = ((correctCount / totalQuestions) * 100).toFixed(1);
     
+    // Başlama sual nömrəsi ilə bağlı info
+    const startInfo = startQuestionNumber > 1 ? 
+        ` (${startQuestionNumber}-ci sualdan başladı)` : '';
+    
     // Skor
     document.getElementById('score').innerHTML = `
         <div style="font-size: 1.8rem; color: var(--secondary-blue); margin-bottom: 10px;">
             ${userName}
         </div>
         <div style="font-size: 1.3rem; color: var(--accent-pink); margin-bottom: 15px;">
-            ${totalQuestions} sualdan ${correctCount} düzgün
+            ${totalQuestions} sualdan ${correctCount} düzgün${startInfo}
         </div>
         <div style="font-size: 3rem; color: var(--primary-blue); font-weight: 800;">
             ${percentage}%
@@ -3700,6 +3948,10 @@ function showResult() {
         <div style="margin-bottom: 15px;">
             <i class="fas fa-percentage" style="color: var(--primary-blue); margin-right: 10px;"></i>
             <strong>Uğur faizi:</strong> ${percentage}%
+        </div>
+        <div style="margin-bottom: 15px;">
+            <i class="fas fa-play-circle" style="color: var(--secondary-blue); margin-right: 10px;"></i>
+            <strong>Başlama nömrəsi:</strong> ${startQuestionNumber}
         </div>
     `;
     
@@ -3723,7 +3975,25 @@ function showResult() {
 }
 
 function restartQuiz() {
-    currentQuestionIndex = 0;
+    // Başlama input-unun dəyərini saxla
+    const input = document.getElementById('start-question-input');
+    let questionNum = parseInt(input.value);
+    
+    // Validasiya
+    if (questionNum < 1) questionNum = 1;
+    if (questionNum > allQuestions.length) questionNum = allQuestions.length;
+    
+    // Yeni başlama index-i tap
+    const questionIndex = findQuestionIndexByNumber(questionNum);
+    
+    if (questionIndex !== -1) {
+        currentQuestionIndex = questionIndex;
+        startQuestionNumber = questionNum;
+    } else {
+        currentQuestionIndex = 0;
+        startQuestionNumber = 1;
+    }
+    
     userAnswers = [];
     
     startContainer.style.display = 'none';
