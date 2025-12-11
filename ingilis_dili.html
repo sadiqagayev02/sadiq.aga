@@ -3253,360 +3253,363 @@
 ]
 }
 ];
-        // Oyun dəyişənləri
-        let currentQuestionIndex = 0;
-        let userAnswers = [];
-        let quizStarted = false;
-        let userName = '';
-        let timerInterval;
-        const totalTime = 40;
-        let timeLeft = totalTime;
-        let isTimerPaused = false;
-        let autoNextTimeout;
+       // ====== ƏSAS DƏYİŞİKLİK ======
+// Bütün sualları bir massivdə birləşdir
+const combinedQuestions = allQuestions.flatMap(category => category.questions);
 
-        // DOM elementləri
-        const startContainer = document.getElementById('start-container');
-        const quizHeader = document.getElementById('quiz-header');
-        const quizContainer = document.getElementById('quiz-container');
-        const resultContainer = document.getElementById('result-container');
-        const questionElement = document.getElementById('question');
-        const optionsContainer = document.getElementById('options-container');
-        const progressElement = document.getElementById('progress');
-        const questionCounterElement = document.getElementById('question-counter');
-        const timerDisplayElement = document.getElementById('timer-display');
-        const timerBarElement = document.getElementById('timer-bar');
-        const nextBtn = document.getElementById('next-btn');
-        const timerToggleBtn = document.getElementById('timer-toggle-btn');
-        const autoNextMessage = document.getElementById('auto-next-message');
-        const userGreeting = document.getElementById('user-greeting');
-        const progressCircles = document.getElementById('progress-circles');
-        const statsDetails = document.getElementById('stats-details');
+// Oyun dəyişənləri
+let currentQuestionIndex = 0;
+let userAnswers = [];
+let quizStarted = false;
+let userName = '';
+let timerInterval;
+const totalTime = 40;
+let timeLeft = totalTime;
+let isTimerPaused = false;
+let autoNextTimeout;
 
-        // ====== ƏSAS DƏYİŞİKLİKLƏR ======
-        // 1. Avtomatik giriş sistemi
-        window.onload = function() {
-            // LocalStorage-dən istifadəçi məlumatlarını yoxla
-            const savedUsername = localStorage.getItem('quizUsername');
-            const savedIsLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            
-            if (savedIsLoggedIn && savedUsername) {
-                // Əvvəlki giriş məlumatları var
-                userName = savedUsername;
-                userGreeting.innerHTML = `<strong>${userName}</strong> olaraq giriş etdiniz!`;
+// DOM elementləri
+const startContainer = document.getElementById('start-container');
+const quizHeader = document.getElementById('quiz-header');
+const quizContainer = document.getElementById('quiz-container');
+const resultContainer = document.getElementById('result-container');
+const questionElement = document.getElementById('question');
+const optionsContainer = document.getElementById('options-container');
+const progressElement = document.getElementById('progress');
+const questionCounterElement = document.getElementById('question-counter');
+const timerDisplayElement = document.getElementById('timer-display');
+const timerBarElement = document.getElementById('timer-bar');
+const nextBtn = document.getElementById('next-btn');
+const timerToggleBtn = document.getElementById('timer-toggle-btn');
+const autoNextMessage = document.getElementById('auto-next-message');
+const userGreeting = document.getElementById('user-greeting');
+const progressCircles = document.getElementById('progress-circles');
+const statsDetails = document.getElementById('stats-details');
+
+// ====== ƏSAS DƏYİŞİKLİKLƏR ======
+// 1. Avtomatik giriş sistemi
+window.onload = function() {
+    // LocalStorage-dən istifadəçi məlumatlarını yoxla
+    const savedUsername = localStorage.getItem('quizUsername');
+    const savedIsLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    
+    if (savedIsLoggedIn && savedUsername) {
+        // Əvvəlki giriş məlumatları var
+        userName = savedUsername;
+        userGreeting.innerHTML = `<strong>${userName}</strong> olaraq giriş etdiniz!`;
+    } else {
+        // Yeni giriş - təsadüfi ad
+        const guestNames = ['Qonaq', 'İstifadəçi', 'Tələbə', 'Tədqiqatçı', 'Biliksevər'];
+        userName = guestNames[Math.floor(Math.random() * guestNames.length)];
+        localStorage.setItem('quizUsername', userName);
+        localStorage.setItem('isLoggedIn', 'true');
+        userGreeting.innerHTML = `<strong>${userName}</strong> olaraq giriş etdiniz!`;
+    }
+    
+    // Particles yarat
+    createParticles();
+    
+    // Progress circles yarat
+    createProgressCircles();
+};
+
+// ====== PARTİCLE SİSTEMİ ======
+function createParticles() {
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.animationDelay = `${Math.random() * 20}s`;
+        particle.style.animationDuration = `${15 + Math.random() * 10}s`;
+        particle.style.opacity = Math.random() * 0.5 + 0.3;
+        particle.style.width = particle.style.height = `${Math.random() * 6 + 2}px`;
+        particlesContainer.appendChild(particle);
+    }
+}
+
+// ====== PROGRESS CIRCLES ======
+function createProgressCircles() {
+    const totalQuestions = combinedQuestions.length; // Dəyişiklik burada
+    progressCircles.innerHTML = '';
+    for (let i = 0; i < totalQuestions; i++) {
+        const circle = document.createElement('div');
+        circle.className = 'progress-circle';
+        circle.id = `circle-${i}`;
+        progressCircles.appendChild(circle);
+    }
+}
+
+function updateProgressCircles() {
+    const circles = document.querySelectorAll('.progress-circle');
+    circles.forEach((circle, index) => {
+        circle.classList.remove('active');
+        if (index === currentQuestionIndex) {
+            circle.classList.add('active');
+        }
+        
+        // Əvvəlki cavabları rənglə
+        if (userAnswers[index]) {
+            if (userAnswers[index].correct) {
+                circle.classList.add('correct');
+                circle.classList.remove('incorrect');
             } else {
-                // Yeni giriş - təsadüfi ad
-                const guestNames = ['Qonaq', 'İstifadəçi', 'Tələbə', 'Tədqiqatçı', 'Biliksevər'];
-                userName = guestNames[Math.floor(Math.random() * guestNames.length)];
-                localStorage.setItem('quizUsername', userName);
-                localStorage.setItem('isLoggedIn', 'true');
-                userGreeting.innerHTML = `<strong>${userName}</strong> olaraq giriş etdiniz!`;
-            }
-            
-            // Particles yarat
-            createParticles();
-            
-            // Progress circles yarat
-            createProgressCircles();
-        };
-
-        // ====== PARTİCLE SİSTEMİ ======
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = `${Math.random() * 100}%`;
-                particle.style.animationDelay = `${Math.random() * 20}s`;
-                particle.style.animationDuration = `${15 + Math.random() * 10}s`;
-                particle.style.opacity = Math.random() * 0.5 + 0.3;
-                particle.style.width = particle.style.height = `${Math.random() * 6 + 2}px`;
-                particlesContainer.appendChild(particle);
+                circle.classList.add('incorrect');
+                circle.classList.remove('correct');
             }
         }
+    });
+}
 
-        // ====== PROGRESS CIRCLES ======
-        function createProgressCircles() {
-            const totalQuestions = allQuestions[0].questions.length;
-            progressCircles.innerHTML = '';
-            for (let i = 0; i < totalQuestions; i++) {
-                const circle = document.createElement('div');
-                circle.className = 'progress-circle';
-                circle.id = `circle-${i}`;
-                progressCircles.appendChild(circle);
-            }
-        }
+// ====== TIMER FUNCTIONS ======
+function resetTimer() {
+    stopTimer();
+    timeLeft = totalTime;
+    timerDisplayElement.textContent = `${timeLeft}s`;
+    timerBarElement.style.width = '100%';
+    startTimer();
+}
 
-        function updateProgressCircles() {
-            const circles = document.querySelectorAll('.progress-circle');
-            circles.forEach((circle, index) => {
-                circle.classList.remove('active');
-                if (index === currentQuestionIndex) {
-                    circle.classList.add('active');
-                }
-                
-                // Əvvəlki cavabları rənglə
-                if (userAnswers[index]) {
-                    if (userAnswers[index].correct) {
-                        circle.classList.add('correct');
-                        circle.classList.remove('incorrect');
-                    } else {
-                        circle.classList.add('incorrect');
-                        circle.classList.remove('correct');
-                    }
-                }
-            });
-        }
+function startTimer() {
+    if (timerInterval) return;
+    isTimerPaused = false;
+    timerToggleBtn.innerHTML = '<i class="fas fa-pause"></i>';
 
-        // ====== TIMER FUNCTIONS ======
-        function resetTimer() {
-            stopTimer();
-            timeLeft = totalTime;
+    timerInterval = setInterval(() => {
+        if (!isTimerPaused) {
+            timeLeft--;
             timerDisplayElement.textContent = `${timeLeft}s`;
-            timerBarElement.style.width = '100%';
-            startTimer();
-        }
+            timerBarElement.style.width = `${(timeLeft / totalTime) * 100}%`;
 
-        function startTimer() {
-            if (timerInterval) return;
-            isTimerPaused = false;
-            timerToggleBtn.innerHTML = '<i class="fas fa-pause"></i>';
-
-            timerInterval = setInterval(() => {
-                if (!isTimerPaused) {
-                    timeLeft--;
-                    timerDisplayElement.textContent = `${timeLeft}s`;
-                    timerBarElement.style.width = `${(timeLeft / totalTime) * 100}%`;
-
-                    if (timeLeft <= 0) {
-                        handleAnswer(null, allQuestions[0].questions[currentQuestionIndex].correct_answer, null);
-                    }
-                }
-            }, 1000);
-        }
-
-        function stopTimer() {
-            clearInterval(timerInterval);
-            timerInterval = null;
-        }
-        
-        function toggleTimer() {
-            if (isTimerPaused) {
-                isTimerPaused = false;
-                timerToggleBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                startTimer();
-            } else {
-                isTimerPaused = true;
-                timerToggleBtn.innerHTML = '<i class="fas fa-play"></i>';
-                stopTimer();
+            if (timeLeft <= 0) {
+                const correctAnswer = combinedQuestions[currentQuestionIndex].correct_answer; // Dəyişiklik
+                handleAnswer(null, correctAnswer, null);
             }
         }
+    }, 1000);
+}
 
-        // ====== QUIZ FUNCTIONS ======
-        function loadQuestion(questionIndex) {
-            clearTimeout(autoNextTimeout);
-            autoNextMessage.style.display = 'none';
+function stopTimer() {
+    clearInterval(timerInterval);
+    timerInterval = null;
+}
+
+function toggleTimer() {
+    if (isTimerPaused) {
+        isTimerPaused = false;
+        timerToggleBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        startTimer();
+    } else {
+        isTimerPaused = true;
+        timerToggleBtn.innerHTML = '<i class="fas fa-play"></i>';
+        stopTimer();
+    }
+}
+
+// ====== QUIZ FUNCTIONS ======
+function loadQuestion(questionIndex) {
+    clearTimeout(autoNextTimeout);
+    autoNextMessage.style.display = 'none';
+    
+    if (questionIndex >= combinedQuestions.length) {
+        showResult();
+        return;
+    }
+
+    const currentQuestion = combinedQuestions[questionIndex];
+    
+    questionElement.innerHTML = `<span style="color: var(--accent-pink);">${currentQuestion.question_number}.</span> ${currentQuestion.question_text}`;
+    progressElement.textContent = `Sual ${questionIndex + 1} / ${combinedQuestions.length}`;
+    questionCounterElement.textContent = `${questionIndex + 1} / ${combinedQuestions.length}`;
+
+    optionsContainer.innerHTML = '';
+    nextBtn.style.display = 'none';
+
+    const optionLetters = ['a', 'b', 'c', 'd'];
+    optionLetters.forEach((letter) => {
+        const optionText = currentQuestion.options[letter];
+        if (optionText) {
+            const button = document.createElement('button');
+            button.className = 'option-btn';
+            button.dataset.answer = letter;
+            button.innerHTML = `<span class="option-letter">${letter.toUpperCase()}</span> ${optionText}`;
             
-            const questions = allQuestions[0].questions;
+            button.addEventListener('click', () => handleAnswer(letter, currentQuestion.correct_answer, button));
             
-            if (questionIndex >= questions.length) {
-                showResult();
-                return;
-            }
-
-            const currentQuestion = questions[questionIndex];
-            
-            questionElement.innerHTML = `<span style="color: var(--accent-pink);">${currentQuestion.question_number}.</span> ${currentQuestion.question_text}`;
-            progressElement.textContent = `Sual ${questionIndex + 1} / ${questions.length}`;
-            questionCounterElement.textContent = `${questionIndex + 1} / ${questions.length}`;
-
-            optionsContainer.innerHTML = '';
-            nextBtn.style.display = 'none';
-
-            const optionLetters = ['a', 'b', 'c', 'd'];
-            optionLetters.forEach((letter) => {
-                const optionText = currentQuestion.options[letter];
-                if (optionText) {
-                    const button = document.createElement('button');
-                    button.className = 'option-btn';
-                    button.dataset.answer = letter;
-                    button.innerHTML = `<span class="option-letter">${letter.toUpperCase()}</span> ${optionText}`;
-                    
-                    button.addEventListener('click', () => handleAnswer(letter, currentQuestion.correct_answer, button));
-                    
-                    optionsContainer.appendChild(button);
-                }
-            });
-
-            resetTimer();
-            updateProgressCircles();
+            optionsContainer.appendChild(button);
         }
-        
-        function handleAnswer(selectedAnswer, correctAnswer, selectedButton) {
-            stopTimer();
-            
-            Array.from(optionsContainer.children).forEach(btn => {
-                btn.disabled = true;
-            });
-            
-            let isCorrect = selectedAnswer === correctAnswer;
+    });
 
-            userAnswers.push({
-                question: allQuestions[0].questions[currentQuestionIndex].question_number,
-                correct: isCorrect,
-                userAnswer: selectedAnswer
-            });
+    resetTimer();
+    updateProgressCircles();
+}
 
-            // Cavabları rənglə
-            Array.from(optionsContainer.children).forEach(btn => {
-                const letter = btn.dataset.answer;
-                if (letter === correctAnswer) {
-                    btn.classList.add('correct');
-                } else if (letter === selectedAnswer && letter !== correctAnswer) {
-                    btn.classList.add('incorrect');
-                }
-            });
+function handleAnswer(selectedAnswer, correctAnswer, selectedButton) {
+    stopTimer();
+    
+    Array.from(optionsContainer.children).forEach(btn => {
+        btn.disabled = true;
+    });
+    
+    let isCorrect = selectedAnswer === correctAnswer;
 
-            // Avtomatik növbəti suala keçid
-            autoNextMessage.textContent = isCorrect ? "✅ Düzgün cavab! Növbəti suala keçir..." : "❌ Yanlış cavab! Növbəti suala keçir...";
-            autoNextMessage.style.display = 'block';
-            autoNextMessage.style.color = isCorrect ? 'var(--accent-green)' : 'var(--accent-pink)';
-            
-            autoNextTimeout = setTimeout(() => {
-                nextQuestion();
-            }, 1500);
-            
-            // Progress circles yenilə
-            updateProgressCircles();
+    userAnswers.push({
+        question: combinedQuestions[currentQuestionIndex].question_number, // Dəyişiklik
+        correct: isCorrect,
+        userAnswer: selectedAnswer
+    });
+
+    // Cavabları rənglə
+    Array.from(optionsContainer.children).forEach(btn => {
+        const letter = btn.dataset.answer;
+        if (letter === correctAnswer) {
+            btn.classList.add('correct');
+        } else if (letter === selectedAnswer && letter !== correctAnswer) {
+            btn.classList.add('incorrect');
         }
+    });
 
-        function nextQuestion() {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < allQuestions[0].questions.length) {
-                loadQuestion(currentQuestionIndex);
-            } else {
-                showResult();
-            }
+    // Avtomatik növbəti suala keçid
+    autoNextMessage.textContent = isCorrect ? "✅ Düzgün cavab! Növbəti suala keçir..." : "❌ Yanlış cavab! Növbəti suala keçir...";
+    autoNextMessage.style.display = 'block';
+    autoNextMessage.style.color = isCorrect ? 'var(--accent-green)' : 'var(--accent-pink)';
+    
+    autoNextTimeout = setTimeout(() => {
+        nextQuestion();
+    }, 1500);
+    
+    // Progress circles yenilə
+    updateProgressCircles();
+}
+
+function nextQuestion() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < combinedQuestions.length) {
+        loadQuestion(currentQuestionIndex);
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    stopTimer();
+    clearTimeout(autoNextTimeout);
+    quizHeader.style.display = 'none';
+    quizContainer.style.display = 'none';
+    resultContainer.style.display = 'block';
+
+    const correctCount = userAnswers.filter(a => a.correct).length;
+    const totalQuestions = combinedQuestions.length; // Dəyişiklik
+    const percentage = ((correctCount / totalQuestions) * 100).toFixed(1);
+    
+    // Skor
+    document.getElementById('score').innerHTML = `
+        <div style="font-size: 1.8rem; color: var(--secondary-blue); margin-bottom: 10px;">
+            ${userName}
+        </div>
+        <div style="font-size: 1.3rem; color: var(--accent-pink); margin-bottom: 15px;">
+            ${totalQuestions} sualdan ${correctCount} düzgün
+        </div>
+        <div style="font-size: 3rem; color: var(--primary-blue); font-weight: 800;">
+            ${percentage}%
+        </div>
+    `;
+    
+    // Statistika
+    let statsHTML = `
+        <div style="margin-bottom: 15px;">
+            <i class="fas fa-check-circle" style="color: var(--accent-green); margin-right: 10px;"></i>
+            <strong>Düzgün cavablar:</strong> ${correctCount}
+        </div>
+        <div style="margin-bottom: 15px;">
+            <i class="fas fa-times-circle" style="color: var(--accent-pink); margin-right: 10px;"></i>
+            <strong>Yanlış cavablar:</strong> ${totalQuestions - correctCount}
+        </div>
+        <div style="margin-bottom: 15px;">
+            <i class="fas fa-percentage" style="color: var(--primary-blue); margin-right: 10px;"></i>
+            <strong>Uğur faizi:</strong> ${percentage}%
+        </div>
+    `;
+    
+    if (percentage >= 80) {
+        statsHTML += `
+            <div style="margin-top: 20px; padding: 15px; background: rgba(6, 214, 160, 0.1); border-radius: 10px; border-left: 4px solid var(--accent-green);">
+                <i class="fas fa-trophy" style="color: var(--accent-yellow); margin-right: 10px;"></i>
+                <strong>ƏLA NƏTİCƏ!</strong> Təbriklər!
+            </div>
+        `;
+    } else if (percentage >= 60) {
+        statsHTML += `
+            <div style="margin-top: 20px; padding: 15px; background: rgba(67, 97, 238, 0.1); border-radius: 10px; border-left: 4px solid var(--primary-blue);">
+                <i class="fas fa-star" style="color: var(--accent-yellow); margin-right: 10px;"></i>
+                <strong>YAXŞI NƏTİCƏ!</strong> Davam edin!
+            </div>
+        `;
+    }
+    
+    statsDetails.innerHTML = statsHTML;
+}
+
+function restartQuiz() {
+    currentQuestionIndex = 0;
+    userAnswers = [];
+    
+    startContainer.style.display = 'none';
+    quizHeader.style.display = 'grid';
+    quizContainer.style.display = 'block';
+    resultContainer.style.display = 'none';
+    
+    document.getElementById('username-display').textContent = userName;
+    loadQuestion(currentQuestionIndex);
+    createProgressCircles();
+}
+
+// ====== EVENT LISTENERS ======
+document.getElementById('start-btn').addEventListener('click', () => {
+    startContainer.style.display = 'none';
+    quizHeader.style.display = 'grid';
+    quizContainer.style.display = 'block';
+    document.getElementById('username-display').textContent = userName;
+    loadQuestion(currentQuestionIndex);
+});
+
+document.getElementById('next-btn').addEventListener('click', nextQuestion);
+document.getElementById('timer-toggle-btn').addEventListener('click', toggleTimer);
+document.getElementById('restart-btn').addEventListener('click', restartQuiz);
+
+// ====== KEYBOARD CONTROLS ======
+document.addEventListener('keydown', (e) => {
+    if (!quizContainer.style.display || quizContainer.style.display === 'none') return;
+    
+    // 1-4 rəqəmləri ilə cavab seçmək
+    if (e.key >= '1' && e.key <= '4') {
+        const index = parseInt(e.key) - 1;
+        const buttons = document.querySelectorAll('.option-btn');
+        if (buttons[index] && !buttons[index].disabled) {
+            const answer = buttons[index].dataset.answer;
+            const correctAnswer = combinedQuestions[currentQuestionIndex].correct_answer; // Dəyişiklik
+            buttons[index].click();
         }
-        
-        function showResult() {
-            stopTimer();
-            clearTimeout(autoNextTimeout);
-            quizHeader.style.display = 'none';
-            quizContainer.style.display = 'none';
-            resultContainer.style.display = 'block';
-
-            const correctCount = userAnswers.filter(a => a.correct).length;
-            const totalQuestions = allQuestions[0].questions.length;
-            const percentage = ((correctCount / totalQuestions) * 100).toFixed(1);
-            
-            // Skor
-            document.getElementById('score').innerHTML = `
-                <div style="font-size: 1.8rem; color: var(--secondary-blue); margin-bottom: 10px;">
-                    ${userName}
-                </div>
-                <div style="font-size: 1.3rem; color: var(--accent-pink); margin-bottom: 15px;">
-                    ${totalQuestions} sualdan ${correctCount} düzgün
-                </div>
-                <div style="font-size: 3rem; color: var(--primary-blue); font-weight: 800;">
-                    ${percentage}%
-                </div>
-            `;
-            
-            // Statistika
-            let statsHTML = `
-                <div style="margin-bottom: 15px;">
-                    <i class="fas fa-check-circle" style="color: var(--accent-green); margin-right: 10px;"></i>
-                    <strong>Düzgün cavablar:</strong> ${correctCount}
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <i class="fas fa-times-circle" style="color: var(--accent-pink); margin-right: 10px;"></i>
-                    <strong>Yanlış cavablar:</strong> ${totalQuestions - correctCount}
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <i class="fas fa-percentage" style="color: var(--primary-blue); margin-right: 10px;"></i>
-                    <strong>Uğur faizi:</strong> ${percentage}%
-                </div>
-            `;
-            
-            if (percentage >= 80) {
-                statsHTML += `
-                    <div style="margin-top: 20px; padding: 15px; background: rgba(6, 214, 160, 0.1); border-radius: 10px; border-left: 4px solid var(--accent-green);">
-                        <i class="fas fa-trophy" style="color: var(--accent-yellow); margin-right: 10px;"></i>
-                        <strong>ƏLA NƏTİCƏ!</strong> Təbriklər!
-                    </div>
-                `;
-            } else if (percentage >= 60) {
-                statsHTML += `
-                    <div style="margin-top: 20px; padding: 15px; background: rgba(67, 97, 238, 0.1); border-radius: 10px; border-left: 4px solid var(--primary-blue);">
-                        <i class="fas fa-star" style="color: var(--accent-yellow); margin-right: 10px;"></i>
-                        <strong>YAXŞI NƏTİCƏ!</strong> Davam edin!
-                    </div>
-                `;
-            }
-            
-            statsDetails.innerHTML = statsHTML;
+    }
+    
+    // Space - taymeri dayandır/davam et
+    if (e.key === ' ') {
+        e.preventDefault();
+        toggleTimer();
+    }
+    
+    // Enter - növbəti suala keç
+    if (e.key === 'Enter' && nextBtn.style.display !== 'none') {
+        nextBtn.click();
+    }
+    
+    // N - növbəti suala keç
+    if (e.key === 'n' || e.key === 'N') {
+        if (nextBtn.style.display !== 'none') {
+            nextBtn.click();
         }
-        
-        function restartQuiz() {
-            currentQuestionIndex = 0;
-            userAnswers = [];
-            
-            startContainer.style.display = 'none';
-            quizHeader.style.display = 'grid';
-            quizContainer.style.display = 'block';
-            resultContainer.style.display = 'none';
-            
-            document.getElementById('username-display').textContent = userName;
-            loadQuestion(currentQuestionIndex);
-            createProgressCircles();
-        }
-
-        // ====== EVENT LISTENERS ======
-        document.getElementById('start-btn').addEventListener('click', () => {
-            startContainer.style.display = 'none';
-            quizHeader.style.display = 'grid';
-            quizContainer.style.display = 'block';
-            document.getElementById('username-display').textContent = userName;
-            loadQuestion(currentQuestionIndex);
-        });
-
-        document.getElementById('next-btn').addEventListener('click', nextQuestion);
-        document.getElementById('timer-toggle-btn').addEventListener('click', toggleTimer);
-        document.getElementById('restart-btn').addEventListener('click', restartQuiz);
-
-        // ====== KEYBOARD CONTROLS ======
-        document.addEventListener('keydown', (e) => {
-            if (!quizContainer.style.display || quizContainer.style.display === 'none') return;
-            
-            // 1-4 rəqəmləri ilə cavab seçmək
-            if (e.key >= '1' && e.key <= '4') {
-                const index = parseInt(e.key) - 1;
-                const buttons = document.querySelectorAll('.option-btn');
-                if (buttons[index] && !buttons[index].disabled) {
-                    const answer = buttons[index].dataset.answer;
-                    const correctAnswer = allQuestions[0].questions[currentQuestionIndex].correct_answer;
-                    buttons[index].click();
-                }
-            }
-            
-            // Space - taymeri dayandır/davam et
-            if (e.key === ' ') {
-                e.preventDefault();
-                toggleTimer();
-            }
-            
-            // Enter - növbəti suala keç
-            if (e.key === 'Enter' && nextBtn.style.display !== 'none') {
-                nextBtn.click();
-            }
-            
-            // N - növbəti suala keç
-            if (e.key === 'n' || e.key === 'N') {
-                if (nextBtn.style.display !== 'none') {
-                    nextBtn.click();
-                }
-            }
-        });
+    }
+});
     </script>
 </body>
 </html>
